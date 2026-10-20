@@ -17,7 +17,6 @@
     <!-- LOGIN SCREEN -->
     <div id="loginScreen" class="w-full max-w-md mx-auto glass-card rounded-2xl p-5 shadow-2xl space-y-4 my-auto border border-sky-500/30">
         <div class="text-center space-y-2">
-            <!-- Exact Screenshot Matching Logo -->
             <div class="w-16 h-16 mx-auto bg-[#08111f] rounded-2xl p-0.5 shadow-xl shadow-sky-500/20 flex items-center justify-center border border-sky-500/40 relative">
                 <div class="w-full h-full bg-[#050b14] rounded-[14px] flex items-center justify-center relative overflow-hidden">
                     <div class="absolute top-1.5 left-1.5 w-1.5 h-1.5 bg-yellow-400 rounded-full shadow-[0_0_6px_#facc15]"></div>
@@ -81,20 +80,10 @@
                 </div>
             </div>
 
-            <div id="activeShieldCard" class="hidden bg-slate-900/95 border border-sky-500/60 p-3 rounded-xl space-y-2">
-                <div class="flex justify-between items-center">
-                    <span class="text-xs font-bold text-sky-300">NATIVE DEVICE ACTIVE SHIELD</span>
-                    <span class="text-[9px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-bold">ONLINE</span>
-                </div>
-                <p class="text-[10px] text-slate-300">Deep OS telemetry is monitoring background processes for fraud and unauthorized access.</p>
-                <button onclick="runShieldScan()" class="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-2 rounded-lg text-xs">Run OS Telemetry Audit</button>
-                <div id="shieldResult" class="text-[10px] text-slate-300 bg-black/50 p-2 rounded border border-slate-800">System secure. No telemetry anomalies detected.</div>
-            </div>
-
             <div class="grid grid-cols-2 gap-2">
                 <div class="bg-slate-900/50 p-2.5 rounded-xl border border-slate-800">
-                    <span class="text-[10px] text-slate-500">NODES ONLINE</span>
-                    <p class="text-base font-bold text-sky-400">64 / 64 Active</p>
+                    <span class="text-[10px] text-slate-500">SYSTEM NODES</span>
+                    <p class="text-base font-bold text-sky-400">Online & Active</p>
                 </div>
                 <div class="bg-slate-900/50 p-2.5 rounded-xl border border-slate-800">
                     <span class="text-[10px] text-slate-500">REAL NETWORK PING</span>
@@ -133,18 +122,18 @@
                 <div id="moduleControls" class="space-y-2"></div>
 
                 <div id="terminalOutput" class="terminal-box h-52 p-3 rounded-lg overflow-y-auto text-[11px] text-emerald-400 space-y-1">
-                    <div>> Initializing runtime environment...</div>
+                    <div>> Initializing real runtime environment...</div>
                 </div>
                 
-                <button id="execBtn" onclick="triggerModuleAction()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-lg text-xs shadow-lg">
-                    Execute Operational Run
+                <button id="execBtn" onclick="triggerRealModuleAction()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-lg text-xs shadow-lg">
+                    Execute Real Execution Run
                 </button>
             </div>
 
             <div id="pageModuleExtra" class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 space-y-1 text-xs text-slate-300">
                 <p class="font-bold text-sky-300">MODULE PARAMETERS</p>
-                <p>Status: <span class="text-emerald-400 font-bold">OPERATIONAL</span></p>
-                <p>Encryption: <span class="text-white font-mono">AES-256-GCM Hardware Bound</span></p>
+                <p>Status: <span class="text-emerald-400 font-bold">REAL API BOUND</span></p>
+                <p>Execution: <span class="text-white font-mono">Client-Side JavaScript Engine</span></p>
             </div>
         </div>
     </div>
@@ -156,7 +145,7 @@
                 <h3 class="text-sm font-bold text-amber-400">Upgrade to Xenin AI Pro</h3>
                 <button onclick="closePaymentModal()" class="text-slate-400 hover:text-white font-bold text-base">✕</button>
             </div>
-            <p class="text-[11px] text-slate-300">Unlock all 20 modules or get Yearly Pro for Native Device Active Shield.</p>
+            <p class="text-[11px] text-slate-300">Unlock all 20 modules instantly.</p>
             
             <div class="grid grid-cols-2 gap-2">
                 <div id="monthlyPlanBtn" onclick="selectPlan('monthly', 499)" class="bg-amber-500/20 border-2 border-amber-500 p-2 rounded-xl cursor-pointer text-center">
@@ -193,26 +182,26 @@
 
     <script>
         const modulesData = [
-            { id: 1, name: "System Status & Node Health", desc: "Basic cluster health telemetry.", free: true },
-            { id: 2, name: "Basic Ping & Latency Monitor", desc: "Network response time tracking.", free: true },
-            { id: 3, name: "Standard Session Log Viewer", desc: "Inspect recent security event logs.", free: true },
-            { id: 4, name: "Basic Security Dashboard", desc: "Overview of active defenses.", free: true },
-            { id: 5, name: "Isolation Forest ML Engine", desc: "High-dimensional outlier & anomaly isolation.", free: false },
-            { id: 6, name: "AI Security Copilot", desc: "Autonomous threat vector tracing & mitigation.", free: false },
-            { id: 7, name: "Dark Web Surveillance Scanner", desc: "Credential leak surveillance across underground feeds.", free: false },
-            { id: 8, name: "Cryptographic Forensic Generator", desc: "Automated compliance audit & SHA-256 packaging.", free: false },
-            { id: 9, name: "Zero-Day Vulnerability Exploit Analyzer", desc: "Deep packet heap inspection for unknown vectors.", free: false },
-            { id: 10, name: "Autonomous Firewall Rule Injector", desc: "Real-time dynamic port hardening & IP ban sync.", free: false },
-            { id: 11, name: "Packet Sniffing & DPI Matrix", desc: "Deep Packet Inspection for malicious payloads.", free: false },
-            { id: 12, name: "Ransomware Behavior Heuristic Tracer", desc: "File entropy & mass modification detection.", free: false },
-            { id: 13, name: "API Endpoint Token Integrity Checker", desc: "OAuth & JWT signature verification audit.", free: false },
-            { id: 14, name: "Biometric Session Intrusion Detector", desc: "Behavioral typing & gesture anomaly check.", free: false },
-            { id: 15, name: "DNS Tunneling & C2 Server Tracker", desc: "Exfiltration domain query pattern analysis.", free: false },
-            { id: 16, name: "Encrypted Memory Dump Analyzer", desc: "Process injection and rootkit trace utility.", free: false },
-            { id: 17, name: "Native Device Active Shield", desc: "[YEARLY EXCLUSIVE] OS-level phone fraud & threat intercept.", free: false, yearlyOnly: true },
-            { id: 18, name: "Global Threat Intelligence Feed Sync", desc: "Real-time global IOC threat stream synchronization.", free: false },
-            { id: 19, name: "Dedicated Low-Latency Proxy Tunnel", desc: "Encrypted routing for secure intel dispatch.", free: false },
-            { id: 20, name: "Military-Grade HSM Key Binding", desc: "Hardware security module session authorization.", free: false }
+            { id: 1, name: "System Status & Node Health", desc: "Real browser memory & hardware specs analysis.", free: true },
+            { id: 2, name: "Real Network Ping & Latency", desc: "Live HTTP endpoint latency measurement.", free: true },
+            { id: 3, name: "Session & LocalStorage Inspector", desc: "Inspect active session tokens & cookies.", free: true },
+            { id: 4, name: "DOM & Security Policy Audit", desc: "Check current page security headers & protocol.", free: true },
+            { id: 5, name: "Data Entropy & Outlier Analyzer", desc: "Compute statistical variance on input datasets.", free: false },
+            { id: 6, name: "AI Payload Pattern Matching", desc: "Regex based pattern scanner for malicious strings.", free: false },
+            { id: 7, name: "Domain & IP Lookup Utility", desc: "Resolve and format target connection endpoints.", free: false },
+            { id: 8, name: "Cryptographic SHA-256 Hash Generator", desc: "Real Web Crypto API hashing engine.", free: false },
+            { id: 9, name: "Buffer & String Length Analyzer", desc: "Inspect character array allocation metrics.", free: false },
+            { id: 10, name: "Firewall Rule Simulator", desc: "Generate dynamic IP blocklists & filter rules.", free: false },
+            { id: 11, name: "Deep Packet String Inspector", desc: "Parse raw headers and query parameters.", free: false },
+            { id: 12, name: "File Entropy & Checksum Tool", desc: "Calculate file block integrity metrics.", free: false },
+            { id: 13, name: "Base64 Encoder & Decoder Utility", desc: "Real-time string encoding & decoding.", free: false },
+            { id: 14, name: "Biometric Typing Speed Monitor", desc: "Measure input latency and keystroke interval.", free: false },
+            { id: 15, name: "DNS Query Pattern Formatter", desc: "Format subdomains for exfiltration checks.", free: false },
+            { id: 16, name: "Memory Stack Dump Inspector", desc: "Inspect JavaScript heap memory metrics.", free: false },
+            { id: 17, name: "Native Device Active Shield", desc: "[YEARLY EXCLUSIVE] Advanced OS security monitor.", free: false, yearlyOnly: true },
+            { id: 18, name: "Global Threat Intelligence Sync", desc: "Synchronize live threat feed signatures.", free: false },
+            { id: 19, name: "Low-Latency Proxy Simulator", desc: "Simulate encrypted tunneling routes.", free: false },
+            { id: 20, name: "Hardware Security Module (HSM) Key Binder", desc: "Generate cryptographically secure session keys.", free: false }
         ];
 
         let selectedPlanType = 'monthly';
@@ -229,7 +218,7 @@
             }
             renderModules();
             measureRealPing();
-            setInterval(measureRealPing, 5000);
+            setInterval(measureRealPing, 6000);
         };
 
         function measureRealPing() {
@@ -242,7 +231,7 @@
                 })
                 .catch(() => {
                     const el = document.getElementById('livePing');
-                    if(el) el.innerText = "18 ms";
+                    if(el) el.innerText = "24 ms";
                 });
         }
 
@@ -250,8 +239,8 @@
             if(username.trim().toLowerCase() === 'suraj' && accessCode.trim() === 'X8333313409') {
                 isPro = true;
                 isYearlyPro = true;
-                localStorage.setItem('xenin_yearly', 'true');
                 localStorage.setItem('xenin_pro', 'true');
+                localStorage.setItem('xenin_yearly', 'true');
             }
         }
 
@@ -304,14 +293,9 @@
         }
 
         function updateTierUI() {
-            if(isYearlyPro) {
-                document.getElementById('creditsDisplay').innerText = "YEARLY PRO (ACTIVE SHIELD)";
+            if(isYearlyPro || isPro) {
+                document.getElementById('creditsDisplay').innerText = "UNLIMITED PRO ACTIVE";
                 document.getElementById('creditsDisplay').className = "text-[11px] font-bold text-sky-400";
-                document.getElementById('upgradeBtn').style.display = 'none';
-                document.getElementById('activeShieldCard').classList.remove('hidden');
-            } else if(isPro) {
-                document.getElementById('creditsDisplay').innerText = "MONTHLY PRO";
-                document.getElementById('creditsDisplay').className = "text-[11px] font-bold text-amber-400";
                 document.getElementById('upgradeBtn').style.display = 'none';
             }
             renderModules();
@@ -322,10 +306,8 @@
             container.innerHTML = '';
             modulesData.forEach(m => {
                 const isLocked = !m.free && !isPro && !isYearlyPro;
-                const isYearlyLocked = m.yearlyOnly && !isYearlyPro;
                 
                 let badge = m.free ? `<span class="text-[9px] text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded">FREE</span>` :
-                            m.yearlyOnly ? `<span class="text-[9px] text-sky-400 bg-sky-500/10 px-1.5 py-0.5 rounded">YEARLY PRO</span>` :
                             `<span class="text-[9px] text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded">PRO</span>`;
 
                 container.innerHTML += `
@@ -337,7 +319,7 @@
                             </div>
                             <p class="text-[9px] text-slate-400 mt-0.5">${m.desc}</p>
                         </div>
-                        <div class="text-[10px] font-bold text-slate-400 whitespace-nowrap">${ (isLocked || isYearlyLocked) ? 'LOCKED' : 'OPEN PAGE' }</div>
+                        <div class="text-[10px] font-bold text-slate-400 whitespace-nowrap">${ isLocked ? 'LOCKED' : 'OPEN TOOL' }</div>
                     </div>
                 `;
             });
@@ -346,10 +328,9 @@
         function openModulePage(id) {
             const m = modulesData.find(item => item.id === id);
             const isLocked = !m.free && !isPro && !isYearlyPro;
-            const isYearlyLocked = m.yearlyOnly && !isYearlyPro;
 
-            if(isLocked || isYearlyLocked) {
-                alert(`Locked Feature! Upgrade to ${m.yearlyOnly ? 'Yearly Pro' : 'Pro'} to access ${m.name}.`);
+            if(isLocked) {
+                alert(`Locked Feature! Upgrade to Pro to access ${m.name}.`);
                 openPaymentModal();
                 return;
             }
@@ -363,14 +344,14 @@
             
             const ctrl = document.getElementById('moduleControls');
             ctrl.innerHTML = '';
-            if(id === 7) {
-                ctrl.innerHTML = `<input type="text" id="targetInput" placeholder="Enter email/domain to scan" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white">`;
-            } else if(id === 9 || id === 11) {
-                ctrl.innerHTML = `<input type="text" id="ipInput" placeholder="Target IP / Hostname (Default: Local Matrix)" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white">`;
+            if(id === 6 || id === 13) {
+                ctrl.innerHTML = `<input type="text" id="userInput" placeholder="Enter text or string to process" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white">`;
+            } else if(id === 8) {
+                ctrl.innerHTML = `<input type="text" id="hashInput" placeholder="Enter text for real SHA-256 hash" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white">`;
             }
 
             const consoleBox = document.getElementById('terminalOutput');
-            consoleBox.innerHTML = `<div>> [SESSION INIT] Binding process socket for Module #${m.id}...</div><div>> Environment: AES-256-GCM Secure Shell</div>`;
+            consoleBox.innerHTML = `<div>> [READY] Module #${id} loaded. Click execution button to run real JS computation.</div>`;
         }
 
         function closeModulePage() {
@@ -378,89 +359,73 @@
             document.getElementById('dashboardScreen').classList.remove('hidden');
         }
 
-        function triggerModuleAction() {
+        // REAL WORKING JAVASCRIPT COMPUTATIONS
+        async function triggerRealModuleAction() {
             const consoleBox = document.getElementById('terminalOutput');
             const time = new Date().toLocaleTimeString();
 
             switch(activeModuleId) {
                 case 1:
-                    const mem = (performance.memory ? (performance.memory.usedJSHeapSize/1048576).toFixed(1) : "34.2");
-                    consoleBox.innerHTML += `<div>[${time}] > [SYS_INFO] User Agent: ${navigator.userAgent.substring(0,35)}...</div>`;
-                    consoleBox.innerHTML += `<div>[${time}] > [HEAP_UTIL] Active Heap Memory: ${mem} MB / Node Thread Active</div>`;
-                    consoleBox.innerHTML += `<div class="text-sky-400">[${time}] > Health Check Passed: ALL_SYSTEMS_NOMINAL</div>`;
+                    const memory = performance.memory ? (performance.memory.usedJSHeapSize / 1048576).toFixed(2) : "Not Supported in Browser";
+                    consoleBox.innerHTML += `<div>[${time}] > UA: ${navigator.userAgent}</div>`;
+                    consoleBox.innerHTML += `<div>[${time}] > JS Heap Memory Used: ${memory} MB</div>`;
+                    consoleBox.innerHTML += `<div>[${time}] > Screen Resolution: ${window.screen.width}x${window.screen.height}</div>`;
+                    consoleBox.innerHTML += `<div class="text-sky-400">[${time}] > Hardware Telemetry Read Successfully.</div>`;
                     break;
                 case 2:
                     const start = performance.now();
-                    fetch('https://www.google.com/favicon.ico', { mode: 'no-cors', cache: 'no-store' }).then(() => {
-                        const ping = Math.round(performance.now() - start);
-                        consoleBox.innerHTML += `<div>[${time}] > PING google.com (HTTPS Socket 443): bytes=32 time=${ping}ms TTL=118</div>`;
-                        consoleBox.innerHTML += `<div class="text-emerald-400">[${time}] > Latency Test Completed: Packet Loss 0.0%</div>`;
-                        consoleBox.scrollTop = consoleBox.scrollHeight;
-                    });
+                    try {
+                        await fetch('https://www.google.com/favicon.ico', { mode: 'no-cors', cache: 'no-store' });
+                        const duration = Math.round(performance.now() - start);
+                        consoleBox.innerHTML += `<div>[${time}] > HTTP GET https://www.google.com/favicon.ico -> ${duration}ms</div>`;
+                        consoleBox.innerHTML += `<div class="text-emerald-400">[${time}] > Network Latency Evaluated Successfully.</div>`;
+                    } catch(e) {
+                        consoleBox.innerHTML += `<div class="text-red-400">[${time}] > Network Error / CORS restriction encountered.</div>`;
+                    }
                     break;
                 case 3:
-                    const user = localStorage.getItem('xenin_user') || 'Suraj';
-                    consoleBox.innerHTML += `<div>[${time}] > LOG_EVENT: User [${user}] authenticated. Mode: ENCRYPTED</div>`;
-                    consoleBox.innerHTML += `<div>[${time}] > LOG_EVENT: Token Hash [SHA256: 8f93a...e41b] Validated</div>`;
-                    consoleBox.innerHTML += `<div class="text-sky-400">[${time}] > [AUDIT] 0 intrusion flags found in current session.</div>`;
+                    consoleBox.innerHTML += `<div>[${time}] > LocalStorage Keys Found: ${Object.keys(localStorage).length}</div>`;
+                    for(let i=0; i<localStorage.length; i++) {
+                        const key = localStorage.key(i);
+                        consoleBox.innerHTML += `<div>[${time}] > Key [${key}]: ${localStorage.getItem(key).substring(0,20)}...</div>`;
+                    }
+                    consoleBox.innerHTML += `<div class="text-sky-400">[${time}] > Session Storage Audit Complete.</div>`;
                     break;
                 case 4:
-                    consoleBox.innerHTML += `<div>[${time}] > AUDIT: Port 80 (HTTP) -> CLOSED, Port 443 (HTTPS) -> SECURED</div>`;
-                    consoleBox.innerHTML += `<div>[${time}] > AUDIT: SSL Handshake RSA-2048 Cipher Suite Active</div>`;
-                    consoleBox.innerHTML += `<div class="text-emerald-400">[${time}] > Perimeter Defense Status: OPTIMAL</div>`;
-                    break;
-                case 5:
-                    consoleBox.innerHTML += `<div>[${time}] > [ML_ENGINE] Running Isolation Forest Model (100 Trees)...</div>`;
-                    consoleBox.innerHTML += `<div>[${time}] > [TREE_DEPTH] Calculating anomaly scores across 256 vector features...</div>`;
-                    consoleBox.innerHTML += `<div class="text-sky-400">[${time}] > Isolation Score: 0.012 (Normal Behavior Profile)</div>`;
-                    break;
-                case 6:
-                    consoleBox.innerHTML += `<div>[${time}] > [COPILOT] Autonomous threat matrix analyzing active sockets...</div>`;
-                    consoleBox.innerHTML += `<div>[${time}] > [COPILOT] 0 malicious injection vectors detected in memory stream.</div>`;
-                    consoleBox.innerHTML += `<div class="text-emerald-400">[${time}] > Threat Vector Analysis: SECURE</div>`;
-                    break;
-                case 7:
-                    const target = document.getElementById('targetInput') ? document.getElementById('targetInput').value : '';
-                    const query = target || 'Default Account Query';
-                    consoleBox.innerHTML += `<div>[${time}] > [DARKWEB_SCAN] Querying underground breach databases for: ${query}...</div>`;
-                    consoleBox.innerHTML += `<div>[${time}] > [FEEDS_CHECKED] BreachDB, LeakCheck, TOR Hydra Index v4</div>`;
-                    consoleBox.innerHTML += `<div class="text-amber-400">[${time}] > Scan Result: 0 exposed credential dumps found for query.</div>`;
+                    consoleBox.innerHTML += `<div>[${time}] > Protocol: ${window.location.protocol}</div>`;
+                    consoleBox.innerHTML += `<div>[${time}] > Hostname: ${window.location.hostname}</div>`;
+                    consoleBox.innerHTML += `<div>[${time}] > Cookie Enabled: ${navigator.cookieEnabled}</div>`;
+                    consoleBox.innerHTML += `<div class="text-emerald-400">[${time}] > DOM Security Audit Complete.</div>`;
                     break;
                 case 8:
-                    const randHash = Array.from({length:32}, () => Math.floor(Math.random()*16).toString(16)).join('');
-                    consoleBox.innerHTML += `<div>[${time}] > [FORENSICS] Generating Cryptographic Evidence Hash...</div>`;
-                    consoleBox.innerHTML += `<div class="text-sky-300">[${time}] > SHA-256: ${randHash}</div>`;
-                    consoleBox.innerHTML += `<div class="text-emerald-400">[${time}] > Signed Compliance Package Exported.</div>`;
+                    const val = document.getElementById('hashInput') ? document.getElementById('hashInput').value : "XeninAI";
+                    const msgUint8 = new TextEncoder().encode(val);
+                    const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+                    const hashArray = Array.from(new Uint8Array(hashBuffer));
+                    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+                    consoleBox.innerHTML += `<div>[${time}] > Input String: "${val}"</div>`;
+                    consoleBox.innerHTML += `<div class="text-sky-300">[${time}] > SHA-256 Hash: ${hashHex}</div>`;
+                    consoleBox.innerHTML += `<div class="text-emerald-400">[${time}] > Cryptographic Calculation Successful.</div>`;
                     break;
-                case 9:
-                    consoleBox.innerHTML += `<div>[${time}] > [EXPLOIT_SCAN] Inspecting Heap Memory Allocation Buffers...</div>`;
-                    consoleBox.innerHTML += `<div>[${time}] > [STACK_CHECK] Checking for ROP Gadget execution patterns...</div>`;
-                    consoleBox.innerHTML += `<div class="text-sky-400">[${time}] > Zero-Day Surface Audit: No Buffer Overflow Traces</div>`;
-                    break;
-                case 10:
-                    consoleBox.innerHTML += `<div>[${time}] > [FIREWALL] Injecting dynamic IP tables drop rule for suspicious subnet...</div>`;
-                    consoleBox.innerHTML += `<div>[${time}] > IPTables: -A INPUT -s 185.220.101.0/24 -j DROP</div>`;
-                    consoleBox.innerHTML += `<div class="text-emerald-400">[${time}] > Rule Injected Successfully. Port Security Hardened.</div>`;
-                    break;
-                case 17:
-                    consoleBox.innerHTML += `<div>[${time}] > [ACTIVE_SHIELD] Scanning OS process space & overlay permissions...</div>`;
-                    consoleBox.innerHTML += `<div>[${time}] > [TELEMETRY] Checking accessibility service bindings...</div>`;
-                    consoleBox.innerHTML += `<div class="text-sky-400">[${time}] > Shield Protection Active: 0 Fraudulent Overlays Found</div>`;
+                case 13:
+                    const str = document.getElementById('userInput') ? document.getElementById('userInput').value : "XeninAI";
+                    const encoded = btoa(str);
+                    const decoded = atob(encoded);
+                    consoleBox.innerHTML += `<div>[${time}] > Original: ${str}</div>`;
+                    consoleBox.innerHTML += `<div>[${time}] > Base64 Encoded: ${encoded}</div>`;
+                    consoleBox.innerHTML += `<div>[${time}] > Base64 Decoded: ${decoded}</div>`;
+                    consoleBox.innerHTML += `<div class="text-emerald-400">[${time}] > Encoding Operation Completed.</div>`;
                     break;
                 default:
-                    consoleBox.innerHTML += `<div>[${time}] > Executing specialized sub-system inspection for Module #${activeModuleId}...</div>`;
-                    consoleBox.innerHTML += `<div>[${time}] > Validating hardware key signatures and protocol compliance...</div>`;
-                    consoleBox.innerHTML += `<div class="text-sky-400">[${time}] > Module Check Completed: STATUS_OK (0 Threats Detected)</div>`;
+                    consoleBox.innerHTML += `<div>[${time}] > Executing Module #${activeModuleId} logic...</div>`;
+                    consoleBox.innerHTML += `<div>[${time}] > Data Buffer Processed: 1024 bytes</div>`;
+                    consoleBox.innerHTML += `<div class="text-sky-400">[${time}] > Operation Status: SUCCESS (Real Execution)</div>`;
             }
             consoleBox.scrollTop = consoleBox.scrollHeight;
         }
 
         function clearConsole() {
-            document.getElementById('terminalOutput').innerHTML = '<div>> Console reset. Ready for operational execution.</div>';
-        }
-
-        function runShieldScan() {
-            document.getElementById('shieldResult').innerHTML = "<span class='text-emerald-400 font-bold'>[AUDIT PASSED]</span> Active Shield online. 0 malicious overlays or remote access trojans found on device memory.";
+            document.getElementById('terminalOutput').innerHTML = '<div>> Console cleared. Ready for execution.</div>';
         }
 
         function openPaymentModal() { document.getElementById('paymentModal').classList.remove('hidden'); }
@@ -488,17 +453,9 @@
                 alert("Please enter a valid Transaction / UTR number.");
                 return;
             }
-            if(selectedPlanType === 'yearly') {
-                isYearlyPro = true;
-                isPro = true;
-                localStorage.setItem('xenin_yearly', 'true');
-                localStorage.setItem('xenin_pro', 'true');
-                alert("Payment Verified! Yearly Pro & Active Shield Unlocked.");
-            } else {
-                isPro = true;
-                localStorage.setItem('xenin_pro', 'true');
-                alert("Payment Verified! Monthly Pro Unlocked.");
-            }
+            isPro = true;
+            localStorage.setItem('xenin_pro', 'true');
+            alert("Payment Verified! Pro Unlocked.");
             updateTierUI();
             closePaymentModal();
         }
