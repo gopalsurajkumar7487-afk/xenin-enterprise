@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XENIN AI - Autonomous Security Intelligence</title>
+    <title>Xenin AI - Autonomous Security Intelligence</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <script>
@@ -20,235 +20,233 @@
         }
     </script>
     <style>
-        body { background: #020617; color: #f8fafc; overflow-x: hidden; }
-        .glass { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(56, 189, 248, 0.15); }
-        .glass-hover:hover { background: rgba(30, 41, 59, 0.8); border-color: rgba(56, 189, 248, 0.4); }
-        .glow-effect { box-shadow: 0 0 40px -10px rgba(14, 165, 233, 0.25); }
-        .glow-text { text-shadow: 0 0 20px rgba(56, 189, 248, 0.5); }
+        body { background: #010409; color: #f0f6fc; overflow-x: hidden; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .enterprise-glass { background: rgba(13, 17, 23, 0.85); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(48, 54, 61, 0.8); }
+        .enterprise-glow { box-shadow: 0 0 50px -12px rgba(56, 139, 253, 0.3); }
+        .terminal-glow { box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8); }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-sky-500 selection:text-black">
+<body class="min-h-screen flex flex-col justify-between selection:bg-blue-500 selection:text-white">
 
-    <!-- AUTHENTICATION SCREEN -->
-    <div id="authScreen" class="fixed inset-0 z-50 bg-[#020617] flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-sky-900/20 via-transparent to-transparent pointer-events-none"></div>
-        <div class="max-w-md w-full glass rounded-3xl p-8 glow-effect relative z-10 shadow-2xl">
+    <!-- SECURE GATEWAY AUTHENTICATION -->
+    <div id="authScreen" class="fixed inset-0 z-50 bg-[#010409] flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-950/40 via-transparent to-transparent pointer-events-none"></div>
+        <div class="max-w-md w-full enterprise-glass rounded-3xl p-8 enterprise-glow relative z-10">
             <div class="text-center mb-8">
-                <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-sky-500/20 to-blue-500/20 border border-sky-500/30 text-sky-400 mb-4 text-2xl shadow-inner">🛡️</div>
-                <h1 class="text-3xl font-extrabold tracking-tight text-white glow-text">XENIN AI</h1>
-                <p class="text-xs text-sky-300/70 font-medium mt-1 tracking-wider uppercase">Enterprise Security Gateway</p>
+                <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-400 mb-4 text-2xl">⚡</div>
+                <h1 class="text-2xl font-extrabold tracking-tight text-white">XENIN AI</h1>
+                <p class="text-[11px] text-slate-400 font-medium mt-1 uppercase tracking-widest">Autonomous Enterprise Core v4.8</p>
             </div>
 
             <form id="loginForm" onsubmit="handleAuth(event)" class="space-y-4">
-                <div id="phoneGroup">
-                    <label class="block text-[11px] font-bold text-slate-400 mb-2 uppercase tracking-widest">Mobile Verification ID / Passkey</label>
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-400 mb-2 uppercase tracking-widest">Secure Terminal ID</label>
                     <div class="flex gap-2">
-                        <span class="bg-slate-950/90 border border-slate-800 rounded-xl px-3.5 py-3.5 text-sm text-slate-400 flex items-center font-mono">+91</span>
-                        <input type="text" id="phoneInput" placeholder="Enter Mobile Number" class="w-full bg-slate-950/90 border border-slate-800 rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none focus:border-sky-500 transition-all font-mono" required>
+                        <span class="bg-[#161b22] border border-[#30363d] rounded-xl px-3.5 py-3.5 text-xs text-slate-400 flex items-center font-mono">+91</span>
+                        <input type="text" id="phoneInput" placeholder="Enter mobile identifier" class="w-full bg-[#161b22] border border-[#30363d] rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none focus:border-blue-500 transition-all font-mono" required>
                     </div>
                 </div>
 
                 <div id="otpGroup" class="hidden">
-                    <label class="block text-[11px] font-bold text-sky-400 mb-2 uppercase tracking-widest">Enter 6-Digit Code</label>
-                    <input type="text" id="otpInput" placeholder="••••••" maxlength="6" class="w-full bg-slate-950/90 border border-sky-500/50 rounded-xl px-4 py-3.5 text-center text-xl tracking-[0.5em] text-sky-300 focus:outline-none font-mono">
-                    <p class="text-[10px] text-slate-400 mt-2 text-center">Cryptographic session verification active.</p>
+                    <label class="block text-[10px] font-bold text-blue-400 mb-2 uppercase tracking-widest">Cryptographic OTP Verification</label>
+                    <input type="text" id="otpInput" placeholder="••••••" maxlength="6" class="w-full bg-[#161b22] border border-blue-500/40 rounded-xl px-4 py-3.5 text-center text-xl tracking-[0.5em] text-blue-300 focus:outline-none font-mono">
+                    <p class="text-[10px] text-slate-500 mt-2 text-center">Secure handshake token dispatched to active node.</p>
                 </div>
 
-                <button type="submit" id="authBtn" class="w-full py-4 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-slate-950 font-extrabold rounded-xl transition-all shadow-lg shadow-sky-500/25 text-sm tracking-wide mt-2">
-                    Initialize Secure Session
+                <button type="submit" id="authBtn" class="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition-all shadow-lg shadow-blue-600/20 text-xs tracking-wider uppercase mt-2">
+                    Initialize Secure Link
                 </button>
             </form>
 
-            <div class="mt-8 text-center border-t border-slate-800/60 pt-4">
-                <p class="text-[10px] text-slate-500 font-mono tracking-wider">SECURED VIA ENCRYPTED TLS PROTOCOL</p>
+            <div class="mt-8 text-center border-t border-[#30363d]/60 pt-4">
+                <p class="text-[9px] text-slate-500 font-mono tracking-widest uppercase">Zero-Trust Enterprise Protocol • 256-Bit Encrypted</p>
             </div>
         </div>
     </div>
 
-    <!-- MAIN DASHBOARD -->
+    <!-- MAIN ENTERPRISE DASHBOARD -->
     <div id="mainDashboard" class="hidden flex-1 flex flex-col">
-        <!-- Top Navigation -->
-        <header class="border-b border-slate-800/80 bg-slate-950/70 backdrop-blur-xl sticky top-0 z-40 px-4 md:px-8 py-3.5 flex items-center justify-between">
+        <!-- Navigation Header -->
+        <header class="border-b border-[#30363d] bg-[#0d1117]/80 backdrop-blur-xl sticky top-0 z-40 px-4 md:px-8 py-3.5 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-400 font-bold shadow-sm">🛡️</div>
+                <div class="w-9 h-9 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 font-bold text-sm">⚡</div>
                 <div>
-                    <h2 class="text-sm font-bold text-white flex items-center gap-2 tracking-wide">XENIN CORE <span class="text-[10px] bg-sky-950 text-sky-400 px-2 py-0.5 rounded-full border border-sky-800 font-mono">v4.8 ACTIVE</span></h2>
-                    <p id="userSessionTxt" class="text-[11px] text-slate-400 font-mono">Session: Authenticated</p>
+                    <h2 class="text-xs font-bold text-white flex items-center gap-2 tracking-wide uppercase">Xenin Core <span class="text-[9px] bg-blue-950/80 text-blue-400 px-2 py-0.5 rounded border border-blue-800/50 font-mono">Enterprise Active</span></h2>
+                    <p id="userSessionTxt" class="text-[10px] text-slate-400 font-mono">Session: Secure</p>
                 </div>
             </div>
             <div class="flex items-center gap-3">
-                <div id="scanTracker" class="text-xs px-3.5 py-2 rounded-xl bg-slate-900/90 border border-slate-800 text-slate-300 font-mono flex items-center gap-2 shadow-inner">
-                    <span>Scans:</span> <span id="scanCount" class="text-sky-400 font-bold">5</span>
+                <div id="scanTracker" class="text-xs px-3 py-1.5 rounded-xl bg-[#161b22] border border-[#30363d] text-slate-300 font-mono flex items-center gap-2">
+                    <span class="text-slate-500">Credits:</span> <span id="scanCount" class="text-blue-400 font-bold">5</span>
                 </div>
-                <button onclick="logout()" class="text-xs px-3.5 py-2 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 hover:bg-rose-500/20 font-semibold transition-all">Logout</button>
+                <button onclick="logout()" class="text-xs px-3 py-1.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 hover:bg-rose-500/20 font-semibold transition-all">Disconnect</button>
             </div>
         </header>
 
-        <!-- Main Workspace -->
+        <!-- Workspace Content -->
         <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-8 space-y-6">
             <!-- Telemetry Metrics Grid -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="glass p-5 rounded-2xl relative overflow-hidden">
-                    <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Risk Index</p>
-                    <p class="text-2xl font-extrabold text-sky-400 font-mono mt-1">0.0142 <span class="text-xs text-emerald-400 font-normal">(-12%)</span></p>
+                <div class="enterprise-glass p-5 rounded-2xl">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Risk Variance</p>
+                    <p class="text-xl font-extrabold text-blue-400 font-mono mt-1">0.0142 <span class="text-[10px] text-emerald-400 font-normal">(-12%)</span></p>
                 </div>
-                <div class="glass p-5 rounded-2xl relative overflow-hidden">
-                    <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Threats Neutralized</p>
-                    <p class="text-2xl font-extrabold text-white font-mono mt-1">1,482</p>
+                <div class="enterprise-glass p-5 rounded-2xl">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Threats Neutralized</p>
+                    <p class="text-xl font-extrabold text-white font-mono mt-1">1,482</p>
                 </div>
-                <div class="glass p-5 rounded-2xl relative overflow-hidden">
-                    <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Active Endpoints</p>
-                    <p class="text-2xl font-extrabold text-white font-mono mt-1">64/64</p>
+                <div class="enterprise-glass p-5 rounded-2xl">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Active Nodes</p>
+                    <p class="text-xl font-extrabold text-white font-mono mt-1">64/64</p>
                 </div>
-                <div class="glass p-5 rounded-2xl relative overflow-hidden">
-                    <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Gateway Latency</p>
-                    <p class="text-2xl font-extrabold text-emerald-400 font-mono mt-1">12ms</p>
+                <div class="enterprise-glass p-5 rounded-2xl">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Gateway Latency</p>
+                    <p class="text-xl font-extrabold text-emerald-400 font-mono mt-1">12ms</p>
                 </div>
             </div>
 
             <!-- Modules Grid -->
             <div>
-                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Autonomous Intelligence Modules</h3>
+                <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Core Processing Modules</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div onclick="executeScan('Isolation Forest ML')" class="glass glass-hover p-5 rounded-2xl cursor-pointer transition-all duration-300 group">
-                        <div class="flex items-start gap-4">
-                            <div class="w-12 h-12 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400 text-xl group-hover:scale-110 transition-transform">🌲</div>
+                    <div onclick="executeScan('Isolation Forest ML')" class="enterprise-glass hover:border-blue-500/40 p-5 rounded-2xl cursor-pointer transition-all duration-200 group">
+                        <div class="flex items-start gap-3.5">
+                            <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 text-base">🌲</div>
                             <div>
-                                <h4 class="text-base font-bold text-white group-hover:text-sky-400 transition-colors">Isolation Forest ML</h4>
-                                <p class="text-xs text-slate-400 mt-1 leading-relaxed">Real-time outlier detection & risk scoring engine.</p>
+                                <h4 class="text-sm font-bold text-white group-hover:text-blue-400 transition-colors">Isolation Forest ML</h4>
+                                <p class="text-xs text-slate-400 mt-1 leading-relaxed">High-dimensional outlier detection and risk stratification matrix.</p>
                             </div>
                         </div>
                     </div>
-                    <div onclick="executeScan('AI Security Copilot')" class="glass glass-hover p-5 rounded-2xl cursor-pointer transition-all duration-300 group">
-                        <div class="flex items-start gap-4">
-                            <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 text-xl group-hover:scale-110 transition-transform">🤖</div>
+                    <div onclick="executeScan('AI Security Copilot')" class="enterprise-glass hover:border-blue-500/40 p-5 rounded-2xl cursor-pointer transition-all duration-200 group">
+                        <div class="flex items-start gap-3.5">
+                            <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 text-base">🤖</div>
                             <div>
-                                <h4 class="text-base font-bold text-white group-hover:text-sky-400 transition-colors">AI Security Copilot</h4>
-                                <p class="text-xs text-slate-400 mt-1 leading-relaxed">Autonomous threat analysis & remediation.</p>
+                                <h4 class="text-sm font-bold text-white group-hover:text-blue-400 transition-colors">AI Security Copilot</h4>
+                                <p class="text-xs text-slate-400 mt-1 leading-relaxed">Autonomous threat vector tracing and automated protocol mitigation.</p>
                             </div>
                         </div>
                     </div>
-                    <div onclick="executeScan('Dark Web Scanner')" class="glass glass-hover p-5 rounded-2xl cursor-pointer transition-all duration-300 group">
-                        <div class="flex items-start gap-4">
-                            <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 text-xl group-hover:scale-110 transition-transform">🕵️‍♂️</div>
+                    <div onclick="executeScan('Dark Web Scanner')" class="enterprise-glass hover:border-blue-500/40 p-5 rounded-2xl cursor-pointer transition-all duration-200 group">
+                        <div class="flex items-start gap-3.5">
+                            <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 text-base">🕵️‍♂️</div>
                             <div>
-                                <h4 class="text-base font-bold text-white group-hover:text-sky-400 transition-colors">Dark Web Scanner</h4>
-                                <p class="text-xs text-slate-400 mt-1 leading-relaxed">Credential leak monitoring across threat feeds.</p>
+                                <h4 class="text-sm font-bold text-white group-hover:text-blue-400 transition-colors">Dark Web Scanner</h4>
+                                <p class="text-xs text-slate-400 mt-1 leading-relaxed">Credential leak surveillance across underground telemetry feeds.</p>
                             </div>
                         </div>
                     </div>
-                    <div onclick="executeScan('Forensic Generator')" class="glass glass-hover p-5 rounded-2xl cursor-pointer transition-all duration-300 group">
-                        <div class="flex items-start gap-4">
-                            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 text-xl group-hover:scale-110 transition-transform">📄</div>
+                    <div onclick="executeScan('Forensic Generator')" class="enterprise-glass hover:border-blue-500/40 p-5 rounded-2xl cursor-pointer transition-all duration-200 group">
+                        <div class="flex items-start gap-3.5">
+                            <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 text-base">📄</div>
                             <div>
-                                <h4 class="text-base font-bold text-white group-hover:text-sky-400 transition-colors">Forensic Generator</h4>
-                                <p class="text-xs text-slate-400 mt-1 leading-relaxed">Compliance audit logging & evidence packaging.</p>
+                                <h4 class="text-sm font-bold text-white group-hover:text-blue-400 transition-colors">Forensic Generator</h4>
+                                <p class="text-xs text-slate-400 mt-1 leading-relaxed">Automated compliance audit logging and cryptographic evidence packaging.</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Terminal -->
-            <div class="glass rounded-2xl p-5 border border-slate-800">
+            <!-- Terminal Stream -->
+            <div class="enterprise-glass rounded-2xl p-5 border border-[#30363d]">
                 <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-mono text-sky-400 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Telemetry Log</span>
-                    <button onclick="clearLogs()" class="text-[10px] font-mono text-slate-400 hover:text-white px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800">Clear</button>
+                    <span class="text-[10px] font-mono text-blue-400 uppercase tracking-widest flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Live Telemetry Stream</span>
+                    <button onclick="clearLogs()" class="text-[10px] font-mono text-slate-400 hover:text-white px-2.5 py-1 rounded-lg bg-[#161b22] border border-[#30363d]">Clear Buffer</button>
                 </div>
-                <div id="terminal" class="bg-slate-950/90 rounded-xl p-4 font-mono text-xs text-sky-300/90 h-32 overflow-y-auto space-y-1.5 border border-slate-900">
-                    <div>[SYSTEM] Xenin Autonomous Core v4.8 initialized.</div>
-                    <div>[AUTH] Encrypted connection established.</div>
-                    <div>[READY] Execute diagnostic module.</div>
+                <div id="terminal" class="bg-[#010409] terminal-glow rounded-xl p-4 font-mono text-xs text-blue-300/85 h-32 overflow-y-auto space-y-1.5 border border-[#30363d]/60">
+                    <div>[SYSTEM] Xenin Enterprise Core v4.8 initialized.</div>
+                    <div>[AUTH] Handshake protocol verified.</div>
+                    <div>[READY] Awaiting operator execution command.</div>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- LIMIT MODAL -->
-    <div id="limitModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
-        <div class="max-w-sm w-full glass rounded-3xl p-6 text-center glow-effect border border-sky-500/30">
-            <h3 class="text-lg font-extrabold text-white">Scan Limit Reached</h3>
-            <p class="text-xs text-slate-400 mt-2">Free trial scan limit (5/5) reached for this session.</p>
+    <!-- UPGRADE MODAL -->
+    <div id="limitModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="max-w-sm w-full enterprise-glass rounded-3xl p-6 text-center enterprise-glow border border-blue-500/30">
+            <h3 class="text-sm font-extrabold text-white uppercase tracking-wider">Usage Limit Reached</h3>
+            <p class="text-xs text-slate-400 mt-2 leading-relaxed">Complimentary trial credits exhausted (5/5). Upgrade to Enterprise Pro for unlimited execution.</p>
             <div class="mt-6 space-y-2.5">
-                <button onclick="upgradeTier()" class="w-full py-3.5 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 text-slate-950 font-extrabold rounded-xl text-xs">Upgrade Plan</button>
-                <button onclick="closeLimitModal()" class="w-full py-2.5 bg-slate-900 text-slate-400 rounded-xl text-xs border border-slate-800">Cancel</button>
+                <button onclick="upgradeTier()" class="w-full py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl text-xs uppercase tracking-wider shadow-lg shadow-blue-600/20">Upgrade Enterprise Plan</button>
+                <button onclick="closeLimitModal()" class="w-full py-2.5 bg-[#161b22] text-slate-400 hover:text-white rounded-xl text-xs border border-[#30363d]">Dismiss</button>
             </div>
         </div>
     </div>
 
     <script>
-        let isPasskeyUser = false;
-        let isPaidPlan = false;
-        let scansLeft = 5;
-        let isOtpPhase = false;
-        let generatedOtp = '';
+        let isRootSession = false;
+        let isPaidTier = false;
+        let scansRemaining = 5;
+        let isOtpStage = false;
+        let activeOtpCode = '';
 
-        function handleAuth(e) {
-            e.preventDefault();
-            const inputVal = document.getElementById('phoneInput').value.trim();
+        function handleAuth(event) {
+            event.preventDefault();
+            const val = document.getElementById('phoneInput').value.trim();
 
-            // Secret Passkey Direct Bypass
-            if(inputVal === 'X8333313409') {
-                isPasskeyUser = true;
-                isPaidPlan = true;
-                launchApp('Authorized Root Session');
+            // Secret Silent Master Override (Fully concealed, zero UI trace)
+            if(val === 'X8333313409') {
+                isRootSession = true;
+                isPaidTier = true;
+                initDashboard('Enterprise Master Operator');
                 return;
             }
 
-            // Normal User Mobile Auth Flow
-            if(!isOtpPhase) {
-                if(inputVal.length < 10) {
-                    alert('Please enter a valid 10-digit mobile number.');
+            // Normal User Authentication Flow
+            if(!isOtpStage) {
+                if(val.length < 10) {
+                    alert('Please enter a valid mobile identifier.');
                     return;
                 }
-                isOtpPhase = true;
-                // Generate dynamic 6-digit OTP for this session
-                generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+                isOtpStage = true;
+                activeOtpCode = Math.floor(100000 + Math.random() * 900000).toString();
                 document.getElementById('otpGroup').classList.remove('hidden');
-                document.getElementById('otpInput').value = generatedOtp; // Auto-filled for smooth testing
-                document.getElementById('authBtn').innerText = 'Verify & Launch Dashboard';
+                document.getElementById('otpInput').value = activeOtpCode; // Auto-fill for seamless user testing
+                document.getElementById('authBtn').innerText = 'Verify & Launch Core';
             } else {
                 const otp = document.getElementById('otpInput').value.trim();
-                if(otp !== generatedOtp) {
-                    alert('Invalid verification code.');
+                if(otp !== activeOtpCode) {
+                    alert('Invalid cryptographic verification code.');
                     return;
                 }
-                launchApp('+91 ' + inputVal);
+                initDashboard('+91 ' + val);
             }
         }
 
-        function launchApp(userLabel) {
+        function initDashboard(sessionIdentifier) {
             document.getElementById('authScreen').classList.add('hidden');
             document.getElementById('mainDashboard').classList.remove('hidden');
-            document.getElementById('userSessionTxt').innerText = `Session: ${userLabel}`;
+            document.getElementById('userSessionTxt').innerText = `Session: ${sessionIdentifier}`;
 
-            if(isPasskeyUser) {
+            if(isRootSession) {
                 document.getElementById('scanCount').innerText = 'Unlimited';
             }
         }
 
         function executeScan(moduleName) {
-            if(!isPasskeyUser && !isPaidPlan && scansLeft <= 0) {
+            if(!isRootSession && !isPaidTier && scansRemaining <= 0) {
                 document.getElementById('limitModal').classList.remove('hidden');
                 return;
             }
 
-            if(!isPasskeyUser && !isPaidPlan) {
-                scansLeft--;
-                document.getElementById('scanCount').innerText = scansLeft;
+            if(!isRootSession && !isPaidTier) {
+                scansRemaining--;
+                document.getElementById('scanCount').innerText = scansRemaining;
             }
 
             const term = document.getElementById('terminal');
-            const time = new Date().toLocaleTimeString();
-            term.innerHTML += `<div class="text-sky-300">[${time}] [EXEC] Diagnostics run for ${moduleName}: OK</div>`;
+            const timestamp = new Date().toLocaleTimeString();
+            term.innerHTML += `<div class="text-blue-300">[${timestamp}] [EXEC] Running module ${moduleName}... Status: Optimal.</div>`;
             term.scrollTop = term.scrollHeight;
         }
 
         function upgradeTier() {
-            isPaidPlan = true;
+            isPaidTier = true;
             document.getElementById('scanCount').innerText = 'Unlimited';
             document.getElementById('limitModal').classList.add('hidden');
-            alert('Tier upgraded successfully.');
+            alert('Enterprise Pro license activated.');
         }
 
         function closeLimitModal() {
@@ -256,7 +254,7 @@
         }
 
         function clearLogs() {
-            document.getElementById('terminal').innerHTML = `<div class="text-slate-500">[SYSTEM] Terminal reset.</div>`;
+            document.getElementById('terminal').innerHTML = `<div class="text-slate-500">[SYSTEM] Buffer cleared.</div>`;
         }
 
         function logout() {
