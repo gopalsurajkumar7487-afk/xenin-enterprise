@@ -13,10 +13,9 @@
 </head>
 <body class="min-h-screen p-4 flex flex-col items-center justify-center">
 
-    <!-- EXACT ORIGINAL LOGIN SCREEN -->
+    <!-- LOGIN SCREEN -->
     <div id="loginScreen" class="w-full max-w-md glass-card rounded-2xl p-6 shadow-2xl space-y-5 border border-sky-500/30">
         <div class="text-center space-y-3">
-            <!-- Exact Hexagonal Icon with Blue Border, Yellow Dots & White X -->
             <div class="w-16 h-16 mx-auto bg-gradient-to-b from-sky-500/30 to-slate-900 rounded-2xl p-0.5 shadow-lg shadow-sky-500/20 flex items-center justify-center border border-sky-400/40">
                 <div class="w-full h-full bg-[#0d1726] rounded-[14px] flex items-center justify-center relative overflow-hidden">
                     <svg class="w-11 h-11 text-sky-400 drop-shadow-[0_0_8px_rgba(56,189,248,0.7)]" viewBox="0 0 24 24" fill="none">
@@ -42,47 +41,56 @@
                 <label class="text-[11px] text-slate-400 font-semibold tracking-wider">OPERATOR NAME / ALIAS</label>
                 <input type="text" id="operatorInput" placeholder="Enter your professional name" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl p-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-sky-500">
             </div>
-
             <div class="space-y-1.5">
                 <label class="text-[11px] text-slate-400 font-semibold tracking-wider">SECURE ACCESS KEY / IDENTIFIER</label>
                 <input type="password" id="tokenInput" placeholder="Enter assigned security token" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl p-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-sky-500">
             </div>
-
             <button onclick="handleLogin()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 rounded-xl text-xs shadow-lg shadow-blue-600/40 transition tracking-wide">
                 ESTABLISH SECURE SESSION
             </button>
         </div>
-
         <div class="border-t border-slate-800/80 pt-3 text-center">
             <p class="text-[10px] text-slate-500 tracking-wider">SINGLE-USER TOKEN BOUND • 256-BIT ENCRYPTED</p>
         </div>
     </div>
 
-    <!-- MAIN DASHBOARD (Initially Hidden) -->
+    <!-- MAIN DASHBOARD -->
     <div id="dashboardScreen" class="hidden w-full max-w-md space-y-4">
         <!-- Header -->
         <div class="flex justify-between items-center px-2">
             <div>
                 <h1 class="text-xl font-bold tracking-wider text-sky-400">XENIN AI</h1>
-                <p class="text-xs text-slate-400">Threat Intelligence & Risk Matrix</p>
+                <p class="text-xs text-slate-400">Threat Intelligence Matrix</p>
             </div>
-            <button id="upgradeBtn" onclick="openPaymentModal()" class="bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 font-bold px-3 py-1.5 rounded-lg text-xs shadow-lg animate-pulse">
-                ⚡ Upgrade Pro
-            </button>
+            <div class="flex items-center space-x-2">
+                <button id="upgradeBtn" onclick="openPaymentModal()" class="bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 font-bold px-3 py-1.5 rounded-lg text-xs shadow-lg">
+                    Upgrade Pro
+                </button>
+                <button onclick="handleLogout()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1.5 rounded-lg text-xs">
+                    Logout
+                </button>
+            </div>
         </div>
 
-        <!-- Main Dashboard Container -->
-        <div class="glass-card rounded-2xl p-5 shadow-2xl space-y-4">
-            <!-- User Status Banner -->
-            <div class="flex justify-between items-center bg-slate-900/60 p-3 rounded-xl border border-slate-800">
-                <div>
-                    <p class="text-xs text-slate-400">OPERATOR STATUS</p>
-                    <p id="operatorDisplay" class="text-sm font-semibold text-sky-300">MASTER OPERATOR</p>
+        <div class="glass-card rounded-2xl p-5 shadow-2xl space-y-4 max-h-[85vh] overflow-y-auto">
+            <!-- Dynamic Time Greeting & Operator Banner -->
+            <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800 space-y-1">
+                <p id="greetingText" class="text-xs font-bold text-sky-400">WELCOME BACK</p>
+                <div class="flex justify-between items-center">
+                    <p id="operatorDisplay" class="text-sm font-semibold text-slate-200">MASTER OPERATOR</p>
+                    <p id="creditsDisplay" class="text-xs font-bold text-emerald-400">Standard Tier</p>
                 </div>
-                <div class="text-right">
-                    <p class="text-xs text-slate-400">CREDITS</p>
-                    <p id="creditsDisplay" class="text-sm font-bold text-emerald-400">Standard Tier</p>
+            </div>
+
+            <!-- Yearly Pro Exclusive Active Shield Status -->
+            <div id="activeShieldCard" class="hidden bg-slate-900/90 border border-sky-500/50 p-3.5 rounded-xl space-y-2">
+                <div class="flex justify-between items-center">
+                    <span class="text-xs font-bold text-sky-300">NATIVE DEVICE ACTIVE SHIELD</span>
+                    <span class="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-bold">ONLINE</span>
                 </div>
+                <p class="text-[11px] text-slate-300">Deep OS telemetry is monitoring background processes for fraud, unauthorized accessibility sniffing, and dangerous payloads.</p>
+                <button onclick="runShieldScan()" class="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-2 rounded-lg text-xs">Run Deep OS Telemetry Audit</button>
+                <div id="shieldResult" class="text-[11px] text-slate-300 bg-black/40 p-2 rounded border border-slate-800">System secure. No telemetry anomalies detected.</div>
             </div>
 
             <!-- Telemetry Stats -->
@@ -98,49 +106,14 @@
             </div>
 
             <!-- Core Processing Modules -->
-            <div class="space-y-3 pt-2">
-                <p class="text-xs font-semibold tracking-wider text-slate-400 uppercase">Core Processing Modules</p>
-
-                <!-- Module 1 -->
-                <div onclick="openModule('isolation')" class="glass-card p-3.5 rounded-xl border border-slate-800 hover:border-sky-500/50 transition cursor-pointer flex items-start space-x-3">
-                    <div class="p-2 bg-emerald-500/10 rounded-lg text-emerald-400">🌲</div>
-                    <div>
-                        <h3 class="text-sm font-semibold text-slate-200">Isolation Forest ML</h3>
-                        <p class="text-xs text-slate-400 mt-0.5">High-dimensional outlier detection and risk stratification matrix.</p>
-                    </div>
-                </div>
-
-                <!-- Module 2 -->
-                <div onclick="openModule('copilot')" class="glass-card p-3.5 rounded-xl border border-slate-800 hover:border-sky-500/50 transition cursor-pointer flex items-start space-x-3">
-                    <div class="p-2 bg-sky-500/10 rounded-lg text-sky-400">🤖</div>
-                    <div>
-                        <h3 class="text-sm font-semibold text-slate-200">AI Security Copilot</h3>
-                        <p class="text-xs text-slate-400 mt-0.5">Autonomous threat vector tracing and automated protocol mitigation.</p>
-                    </div>
-                </div>
-
-                <!-- Module 3 -->
-                <div onclick="openModule('darkweb')" class="glass-card p-3.5 rounded-xl border border-slate-800 hover:border-sky-500/50 transition cursor-pointer flex items-start space-x-3">
-                    <div class="p-2 bg-purple-500/10 rounded-lg text-purple-400">🕵️</div>
-                    <div>
-                        <h3 class="text-sm font-semibold text-slate-200">Dark Web Scanner</h3>
-                        <p class="text-xs text-slate-400 mt-0.5">Credential leak surveillance across underground telemetry feeds.</p>
-                    </div>
-                </div>
-
-                <!-- Module 4 -->
-                <div onclick="openModule('forensic')" class="glass-card p-3.5 rounded-xl border border-slate-800 hover:border-sky-500/50 transition cursor-pointer flex items-start space-x-3">
-                    <div class="p-2 bg-amber-500/10 rounded-lg text-amber-400">📄</div>
-                    <div>
-                        <h3 class="text-sm font-semibold text-slate-200">Forensic Generator</h3>
-                        <p class="text-xs text-slate-400 mt-0.5">Automated compliance audit logging and cryptographic evidence packaging.</p>
-                    </div>
-                </div>
+            <div class="space-y-2.5 pt-2">
+                <p class="text-xs font-semibold tracking-wider text-slate-400 uppercase">Core Processing Modules (20 Active)</p>
+                <div id="moduleList" class="space-y-2"></div>
             </div>
         </div>
     </div>
 
-    <!-- Interactive Module Modal -->
+    <!-- Module Modal -->
     <div id="moduleModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <div class="glass-card w-full max-w-md rounded-2xl p-5 border border-sky-500/30 space-y-4 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center border-b border-slate-800 pb-3">
@@ -151,33 +124,31 @@
         </div>
     </div>
 
-    <!-- Real Payment Modal with Monthly & Yearly Plans -->
+    <!-- Payment Modal (FamApp QR & UPI 8851738350@fam) -->
     <div id="paymentModal" class="hidden fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
         <div class="glass-card w-full max-w-md rounded-2xl p-5 border border-amber-500/40 space-y-3 text-center max-h-[95vh] overflow-y-auto">
             <div class="flex justify-between items-center border-b border-slate-800 pb-2">
-                <h3 class="text-base font-bold text-amber-400">⚡ Upgrade to Xenin AI Pro</h3>
+                <h3 class="text-base font-bold text-amber-400">Upgrade to Xenin AI Pro</h3>
                 <button onclick="closePaymentModal()" class="text-slate-400 hover:text-white font-bold text-lg">✕</button>
             </div>
-            <p class="text-xs text-slate-300">Select subscription plan and pay via QR or UPI ID:</p>
+            <p class="text-xs text-slate-300">Unlock all 20 modules or get Yearly Pro for Native Device Active Shield.</p>
             
-            <!-- Plan Selection Tabs -->
             <div class="grid grid-cols-2 gap-2">
-                <div id="monthlyPlanBtn" onclick="selectPlan('monthly', 499)" class="bg-amber-500/20 border-2 border-amber-500 p-2.5 rounded-xl cursor-pointer text-center transition">
-                    <p class="text-xs font-bold text-amber-400">MONTHLY PLAN</p>
-                    <p class="text-sm font-extrabold text-white mt-0.5">₹499 <span class="text-[10px] text-slate-400">/mo</span></p>
+                <div id="monthlyPlanBtn" onclick="selectPlan('monthly', 399)" class="bg-amber-500/20 border-2 border-amber-500 p-2.5 rounded-xl cursor-pointer text-center transition">
+                    <p class="text-[10px] font-bold text-amber-400">MONTHLY PRO</p>
+                    <p class="text-sm font-extrabold text-white mt-0.5">₹399 <span class="text-[9px] text-slate-400">/mo</span></p>
                 </div>
-                <div id="yearlyPlanBtn" onclick="selectPlan('yearly', 2999)" class="bg-slate-900/60 border border-slate-700 p-2.5 rounded-xl cursor-pointer text-center transition">
-                    <p class="text-xs font-bold text-sky-400">YEARLY PLAN</p>
-                    <p class="text-sm font-extrabold text-white mt-0.5">₹2,999 <span class="text-[10px] text-slate-400">/yr</span></p>
+                <div id="yearlyPlanBtn" onclick="selectPlan('yearly', 1999)" class="bg-slate-900/60 border border-slate-700 p-2.5 rounded-xl cursor-pointer text-center transition">
+                    <p class="text-[10px] font-bold text-sky-400">YEARLY PRO (SHIELD)</p>
+                    <p class="text-sm font-extrabold text-white mt-0.5">₹1,999 <span class="text-[9px] text-slate-400">/yr</span></p>
                 </div>
             </div>
 
-            <!-- FamApp QR Code -->
             <div class="bg-black/40 p-2 rounded-xl border border-slate-700 inline-block shadow-lg">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=upi%3A%2F%2Fpay%3Fpa%3D8851738350%40fam%26pn%3DSuraj%2520Kumar%26cu%3DINR" alt="FamApp UPI QR Code" class="w-44 h-auto mx-auto rounded-lg object-contain">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=upi%3A%2F%2Fpay%3Fpa%3D8851738350%40fam%26pn%3DSuraj%2520Kumar%26cu%3DINR" alt="FamApp UPI QR Code" class="w-36 h-auto mx-auto rounded-lg object-contain">
             </div>
 
-            <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800 text-left space-y-1">
+            <div class="bg-slate-900/80 p-2 rounded-xl border border-slate-800 text-left space-y-1">
                 <p class="text-xs text-slate-400">Payee: <span class="text-white font-bold">Suraj Kumar</span></p>
                 <div class="flex justify-between items-center">
                     <span class="text-sm font-mono font-bold text-amber-300">8851738350@fam</span>
@@ -196,21 +167,40 @@
     </div>
 
     <script>
-        let selectedAmount = 499;
-        let selectedPlanName = "MONTHLY PRO";
+        const modulesData = [
+            { id: 1, name: "System Status & Node Health", desc: "Basic cluster health telemetry.", free: true },
+            { id: 2, name: "Basic Ping & Latency Monitor", desc: "Network response time tracking.", free: true },
+            { id: 3, name: "Standard Session Log Viewer", desc: "Inspect recent security event logs.", free: true },
+            { id: 4, name: "Basic Security Dashboard", desc: "Overview of active defenses.", free: true },
+            { id: 5, name: "Isolation Forest ML Engine", desc: "High-dimensional outlier & anomaly isolation.", free: false },
+            { id: 6, name: "AI Security Copilot", desc: "Autonomous threat vector tracing & mitigation.", free: false },
+            { id: 7, name: "Dark Web Surveillance Scanner", desc: "Credential leak surveillance across underground feeds.", free: false },
+            { id: 8, name: "Cryptographic Forensic Generator", desc: "Automated compliance audit & SHA-256 packaging.", free: false },
+            { id: 9, name: "Zero-Day Vulnerability Exploit Analyzer", desc: "Deep packet heap inspection for unknown vectors.", free: false },
+            { id: 10, name: "Autonomous Firewall Rule Injector", desc: "Real-time dynamic port hardening & IP ban sync.", free: false },
+            { id: 11, name: "Packet Sniffing & DPI Matrix", desc: "Deep Packet Inspection for malicious payloads.", free: false },
+            { id: 12, name: "Ransomware Behavior Heuristic Tracer", desc: "File entropy & mass modification detection.", free: false },
+            { id: 13, name: "API Endpoint Token Integrity Checker", desc: "OAuth & JWT signature verification audit.", free: false },
+            { id: 14, name: "Biometric Session Intrusion Detector", desc: "Behavioral typing & gesture anomaly check.", free: false },
+            { id: 15, name: "DNS Tunneling & C2 Server Tracker", desc: "Exfiltration domain query pattern analysis.", free: false },
+            { id: 16, name: "Encrypted Memory Dump Analyzer", desc: "Process injection and rootkit trace utility.", free: false },
+            { id: 17, name: "Native Device Active Shield", desc: "[YEARLY EXCLUSIVE] OS-level phone fraud & threat intercept.", free: false, yearlyOnly: true },
+            { id: 18, name: "Global Threat Intelligence Feed Sync", desc: "Real-time global IOC threat stream synchronization.", free: false },
+            { id: 19, name: "Dedicated Low-Latency Proxy Tunnel", desc: "Encrypted routing for secure intel dispatch.", free: false },
+            { id: 20, name: "Military-Grade HSM Key Binding", desc: "Hardware security module session authorization.", free: false }
+        ];
 
-        function selectPlan(type, amount) {
-            selectedAmount = amount;
-            if(type === 'monthly') {
-                selectedPlanName = "MONTHLY PRO";
-                document.getElementById('monthlyPlanBtn').className = "bg-amber-500/20 border-2 border-amber-500 p-2.5 rounded-xl cursor-pointer text-center transition";
-                document.getElementById('yearlyPlanBtn').className = "bg-slate-900/60 border border-slate-700 p-2.5 rounded-xl cursor-pointer text-center transition";
-            } else {
-                selectedPlanName = "YEARLY PRO";
-                document.getElementById('yearlyPlanBtn').className = "bg-sky-500/20 border-2 border-sky-500 p-2.5 rounded-xl cursor-pointer text-center transition";
-                document.getElementById('monthlyPlanBtn').className = "bg-slate-900/60 border border-slate-700 p-2.5 rounded-xl cursor-pointer text-center transition";
+        let selectedPlanType = 'monthly';
+        let isPro = localStorage.getItem('xenin_pro') === 'true';
+        let isYearlyPro = localStorage.getItem('xenin_yearly') === 'true';
+
+        window.onload = function() {
+            const savedUser = localStorage.getItem('xenin_user');
+            if(savedUser) {
+                showDashboard(savedUser);
             }
-        }
+            renderModules();
+        };
 
         function handleLogin() {
             const name = document.getElementById('operatorInput').value.trim();
@@ -218,9 +208,102 @@
                 alert("Please enter operator name/alias.");
                 return;
             }
-            document.getElementById('operatorDisplay').innerText = `MASTER OPERATOR [${name.toUpperCase()}]`;
+            localStorage.setItem('xenin_user', name);
+            showDashboard(name);
+        }
+
+        function showDashboard(username) {
+            const hour = new Date().getHours();
+            let timeGreeting = "GOOD MORNING";
+            if (hour >= 12 && hour < 17) {
+                timeGreeting = "GOOD AFTERNOON";
+            } else if (hour >= 17 && hour < 21) {
+                timeGreeting = "GOOD EVENING";
+            } else if (hour >= 21 || hour < 4) {
+                timeGreeting = "GOOD NIGHT";
+            }
+
+            document.getElementById('greetingText').innerText = `${timeGreeting}, ${username.toUpperCase()}`;
+            document.getElementById('operatorDisplay').innerText = `OPERATOR: ${username.toUpperCase()}`;
+            
             document.getElementById('loginScreen').classList.add('hidden');
             document.getElementById('dashboardScreen').classList.remove('hidden');
+            updateTierUI();
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('xenin_user');
+            localStorage.removeItem('xenin_pro');
+            localStorage.removeItem('xenin_yearly');
+            location.reload();
+        }
+
+        function updateTierUI() {
+            if(isYearlyPro) {
+                document.getElementById('creditsDisplay').innerText = "YEARLY PRO (ACTIVE SHIELD)";
+                document.getElementById('creditsDisplay').className = "text-xs font-bold text-sky-400";
+                document.getElementById('upgradeBtn').style.display = 'none';
+                document.getElementById('activeShieldCard').classList.remove('hidden');
+            } else if(isPro) {
+                document.getElementById('creditsDisplay').innerText = "MONTHLY PRO";
+                document.getElementById('creditsDisplay').className = "text-xs font-bold text-amber-400";
+                document.getElementById('upgradeBtn').style.display = 'none';
+            }
+            renderModules();
+        }
+
+        function renderModules() {
+            const container = document.getElementById('moduleList');
+            container.innerHTML = '';
+            modulesData.forEach(m => {
+                const isLocked = !m.free && !isPro && !isYearlyPro;
+                const isYearlyLocked = m.yearlyOnly && !isYearlyPro;
+                
+                let badge = m.free ? `<span class="text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">FREE</span>` :
+                            m.yearlyOnly ? `<span class="text-[10px] text-sky-400 bg-sky-500/10 px-2 py-0.5 rounded">YEARLY PRO ONLY</span>` :
+                            `<span class="text-[10px] text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded">PRO</span>`;
+
+                container.innerHTML += `
+                    <div onclick="clickModule(${m.id})" class="glass-card p-3 rounded-xl border border-slate-800 hover:border-sky-500/50 transition cursor-pointer flex justify-between items-center">
+                        <div>
+                            <div class="flex items-center space-x-2">
+                                <h3 class="text-xs font-semibold text-slate-200">${m.id}. ${m.name}</h3>
+                                ${badge}
+                            </div>
+                            <p class="text-[10px] text-slate-400 mt-0.5">${m.desc}</p>
+                        </div>
+                        <div class="text-[10px] font-bold text-slate-400">${ (isLocked || isYearlyLocked) ? 'LOCKED' : 'ACTIVE' }</div>
+                    </div>
+                `;
+            });
+        }
+
+        function clickModule(id) {
+            const m = modulesData.find(item => item.id === id);
+            const isLocked = !m.free && !isPro && !isYearlyPro;
+            const isYearlyLocked = m.yearlyOnly && !isYearlyPro;
+
+            if(isLocked || isYearlyLocked) {
+                alert(`Locked Feature! Upgrade to ${m.yearlyOnly ? 'Yearly Pro' : 'Pro'} to access ${m.name}.`);
+                openPaymentModal();
+                return;
+            }
+
+            const modal = document.getElementById('moduleModal');
+            const title = document.getElementById('modalTitle');
+            const body = document.getElementById('modalBody');
+            modal.classList.remove('hidden');
+            title.innerText = `${m.id}. ${m.name}`;
+            body.innerHTML = `
+                <p class="text-xs text-slate-300">${m.desc}</p>
+                <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-800 text-xs text-emerald-400">
+                    [SYSTEM ACTIVE] Module operational. Telemetry feed streaming successfully without restrictions.
+                </div>
+            `;
+        }
+
+        function runShieldScan() {
+            document.getElementById('shieldResult').innerHTML = "<span class='text-emerald-400 font-bold'>[AUDIT PASSED]</span> Active Shield online. 0 malicious overlays or remote access trojans found on device memory.";
         }
 
         function openPaymentModal() { document.getElementById('paymentModal').classList.remove('hidden'); }
@@ -229,74 +312,40 @@
             navigator.clipboard.writeText("8851738350@fam");
             alert("UPI ID copied to clipboard!");
         }
+
+        function selectPlan(type, amount) {
+            selectedPlanType = type;
+            if(type === 'monthly') {
+                document.getElementById('monthlyPlanBtn').className = "bg-amber-500/20 border-2 border-amber-500 p-2.5 rounded-xl cursor-pointer text-center transition";
+                document.getElementById('yearlyPlanBtn').className = "bg-slate-900/60 border border-slate-700 p-2.5 rounded-xl cursor-pointer text-center transition";
+            } else {
+                document.getElementById('yearlyPlanBtn').className = "bg-sky-500/20 border-2 border-sky-500 p-2.5 rounded-xl cursor-pointer text-center transition";
+                document.getElementById('monthlyPlanBtn').className = "bg-slate-900/60 border border-slate-700 p-2.5 rounded-xl cursor-pointer text-center transition";
+            }
+        }
+
         function verifyPayment() {
             const utr = document.getElementById('utrInput').value.trim();
             if(utr.length < 6) {
                 alert("Please enter a valid Transaction / UTR number.");
                 return;
             }
-            alert(`Payment Verified for ${selectedPlanName}! Pro status activated.`);
-            document.getElementById('creditsDisplay').innerText = `${selectedPlanName}`;
-            document.getElementById('creditsDisplay').className = "text-sm font-bold text-amber-400";
-            document.getElementById('upgradeBtn').style.display = 'none';
+            if(selectedPlanType === 'yearly') {
+                isYearlyPro = true;
+                isPro = true;
+                localStorage.setItem('xenin_yearly', 'true');
+                localStorage.setItem('xenin_pro', 'true');
+                alert("Payment Verified! Yearly Pro & Active Shield Unlocked.");
+            } else {
+                isPro = true;
+                localStorage.setItem('xenin_pro', 'true');
+                alert("Payment Verified! Monthly Pro Unlocked.");
+            }
+            updateTierUI();
             closePaymentModal();
         }
 
         function closeModal() { document.getElementById('moduleModal').classList.add('hidden'); }
-        
-        function openModule(type) {
-            const modal = document.getElementById('moduleModal');
-            const title = document.getElementById('modalTitle');
-            const body = document.getElementById('modalBody');
-            modal.classList.remove('hidden');
-
-            if(type === 'isolation') {
-                title.innerText = "🌲 Isolation Forest ML Engine";
-                body.innerHTML = `
-                    <p class="text-xs text-slate-300">Paste logs or transaction batch data for anomaly isolation:</p>
-                    <textarea id="mlInput" rows="3" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-slate-200" placeholder="e.g. user_id: 402, amount: 95000, ip: 192.168.1.5"></textarea>
-                    <button onclick="runML()" class="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-2 rounded-lg text-xs">Execute Anomaly Scan</button>
-                    <div id="mlResult" class="text-xs text-slate-300 bg-slate-900/60 p-2.5 rounded-lg border border-slate-800">Ready for diagnostic stream...</div>
-                `;
-            } else if(type === 'copilot') {
-                title.innerText = "🤖 AI Security Copilot";
-                body.innerHTML = `
-                    <p class="text-xs text-slate-300">Enter threat query or security incident description:</p>
-                    <input type="text" id="copilotQuery" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-white" placeholder="e.g. Brute-force attempt detected on port 22">
-                    <button onclick="runCopilot()" class="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-2 rounded-lg text-xs">Generate Mitigation Protocol</button>
-                    <div id="copilotResult" class="text-xs text-slate-300 bg-slate-900/60 p-2.5 rounded-lg border border-slate-800">Awaiting vector input...</div>
-                `;
-            } else if(type === 'darkweb') {
-                title.innerText = "🕵️ Dark Web Surveillance Scanner";
-                body.innerHTML = `
-                    <p class="text-xs text-slate-300">Enter target email address or domain to scan credential leaks:</p>
-                    <input type="text" id="darkInput" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-white" placeholder="e.g. target@domain.com">
-                    <button onclick="runDarkWeb()" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 rounded-lg text-xs">Scan Underground Feeds</button>
-                    <div id="darkResult" class="text-xs text-slate-300 bg-slate-900/60 p-2.5 rounded-lg border border-slate-800">Awaiting target parameters...</div>
-                `;
-            } else if(type === 'forensic') {
-                title.innerText = "📄 Cryptographic Forensic Generator";
-                body.innerHTML = `
-                    <p class="text-xs text-slate-300">Generate cryptographic evidence report for current logs:</p>
-                    <button onclick="runForensic()" class="w-full bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold py-2 rounded-lg text-xs">Compile Cryptographic Audit</button>
-                    <div id="forensicResult" class="text-xs text-slate-300 bg-slate-900/60 p-2.5 rounded-lg border border-slate-800">Ready to package audit trail...</div>
-                `;
-            }
-        }
-
-        function runML() {
-            document.getElementById('mlResult').innerHTML = "<span class='text-emerald-400 font-bold'>[SUCCESS]</span> Anomaly Score: 0.04 (Normal variance). No high-dimensional threats detected.";
-        }
-        function runCopilot() {
-            document.getElementById('copilotResult').innerHTML = "<span class='text-sky-400 font-bold'>[MITIGATION ACTIVE]</span> Firewall rule updated: IP rate-limited and port 22 secured with fail2ban policy.";
-        }
-        function runDarkWeb() {
-            document.getElementById('darkResult').innerHTML = "<span class='text-amber-400 font-bold'>[ALERT]</span> 0 credential leaks found across underground pastebins and telemetry dumps.";
-        }
-        function runForensic() {
-            const hash = "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
-            document.getElementById('forensicResult').innerHTML = `<span class='text-emerald-400 font-bold'>[PACKAGED]</span> Audit Log generated.<br><span class='font-mono text-[10px] text-slate-400'>${hash}</span>`;
-        }
     </script>
 </body>
 </html>
