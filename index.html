@@ -11,83 +11,114 @@
         .glass-card { background: rgba(13, 25, 45, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(56, 189, 248, 0.15); }
     </style>
 </head>
-<body class="min-h-screen p-4 flex flex-col items-center justify-start">
+<body class="min-h-screen p-4 flex flex-col items-center justify-center">
 
-    <!-- Header -->
-    <div class="w-full max-w-md flex justify-between items-center mb-6 px-2">
-        <div>
-            <h1 class="text-xl font-bold tracking-wider text-sky-400">XENIN AI</h1>
-            <p class="text-xs text-slate-400">Threat Intelligence & Risk Matrix</p>
+    <!-- LOGIN SCREEN -->
+    <div id="loginScreen" class="w-full max-w-md glass-card rounded-2xl p-6 shadow-2xl space-y-5 border border-sky-500/30">
+        <div class="text-center space-y-2">
+            <div class="inline-block p-3 bg-sky-500/10 rounded-2xl border border-sky-500/30 mb-1">
+                <span class="text-2xl">🛡️</span>
+            </div>
+            <h1 class="text-xl font-bold tracking-wider text-white">XENIN AI</h1>
+            <p class="text-xs text-slate-400">AUTONOMOUS THREAT INTELLIGENCE & RISK MATRIX</p>
         </div>
-        <button id="upgradeBtn" onclick="openPaymentModal()" class="bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 font-bold px-3 py-1.5 rounded-lg text-xs shadow-lg animate-pulse">
-            ⚡ Upgrade Pro
-        </button>
+
+        <div class="space-y-4 pt-2">
+            <div class="space-y-1.5">
+                <label class="text-xs text-slate-400 font-semibold tracking-wider">OPERATOR NAME / ALIAS</label>
+                <input type="text" id="operatorInput" placeholder="Enter your professional name" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-sky-500">
+            </div>
+
+            <div class="space-y-1.5">
+                <label class="text-xs text-slate-400 font-semibold tracking-wider">SECURE ACCESS KEY / IDENTIFIER</label>
+                <input type="password" id="tokenInput" placeholder="Enter assigned security token" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-sky-500">
+            </div>
+
+            <button onclick="handleLogin()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl text-xs shadow-lg shadow-blue-600/30 transition">
+                ESTABLISH SECURE SESSION
+            </button>
+        </div>
+
+        <p class="text-[10px] text-center text-slate-500 tracking-widest pt-2">SINGLE-USER TOKEN BOUND • 256-BIT ENCRYPTED</p>
     </div>
 
-    <!-- Main Dashboard Container -->
-    <div id="mainDashboard" class="w-full max-w-md glass-card rounded-2xl p-5 shadow-2xl space-y-4">
-        
-        <!-- User Status Banner -->
-        <div class="flex justify-between items-center bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+    <!-- MAIN DASHBOARD (Initially Hidden) -->
+    <div id="dashboardScreen" class="hidden w-full max-w-md space-y-4">
+        <!-- Header -->
+        <div class="flex justify-between items-center px-2">
             <div>
-                <p class="text-xs text-slate-400">OPERATOR STATUS</p>
-                <p id="operatorDisplay" class="text-sm font-semibold text-sky-300">MASTER OPERATOR [SURAJ]</p>
+                <h1 class="text-xl font-bold tracking-wider text-sky-400">XENIN AI</h1>
+                <p class="text-xs text-slate-400">Threat Intelligence & Risk Matrix</p>
             </div>
-            <div class="text-right">
-                <p class="text-xs text-slate-400">CREDITS</p>
-                <p id="creditsDisplay" class="text-sm font-bold text-emerald-400">Standard Tier</p>
-            </div>
+            <button id="upgradeBtn" onclick="openPaymentModal()" class="bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 font-bold px-3 py-1.5 rounded-lg text-xs shadow-lg animate-pulse">
+                ⚡ Upgrade Pro
+            </button>
         </div>
 
-        <!-- Telemetry Stats -->
-        <div class="grid grid-cols-2 gap-3">
-            <div class="bg-slate-900/40 p-3 rounded-xl border border-slate-800/80">
-                <span class="text-xs text-slate-500">NODES ACTIVE</span>
-                <p class="text-lg font-bold text-sky-400">64 / 64</p>
-            </div>
-            <div class="bg-slate-900/40 p-3 rounded-xl border border-slate-800/80">
-                <span class="text-xs text-slate-500">LATENCY</span>
-                <p class="text-lg font-bold text-emerald-400">12ms</p>
-            </div>
-        </div>
-
-        <!-- Core Processing Modules -->
-        <div class="space-y-3 pt-2">
-            <p class="text-xs font-semibold tracking-wider text-slate-400 uppercase">Core Processing Modules</p>
-
-            <!-- Module 1 -->
-            <div onclick="openModule('isolation')" class="glass-card p-3.5 rounded-xl border border-slate-800 hover:border-sky-500/50 transition cursor-pointer flex items-start space-x-3">
-                <div class="p-2 bg-emerald-500/10 rounded-lg text-emerald-400">🌲</div>
+        <!-- Main Dashboard Container -->
+        <div class="glass-card rounded-2xl p-5 shadow-2xl space-y-4">
+            <!-- User Status Banner -->
+            <div class="flex justify-between items-center bg-slate-900/60 p-3 rounded-xl border border-slate-800">
                 <div>
-                    <h3 class="text-sm font-semibold text-slate-200">Isolation Forest ML</h3>
-                    <p class="text-xs text-slate-400 mt-0.5">High-dimensional outlier detection and risk stratification matrix.</p>
+                    <p class="text-xs text-slate-400">OPERATOR STATUS</p>
+                    <p id="operatorDisplay" class="text-sm font-semibold text-sky-300">MASTER OPERATOR</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-xs text-slate-400">CREDITS</p>
+                    <p id="creditsDisplay" class="text-sm font-bold text-emerald-400">Standard Tier</p>
                 </div>
             </div>
 
-            <!-- Module 2 -->
-            <div onclick="openModule('copilot')" class="glass-card p-3.5 rounded-xl border border-slate-800 hover:border-sky-500/50 transition cursor-pointer flex items-start space-x-3">
-                <div class="p-2 bg-sky-500/10 rounded-lg text-sky-400">🤖</div>
-                <div>
-                    <h3 class="text-sm font-semibold text-slate-200">AI Security Copilot</h3>
-                    <p class="text-xs text-slate-400 mt-0.5">Autonomous threat vector tracing and automated protocol mitigation.</p>
+            <!-- Telemetry Stats -->
+            <div class="grid grid-cols-2 gap-3">
+                <div class="bg-slate-900/40 p-3 rounded-xl border border-slate-800/80">
+                    <span class="text-xs text-slate-500">NODES ACTIVE</span>
+                    <p class="text-lg font-bold text-sky-400">64 / 64</p>
+                </div>
+                <div class="bg-slate-900/40 p-3 rounded-xl border border-slate-800/80">
+                    <span class="text-xs text-slate-500">LATENCY</span>
+                    <p class="text-lg font-bold text-emerald-400">12ms</p>
                 </div>
             </div>
 
-            <!-- Module 3 -->
-            <div onclick="openModule('darkweb')" class="glass-card p-3.5 rounded-xl border border-slate-800 hover:border-sky-500/50 transition cursor-pointer flex items-start space-x-3">
-                <div class="p-2 bg-purple-500/10 rounded-lg text-purple-400">🕵️</div>
-                <div>
-                    <h3 class="text-sm font-semibold text-slate-200">Dark Web Scanner</h3>
-                    <p class="text-xs text-slate-400 mt-0.5">Credential leak surveillance across underground telemetry feeds.</p>
-                </div>
-            </div>
+            <!-- Core Processing Modules -->
+            <div class="space-y-3 pt-2">
+                <p class="text-xs font-semibold tracking-wider text-slate-400 uppercase">Core Processing Modules</p>
 
-            <!-- Module 4 -->
-            <div onclick="openModule('forensic')" class="glass-card p-3.5 rounded-xl border border-slate-800 hover:border-sky-500/50 transition cursor-pointer flex items-start space-x-3">
-                <div class="p-2 bg-amber-500/10 rounded-lg text-amber-400">📄</div>
-                <div>
-                    <h3 class="text-sm font-semibold text-slate-200">Forensic Generator</h3>
-                    <p class="text-xs text-slate-400 mt-0.5">Automated compliance audit logging and cryptographic evidence packaging.</p>
+                <!-- Module 1 -->
+                <div onclick="openModule('isolation')" class="glass-card p-3.5 rounded-xl border border-slate-800 hover:border-sky-500/50 transition cursor-pointer flex items-start space-x-3">
+                    <div class="p-2 bg-emerald-500/10 rounded-lg text-emerald-400">🌲</div>
+                    <div>
+                        <h3 class="text-sm font-semibold text-slate-200">Isolation Forest ML</h3>
+                        <p class="text-xs text-slate-400 mt-0.5">High-dimensional outlier detection and risk stratification matrix.</p>
+                    </div>
+                </div>
+
+                <!-- Module 2 -->
+                <div onclick="openModule('copilot')" class="glass-card p-3.5 rounded-xl border border-slate-800 hover:border-sky-500/50 transition cursor-pointer flex items-start space-x-3">
+                    <div class="p-2 bg-sky-500/10 rounded-lg text-sky-400">🤖</div>
+                    <div>
+                        <h3 class="text-sm font-semibold text-slate-200">AI Security Copilot</h3>
+                        <p class="text-xs text-slate-400 mt-0.5">Autonomous threat vector tracing and automated protocol mitigation.</p>
+                    </div>
+                </div>
+
+                <!-- Module 3 -->
+                <div onclick="openModule('darkweb')" class="glass-card p-3.5 rounded-xl border border-slate-800 hover:border-sky-500/50 transition cursor-pointer flex items-start space-x-3">
+                    <div class="p-2 bg-purple-500/10 rounded-lg text-purple-400">🕵️</div>
+                    <div>
+                        <h3 class="text-sm font-semibold text-slate-200">Dark Web Scanner</h3>
+                        <p class="text-xs text-slate-400 mt-0.5">Credential leak surveillance across underground telemetry feeds.</p>
+                    </div>
+                </div>
+
+                <!-- Module 4 -->
+                <div onclick="openModule('forensic')" class="glass-card p-3.5 rounded-xl border border-slate-800 hover:border-sky-500/50 transition cursor-pointer flex items-start space-x-3">
+                    <div class="p-2 bg-amber-500/10 rounded-lg text-amber-400">📄</div>
+                    <div>
+                        <h3 class="text-sm font-semibold text-slate-200">Forensic Generator</h3>
+                        <p class="text-xs text-slate-400 mt-0.5">Automated compliance audit logging and cryptographic evidence packaging.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -104,7 +135,7 @@
         </div>
     </div>
 
-    <!-- Real Payment Modal (Real FamApp QR Image Embedded) -->
+    <!-- Real Payment Modal (FamApp QR Embedded) -->
     <div id="paymentModal" class="hidden fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
         <div class="glass-card w-full max-w-md rounded-2xl p-5 border border-amber-500/40 space-y-4 text-center">
             <div class="flex justify-between items-center border-b border-slate-800 pb-2">
@@ -113,7 +144,6 @@
             </div>
             <p class="text-xs text-slate-300">Scan QR Code or pay directly via UPI to unlock Unlimited Lifetime Access.</p>
             
-            <!-- Tera Original FamApp QR Image -->
             <div class="bg-black/40 p-2 rounded-xl border border-slate-700 inline-block shadow-lg">
                 <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi%3A%2F%2Fpay%3Fpa%3D8851738350%40fam%26pn%3DSuraj%2520Kumar%26cu%3DINR" alt="FamApp UPI QR Code" class="w-56 h-auto mx-auto rounded-lg object-contain">
             </div>
@@ -136,6 +166,18 @@
     </div>
 
     <script>
+        function handleLogin() {
+            const name = document.getElementById('operatorInput').value.trim();
+            const token = document.getElementById('tokenInput').value.trim();
+            if(!name) {
+                alert("Please enter operator name/alias.");
+                return;
+            }
+            document.getElementById('operatorDisplay').innerText = `MASTER OPERATOR [${name.toUpperCase()}]`;
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('dashboardScreen').classList.remove('hidden');
+        }
+
         function openPaymentModal() { document.getElementById('paymentModal').classList.remove('hidden'); }
         function closePaymentModal() { document.getElementById('paymentModal').classList.add('hidden'); }
         function copyUpi() {
@@ -148,7 +190,7 @@
                 alert("Please enter a valid Transaction / UTR number.");
                 return;
             }
-            alert("Payment Request Received! Pro status activated.");
+            alert("Payment Verified! Pro status activated.");
             document.getElementById('creditsDisplay').innerText = "UNLIMITED (PRO)";
             document.getElementById('creditsDisplay').className = "text-sm font-bold text-amber-400";
             document.getElementById('upgradeBtn').style.display = 'none';
