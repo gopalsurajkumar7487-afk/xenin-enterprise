@@ -4,19 +4,5 @@
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0a0f1d",
-  "theme_color": "#0a0f1d",
-  "icons": [
-    {
-      "src": "https://xenin-enterprise.vercel.app/Screenshot_20261020_144409_Chrome.jpeg",
-      "sizes": "192x192",
-      "type": "image/jpeg",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "https://xenin-enterprise.vercel.app/Screenshot_20261020_144409_Chrome.jpeg",
-      "sizes": "512x512",
-      "type": "image/jpeg",
-      "purpose": "any maskable"
-    }
-  ]
+  "theme_color": "#0a0f1d"
 }
