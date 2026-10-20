@@ -39,18 +39,18 @@
         <div class="space-y-3 pt-1">
             <div class="space-y-1">
                 <label class="text-[10px] text-slate-400 font-semibold tracking-wider">OPERATOR NAME / ALIAS</label>
-                <input type="text" id="operatorInput" placeholder="Enter your name (Suraj for owner)" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-sky-500">
+                <input type="text" id="operatorInput" placeholder="Enter operator name" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-sky-500">
             </div>
             <div class="space-y-1">
                 <label class="text-[10px] text-slate-400 font-semibold tracking-wider">SECURE ACCESS KEY / IDENTIFIER</label>
-                <input type="password" id="tokenInput" placeholder="Enter access token (6-10 digits or X8333313409)" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-sky-500">
+                <input type="password" id="tokenInput" placeholder="Enter secure access token" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-sky-500">
             </div>
             <button onclick="handleLogin()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl text-xs shadow-lg shadow-blue-600/40 tracking-wide">
                 ESTABLISH SECURE SESSION
             </button>
         </div>
         <div class="border-t border-slate-800/80 pt-3 text-center">
-            <p class="text-[9px] text-slate-500 tracking-wider">OWNER BYPASS & PRO TIERS ENABLED</p>
+            <p class="text-[9px] text-slate-500 tracking-wider">SECURE CLIENT TERMINAL v4.2</p>
         </div>
     </div>
 
@@ -175,7 +175,6 @@
     </div>
 
     <script>
-        // 10 100% REAL WORKING UTILITY TOOLS (No fake backend scanners)
         const modulesData = [
             { id: 1, name: "Browser Hardware & Memory Info", desc: "Inspect real device specs, screen & JS heap memory.", free: true },
             { id: 2, name: "Live Network Latency Tester", desc: "Measure real ping to external endpoints.", free: true },
@@ -340,7 +339,6 @@
             document.getElementById('dashboardScreen').classList.remove('hidden');
         }
 
-        // 100% REAL WORKING JAVASCRIPT TOOL EXECUTIONS
         async function executeToolAction() {
             const consoleBox = document.getElementById('terminalOutput');
             const time = new Date().toLocaleTimeString();
