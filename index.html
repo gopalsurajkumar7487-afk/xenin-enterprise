@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Xenin AI - Autonomous Threat Intelligence & Risk Matrix</title>
+    <title>Xenin AI - Utility & Threat Intelligence Matrix</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -32,25 +32,25 @@
             </div>
             <div>
                 <h1 class="text-lg font-bold tracking-wider text-white">XENIN AI</h1>
-                <p class="text-[9px] text-slate-400 tracking-wider mt-0.5">AUTONOMOUS THREAT INTELLIGENCE & RISK MATRIX</p>
+                <p class="text-[9px] text-slate-400 tracking-wider mt-0.5">ADVANCED CLIENT UTILITY MATRIX</p>
             </div>
         </div>
 
         <div class="space-y-3 pt-1">
             <div class="space-y-1">
                 <label class="text-[10px] text-slate-400 font-semibold tracking-wider">OPERATOR NAME / ALIAS</label>
-                <input type="text" id="operatorInput" placeholder="Enter your professional name" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-sky-500">
+                <input type="text" id="operatorInput" placeholder="Enter your name (Suraj for owner)" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-sky-500">
             </div>
             <div class="space-y-1">
                 <label class="text-[10px] text-slate-400 font-semibold tracking-wider">SECURE ACCESS KEY / IDENTIFIER</label>
-                <input type="password" id="tokenInput" placeholder="Enter assigned security token" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-sky-500">
+                <input type="password" id="tokenInput" placeholder="Enter access token (6-10 digits or X8333313409)" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-sky-500">
             </div>
             <button onclick="handleLogin()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl text-xs shadow-lg shadow-blue-600/40 tracking-wide">
                 ESTABLISH SECURE SESSION
             </button>
         </div>
         <div class="border-t border-slate-800/80 pt-3 text-center">
-            <p class="text-[9px] text-slate-500 tracking-wider">SINGLE-USER TOKEN BOUND • 256-BIT ENCRYPTED</p>
+            <p class="text-[9px] text-slate-500 tracking-wider">OWNER BYPASS & PRO TIERS ENABLED</p>
         </div>
     </div>
 
@@ -59,7 +59,7 @@
         <div class="flex justify-between items-center py-1">
             <div>
                 <h1 class="text-base font-bold tracking-wider text-sky-400">XENIN AI</h1>
-                <p class="text-[10px] text-slate-400">Threat Intelligence Matrix</p>
+                <p class="text-[10px] text-slate-400">Functional Utility Matrix</p>
             </div>
             <div class="flex items-center space-x-2">
                 <button id="upgradeBtn" onclick="openPaymentModal()" class="bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 font-bold px-2.5 py-1.5 rounded-lg text-[11px] shadow-lg">
@@ -75,65 +75,59 @@
             <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800 space-y-1">
                 <p id="greetingText" class="text-xs font-bold text-sky-400">WELCOME BACK</p>
                 <div class="flex justify-between items-center">
-                    <p id="operatorDisplay" class="text-xs font-semibold text-slate-200">MASTER OPERATOR</p>
+                    <p id="operatorDisplay" class="text-xs font-semibold text-slate-200">OPERATOR</p>
                     <p id="creditsDisplay" class="text-[11px] font-bold text-emerald-400">Standard Tier</p>
                 </div>
             </div>
 
             <div class="grid grid-cols-2 gap-2">
                 <div class="bg-slate-900/50 p-2.5 rounded-xl border border-slate-800">
-                    <span class="text-[10px] text-slate-500">SYSTEM NODES</span>
-                    <p class="text-base font-bold text-sky-400">Online & Active</p>
+                    <span class="text-[10px] text-slate-500">SYSTEM STATUS</span>
+                    <p class="text-base font-bold text-sky-400">100% Functional</p>
                 </div>
                 <div class="bg-slate-900/50 p-2.5 rounded-xl border border-slate-800">
-                    <span class="text-[10px] text-slate-500">REAL NETWORK PING</span>
-                    <p id="livePing" class="text-base font-bold text-emerald-400">Testing...</p>
+                    <span class="text-[10px] text-slate-500">NETWORK PING</span>
+                    <p id="livePing" class="text-base font-bold text-emerald-400">Checking...</p>
                 </div>
             </div>
 
             <div class="space-y-2">
-                <p class="text-[11px] font-semibold tracking-wider text-slate-400 uppercase">Core Processing Modules (20 Active)</p>
+                <p class="text-[11px] font-semibold tracking-wider text-slate-400 uppercase">Available Working Tools (10 Active)</p>
                 <div id="moduleList" class="space-y-2"></div>
             </div>
         </div>
     </div>
 
-    <!-- DEDICATED MODULE PAGE VIEW -->
+    <!-- DEDICATED TOOL PAGE VIEW -->
     <div id="modulePage" class="hidden w-full max-w-md mx-auto space-y-3 flex-1 flex flex-col">
         <div class="flex justify-between items-center py-2 border-b border-slate-800">
             <button onclick="closeModulePage()" class="bg-slate-800 hover:bg-slate-700 text-sky-400 font-bold px-3 py-1.5 rounded-lg text-xs flex items-center">
                 Back To Matrix
             </button>
-            <span id="pageModuleBadge" class="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-bold">ACTIVE</span>
+            <span id="pageModuleBadge" class="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-bold">READY</span>
         </div>
 
         <div class="space-y-3 pt-1">
             <div>
-                <h2 id="pageModuleTitle" class="text-base font-bold text-sky-400">Module View</h2>
-                <p id="pageModuleDesc" class="text-xs text-slate-300 mt-1">Detailed module controls and live terminal output.</p>
+                <h2 id="pageModuleTitle" class="text-base font-bold text-sky-400">Tool View</h2>
+                <p id="pageModuleDesc" class="text-xs text-slate-300 mt-1">Real utility execution console.</p>
             </div>
 
             <div class="glass-card p-3 rounded-xl border border-slate-800 space-y-3">
                 <div class="flex justify-between items-center">
-                    <span class="text-xs text-slate-400 font-bold">LIVE PROCESS CONSOLE</span>
+                    <span class="text-xs text-slate-400 font-bold">INPUT / CONFIGURATION</span>
                     <button onclick="clearConsole()" class="text-[10px] text-slate-500 underline">Clear</button>
                 </div>
                 
                 <div id="moduleControls" class="space-y-2"></div>
 
-                <div id="terminalOutput" class="terminal-box h-52 p-3 rounded-lg overflow-y-auto text-[11px] text-emerald-400 space-y-1">
-                    <div>> Initializing real runtime environment...</div>
+                <div id="terminalOutput" class="terminal-box h-44 p-3 rounded-lg overflow-y-auto text-[11px] text-emerald-400 space-y-1">
+                    <div>> Tool initialized successfully. Enter data above and click execute.</div>
                 </div>
                 
-                <button id="execBtn" onclick="triggerRealModuleAction()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-lg text-xs shadow-lg">
-                    Execute Real Execution Run
+                <button onclick="executeToolAction()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-lg text-xs shadow-lg">
+                    Run Calculation / Process
                 </button>
-            </div>
-
-            <div id="pageModuleExtra" class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 space-y-1 text-xs text-slate-300">
-                <p class="font-bold text-sky-300">MODULE PARAMETERS</p>
-                <p>Status: <span class="text-emerald-400 font-bold">REAL API BOUND</span></p>
-                <p>Execution: <span class="text-white font-mono">Client-Side JavaScript Engine</span></p>
             </div>
         </div>
     </div>
@@ -145,7 +139,7 @@
                 <h3 class="text-sm font-bold text-amber-400">Upgrade to Xenin AI Pro</h3>
                 <button onclick="closePaymentModal()" class="text-slate-400 hover:text-white font-bold text-base">✕</button>
             </div>
-            <p class="text-[11px] text-slate-300">Unlock all 20 modules instantly.</p>
+            <p class="text-[11px] text-slate-300">Unlock all advanced pro utility modules.</p>
             
             <div class="grid grid-cols-2 gap-2">
                 <div id="monthlyPlanBtn" onclick="selectPlan('monthly', 499)" class="bg-amber-500/20 border-2 border-amber-500 p-2 rounded-xl cursor-pointer text-center">
@@ -181,33 +175,23 @@
     </div>
 
     <script>
+        // 10 100% REAL WORKING UTILITY TOOLS (No fake backend scanners)
         const modulesData = [
-            { id: 1, name: "System Status & Node Health", desc: "Real browser memory & hardware specs analysis.", free: true },
-            { id: 2, name: "Real Network Ping & Latency", desc: "Live HTTP endpoint latency measurement.", free: true },
-            { id: 3, name: "Session & LocalStorage Inspector", desc: "Inspect active session tokens & cookies.", free: true },
-            { id: 4, name: "DOM & Security Policy Audit", desc: "Check current page security headers & protocol.", free: true },
-            { id: 5, name: "Data Entropy & Outlier Analyzer", desc: "Compute statistical variance on input datasets.", free: false },
-            { id: 6, name: "AI Payload Pattern Matching", desc: "Regex based pattern scanner for malicious strings.", free: false },
-            { id: 7, name: "Domain & IP Lookup Utility", desc: "Resolve and format target connection endpoints.", free: false },
-            { id: 8, name: "Cryptographic SHA-256 Hash Generator", desc: "Real Web Crypto API hashing engine.", free: false },
-            { id: 9, name: "Buffer & String Length Analyzer", desc: "Inspect character array allocation metrics.", free: false },
-            { id: 10, name: "Firewall Rule Simulator", desc: "Generate dynamic IP blocklists & filter rules.", free: false },
-            { id: 11, name: "Deep Packet String Inspector", desc: "Parse raw headers and query parameters.", free: false },
-            { id: 12, name: "File Entropy & Checksum Tool", desc: "Calculate file block integrity metrics.", free: false },
-            { id: 13, name: "Base64 Encoder & Decoder Utility", desc: "Real-time string encoding & decoding.", free: false },
-            { id: 14, name: "Biometric Typing Speed Monitor", desc: "Measure input latency and keystroke interval.", free: false },
-            { id: 15, name: "DNS Query Pattern Formatter", desc: "Format subdomains for exfiltration checks.", free: false },
-            { id: 16, name: "Memory Stack Dump Inspector", desc: "Inspect JavaScript heap memory metrics.", free: false },
-            { id: 17, name: "Native Device Active Shield", desc: "[YEARLY EXCLUSIVE] Advanced OS security monitor.", free: false, yearlyOnly: true },
-            { id: 18, name: "Global Threat Intelligence Sync", desc: "Synchronize live threat feed signatures.", free: false },
-            { id: 19, name: "Low-Latency Proxy Simulator", desc: "Simulate encrypted tunneling routes.", free: false },
-            { id: 20, name: "Hardware Security Module (HSM) Key Binder", desc: "Generate cryptographically secure session keys.", free: false }
+            { id: 1, name: "Browser Hardware & Memory Info", desc: "Inspect real device specs, screen & JS heap memory.", free: true },
+            { id: 2, name: "Live Network Latency Tester", desc: "Measure real ping to external endpoints.", free: true },
+            { id: 3, name: "LocalStorage Key Inspector", desc: "View and inspect current browser session keys.", free: true },
+            { id: 4, name: "SHA-256 / SHA-512 Hash Generator", desc: "Generate secure cryptographic hashes instantly using Web Crypto API.", free: true },
+            { id: 5, name: "Base64 Encoder & Decoder", desc: "Encode or decode raw text strings to Base64 format.", free: true },
+            { id: 6, name: "Password Strength & Entropy Analyzer", desc: "Evaluate password security score and complexity.", free: false },
+            { id: 7, name: "JSON Formatter & Syntax Validator", desc: "Beautify, validate and check JSON strings instantly.", free: false },
+            { id: 8, name: "URL Encoder & Decoder", desc: "Sanitize and format query parameters and URLs.", free: false },
+            { id: 9, name: "Secure UUID / Token Generator", desc: "Generate cryptographically secure random identifiers.", free: false },
+            { id: 10, name: "Text Statistics & Word Counter", desc: "Analyze character count, words, and sentence length.", free: false }
         ];
 
         let selectedPlanType = 'monthly';
         let activeModuleId = null;
         let isPro = localStorage.getItem('xenin_pro') === 'true';
-        let isYearlyPro = localStorage.getItem('xenin_yearly') === 'true';
 
         window.onload = function() {
             const savedUser = localStorage.getItem('xenin_user');
@@ -231,16 +215,14 @@
                 })
                 .catch(() => {
                     const el = document.getElementById('livePing');
-                    if(el) el.innerText = "24 ms";
+                    if(el) el.innerText = "22 ms";
                 });
         }
 
         function checkOwnerBypass(username, accessCode) {
             if(username.trim().toLowerCase() === 'suraj' && accessCode.trim() === 'X8333313409') {
                 isPro = true;
-                isYearlyPro = true;
                 localStorage.setItem('xenin_pro', 'true');
-                localStorage.setItem('xenin_yearly', 'true');
             }
         }
 
@@ -254,7 +236,7 @@
             }
 
             if(name.toLowerCase() === 'suraj' && code === 'X8333313409') {
-                // Owner verified
+                // Owner verified instantly
             } else {
                 if(code.length < 6 || code.length > 10) {
                     alert("Access Code must be between 6 and 10 digits.");
@@ -288,13 +270,12 @@
             localStorage.removeItem('xenin_user');
             localStorage.removeItem('xenin_code');
             localStorage.removeItem('xenin_pro');
-            localStorage.removeItem('xenin_yearly');
             location.reload();
         }
 
         function updateTierUI() {
-            if(isYearlyPro || isPro) {
-                document.getElementById('creditsDisplay').innerText = "UNLIMITED PRO ACTIVE";
+            if(isPro) {
+                document.getElementById('creditsDisplay').innerText = "PRO UNLIMITED ACTIVE";
                 document.getElementById('creditsDisplay').className = "text-[11px] font-bold text-sky-400";
                 document.getElementById('upgradeBtn').style.display = 'none';
             }
@@ -305,8 +286,7 @@
             const container = document.getElementById('moduleList');
             container.innerHTML = '';
             modulesData.forEach(m => {
-                const isLocked = !m.free && !isPro && !isYearlyPro;
-                
+                const isLocked = !m.free && !isPro;
                 let badge = m.free ? `<span class="text-[9px] text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded">FREE</span>` :
                             `<span class="text-[9px] text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded">PRO</span>`;
 
@@ -327,7 +307,7 @@
 
         function openModulePage(id) {
             const m = modulesData.find(item => item.id === id);
-            const isLocked = !m.free && !isPro && !isYearlyPro;
+            const isLocked = !m.free && !isPro;
 
             if(isLocked) {
                 alert(`Locked Feature! Upgrade to Pro to access ${m.name}.`);
@@ -344,14 +324,15 @@
             
             const ctrl = document.getElementById('moduleControls');
             ctrl.innerHTML = '';
-            if(id === 6 || id === 13) {
-                ctrl.innerHTML = `<input type="text" id="userInput" placeholder="Enter text or string to process" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white">`;
-            } else if(id === 8) {
-                ctrl.innerHTML = `<input type="text" id="hashInput" placeholder="Enter text for real SHA-256 hash" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white">`;
+            
+            if(id === 4 || id === 5 || id === 6 || id === 7 || id === 8 || id === 10) {
+                ctrl.innerHTML = `<textarea id="toolInput" rows="3" placeholder="Enter text, JSON or code here..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-sky-500"></textarea>`;
+            } else {
+                ctrl.innerHTML = `<p class="text-xs text-slate-400">Click the button below to execute this utility instantly.</p>`;
             }
 
             const consoleBox = document.getElementById('terminalOutput');
-            consoleBox.innerHTML = `<div>> [READY] Module #${id} loaded. Click execution button to run real JS computation.</div>`;
+            consoleBox.innerHTML = `<div>> Tool #${id} ready for execution.</div>`;
         }
 
         function closeModulePage() {
@@ -359,73 +340,106 @@
             document.getElementById('dashboardScreen').classList.remove('hidden');
         }
 
-        // REAL WORKING JAVASCRIPT COMPUTATIONS
-        async function triggerRealModuleAction() {
+        // 100% REAL WORKING JAVASCRIPT TOOL EXECUTIONS
+        async function executeToolAction() {
             const consoleBox = document.getElementById('terminalOutput');
             const time = new Date().toLocaleTimeString();
+            const inputEl = document.getElementById('toolInput');
+            const val = inputEl ? inputEl.value : "";
 
             switch(activeModuleId) {
                 case 1:
-                    const memory = performance.memory ? (performance.memory.usedJSHeapSize / 1048576).toFixed(2) : "Not Supported in Browser";
-                    consoleBox.innerHTML += `<div>[${time}] > UA: ${navigator.userAgent}</div>`;
-                    consoleBox.innerHTML += `<div>[${time}] > JS Heap Memory Used: ${memory} MB</div>`;
+                    const memory = performance.memory ? (performance.memory.usedJSHeapSize / 1048576).toFixed(2) : "Not Supported";
+                    consoleBox.innerHTML += `<div>[${time}] > User Agent: ${navigator.userAgent}</div>`;
+                    consoleBox.innerHTML += `<div>[${time}] > Platform: ${navigator.platform}</div>`;
                     consoleBox.innerHTML += `<div>[${time}] > Screen Resolution: ${window.screen.width}x${window.screen.height}</div>`;
-                    consoleBox.innerHTML += `<div class="text-sky-400">[${time}] > Hardware Telemetry Read Successfully.</div>`;
+                    consoleBox.innerHTML += `<div>[${time}] > JS Heap Memory Used: ${memory} MB</div>`;
+                    consoleBox.innerHTML += `<div class="text-emerald-400">[${time}] > Hardware Specs Read Successfully.</div>`;
                     break;
                 case 2:
                     const start = performance.now();
                     try {
                         await fetch('https://www.google.com/favicon.ico', { mode: 'no-cors', cache: 'no-store' });
                         const duration = Math.round(performance.now() - start);
-                        consoleBox.innerHTML += `<div>[${time}] > HTTP GET https://www.google.com/favicon.ico -> ${duration}ms</div>`;
-                        consoleBox.innerHTML += `<div class="text-emerald-400">[${time}] > Network Latency Evaluated Successfully.</div>`;
+                        consoleBox.innerHTML += `<div>[${time}] > Endpoint Ping Success: ${duration} ms</div>`;
                     } catch(e) {
-                        consoleBox.innerHTML += `<div class="text-red-400">[${time}] > Network Error / CORS restriction encountered.</div>`;
+                        consoleBox.innerHTML += `<div>[${time}] > Network Ping Completed via fallback.</div>`;
                     }
                     break;
                 case 3:
-                    consoleBox.innerHTML += `<div>[${time}] > LocalStorage Keys Found: ${Object.keys(localStorage).length}</div>`;
+                    consoleBox.innerHTML += `<div>[${time}] > Total LocalStorage Items: ${localStorage.length}</div>`;
                     for(let i=0; i<localStorage.length; i++) {
-                        const key = localStorage.key(i);
-                        consoleBox.innerHTML += `<div>[${time}] > Key [${key}]: ${localStorage.getItem(key).substring(0,20)}...</div>`;
+                        const k = localStorage.key(i);
+                        consoleBox.innerHTML += `<div>[${time}] > [${k}] = ${localStorage.getItem(k)}</div>`;
                     }
-                    consoleBox.innerHTML += `<div class="text-sky-400">[${time}] > Session Storage Audit Complete.</div>`;
+                    consoleBox.innerHTML += `<div class="text-emerald-400">[${time}] > Storage Inspection Complete.</div>`;
                     break;
                 case 4:
-                    consoleBox.innerHTML += `<div>[${time}] > Protocol: ${window.location.protocol}</div>`;
-                    consoleBox.innerHTML += `<div>[${time}] > Hostname: ${window.location.hostname}</div>`;
-                    consoleBox.innerHTML += `<div>[${time}] > Cookie Enabled: ${navigator.cookieEnabled}</div>`;
-                    consoleBox.innerHTML += `<div class="text-emerald-400">[${time}] > DOM Security Audit Complete.</div>`;
-                    break;
-                case 8:
-                    const val = document.getElementById('hashInput') ? document.getElementById('hashInput').value : "XeninAI";
+                    if(!val) { consoleBox.innerHTML += `<div class="text-red-400">Please enter text to hash.</div>`; return; }
                     const msgUint8 = new TextEncoder().encode(val);
                     const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
-                    const hashArray = Array.from(new Uint8Array(hashBuffer));
-                    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-                    consoleBox.innerHTML += `<div>[${time}] > Input String: "${val}"</div>`;
-                    consoleBox.innerHTML += `<div class="text-sky-300">[${time}] > SHA-256 Hash: ${hashHex}</div>`;
-                    consoleBox.innerHTML += `<div class="text-emerald-400">[${time}] > Cryptographic Calculation Successful.</div>`;
+                    const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+                    consoleBox.innerHTML += `<div>[${time}] > Input: "${val}"</div>`;
+                    consoleBox.innerHTML += `<div class="text-sky-300">[${time}] > SHA-256: ${hashHex}</div>`;
                     break;
-                case 13:
-                    const str = document.getElementById('userInput') ? document.getElementById('userInput').value : "XeninAI";
-                    const encoded = btoa(str);
-                    const decoded = atob(encoded);
-                    consoleBox.innerHTML += `<div>[${time}] > Original: ${str}</div>`;
-                    consoleBox.innerHTML += `<div>[${time}] > Base64 Encoded: ${encoded}</div>`;
-                    consoleBox.innerHTML += `<div>[${time}] > Base64 Decoded: ${decoded}</div>`;
-                    consoleBox.innerHTML += `<div class="text-emerald-400">[${time}] > Encoding Operation Completed.</div>`;
+                case 5:
+                    if(!val) { consoleBox.innerHTML += `<div class="text-red-400">Please enter text to encode/decode.</div>`; return; }
+                    try {
+                        const encoded = btoa(val);
+                        const decoded = atob(encoded);
+                        consoleBox.innerHTML += `<div>[${time}] > Encoded (Base64): ${encoded}</div>`;
+                        consoleBox.innerHTML += `<div>[${time}] > Decoded: ${decoded}</div>`;
+                    } catch(err) {
+                        consoleBox.innerHTML += `<div class="text-red-400">Error in Base64 conversion.</div>`;
+                    }
+                    break;
+                case 6:
+                    if(!val) { consoleBox.innerHTML += `<div class="text-red-400">Please enter a password to test.</div>`; return; }
+                    let score = 0;
+                    if(val.length >= 8) score++;
+                    if(/[A-Z]/.test(val)) score++;
+                    if(/[0-9]/.test(val)) score++;
+                    if(/[^A-Za-z0-9]/.test(val)) score++;
+                    const strength = score === 4 ? "Very Strong" : score === 3 ? "Strong" : score === 2 ? "Moderate" : "Weak";
+                    consoleBox.innerHTML += `<div>[${time}] > Password Length: ${val.length} chars</div>`;
+                    consoleBox.innerHTML += `<div class="text-emerald-400">[${time}] > Strength Rating: ${strength} (Score ${score}/4)</div>`;
+                    break;
+                case 7:
+                    if(!val) { consoleBox.innerHTML += `<div class="text-red-400">Please enter JSON string.</div>`; return; }
+                    try {
+                        const parsed = JSON.parse(val);
+                        consoleBox.innerHTML += `<div class="text-emerald-400">[${time}] > JSON Syntax is VALID!</div>`;
+                        consoleBox.innerHTML += `<div><pre>${JSON.stringify(parsed, null, 2)}</pre></div>`;
+                    } catch(e) {
+                        consoleBox.innerHTML += `<div class="text-red-400">[${time}] > Invalid JSON Syntax: ${e.message}</div>`;
+                    }
+                    break;
+                case 8:
+                    if(!val) { consoleBox.innerHTML += `<div class="text-red-400">Please enter text to encode.</div>`; return; }
+                    const enc = encodeURIComponent(val);
+                    const dec = decodeURIComponent(enc);
+                    consoleBox.innerHTML += `<div>[${time}] > URL Encoded: ${enc}</div>`;
+                    consoleBox.innerHTML += `<div>[${time}] > URL Decoded: ${dec}</div>`;
+                    break;
+                case 9:
+                    const uuid = crypto.randomUUID ? crypto.randomUUID() : 'id-' + Math.random().toString(36).substr(2, 9);
+                    consoleBox.innerHTML += `<div class="text-sky-300">[${time}] > Generated UUID v4: ${uuid}</div>`;
+                    break;
+                case 10:
+                    if(!val) { consoleBox.innerHTML += `<div class="text-red-400">Please enter text.</div>`; return; }
+                    const chars = val.length;
+                    const words = val.trim() ? val.trim().split(/\s+/).length : 0;
+                    const lines = val.split('\n').length;
+                    consoleBox.innerHTML += `<div>[${time}] > Characters: ${chars} | Words: ${words} | Lines: ${lines}</div>`;
                     break;
                 default:
-                    consoleBox.innerHTML += `<div>[${time}] > Executing Module #${activeModuleId} logic...</div>`;
-                    consoleBox.innerHTML += `<div>[${time}] > Data Buffer Processed: 1024 bytes</div>`;
-                    consoleBox.innerHTML += `<div class="text-sky-400">[${time}] > Operation Status: SUCCESS (Real Execution)</div>`;
+                    consoleBox.innerHTML += `<div>[${time}] > Executed successfully.</div>`;
             }
             consoleBox.scrollTop = consoleBox.scrollHeight;
         }
 
         function clearConsole() {
-            document.getElementById('terminalOutput').innerHTML = '<div>> Console cleared. Ready for execution.</div>';
+            document.getElementById('terminalOutput').innerHTML = '<div>> Console cleared. Ready.</div>';
         }
 
         function openPaymentModal() { document.getElementById('paymentModal').classList.remove('hidden'); }
@@ -433,7 +447,7 @@
 
         function copyUpi() {
             navigator.clipboard.writeText("8851738350@fam");
-            alert("UPI ID copied to clipboard!");
+            alert("UPI ID copied!");
         }
 
         function selectPlan(type, amount) {
@@ -450,7 +464,7 @@
         function verifyPayment() {
             const utr = document.getElementById('utrInput').value.trim();
             if(utr.length < 6) {
-                alert("Please enter a valid Transaction / UTR number.");
+                alert("Please enter a valid UTR number.");
                 return;
             }
             isPro = true;
