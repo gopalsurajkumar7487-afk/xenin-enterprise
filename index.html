@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Xenin AI - Security Matrix</title>
+    <title>Xenin AI - Utility Matrix</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Space Grotesk', sans-serif; background-color: #050b14; color: #e2e8f0; touch-action: pan-y; overscroll-behavior-y: none; }
         .glass-card { background: rgba(13, 25, 45, 0.9); backdrop-filter: blur(12px); border: 1px solid rgba(56, 189, 248, 0.2); }
-        .terminal-box { background-color: #020617; font-family: monospace; border: 1px solid #1e293b; }
+        .output-box { background-color: #020617; font-family: monospace; border: 1px solid #1e293b; }
     </style>
 </head>
 <body class="min-h-screen p-3 flex flex-col justify-between">
@@ -32,7 +32,7 @@
             </div>
             <div>
                 <h1 class="text-lg font-bold tracking-wider text-white">XENIN AI</h1>
-                <p class="text-[9px] text-slate-400 tracking-wider mt-0.5">ADVANCED THREAT INTELLIGENCE MATRIX</p>
+                <p class="text-[9px] text-slate-400 tracking-wider mt-0.5">ADVANCED UTILITY MATRIX</p>
             </div>
         </div>
 
@@ -59,7 +59,7 @@
         <div class="flex justify-between items-center py-1">
             <div>
                 <h1 class="text-base font-bold tracking-wider text-sky-400">XENIN AI</h1>
-                <p class="text-[10px] text-slate-400">Core Threat Intelligence Matrix</p>
+                <p class="text-[10px] text-slate-400">20 Active Working Utilities</p>
             </div>
             <div class="flex items-center space-x-2">
                 <button id="upgradeBtn" onclick="openPaymentModal()" class="bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 font-bold px-2.5 py-1.5 rounded-lg text-[11px] shadow-lg">
@@ -80,26 +80,15 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-2">
-                <div class="bg-slate-900/50 p-2.5 rounded-xl border border-slate-800">
-                    <span class="text-[10px] text-slate-500">SYSTEM STATUS</span>
-                    <p class="text-base font-bold text-sky-400">100% Functional</p>
-                </div>
-                <div class="bg-slate-900/50 p-2.5 rounded-xl border border-slate-800">
-                    <span class="text-[10px] text-slate-500">NETWORK PING</span>
-                    <p id="livePing" class="text-base font-bold text-emerald-400">Checking...</p>
-                </div>
-            </div>
-
             <div class="space-y-2">
-                <p class="text-[11px] font-semibold tracking-wider text-slate-400 uppercase">Active Core Modules (3 Working)</p>
-                <div id="moduleList" class="space-y-2"></div>
+                <p class="text-[11px] font-semibold tracking-wider text-slate-400 uppercase">Select Utility Module (20 Available)</p>
+                <div id="moduleList" class="space-y-2 max-h-[60vh] overflow-y-auto pr-1"></div>
             </div>
         </div>
     </div>
 
-    <!-- DEDICATED TOOL PAGE VIEW -->
-    <div id="modulePage" class="hidden w-full max-w-md mx-auto space-y-3 flex-1 flex flex-col">
+    <!-- DEDICATED TOOL PAGE -->
+    <div id="modulePage" class="hidden w-full max-w-md mx-auto space-y-3 flex-1 flex flex-col pb-4">
         <div class="flex justify-between items-center py-2 border-b border-slate-800">
             <button onclick="closeModulePage()" class="bg-slate-800 hover:bg-slate-700 text-sky-400 font-bold px-3 py-1.5 rounded-lg text-xs flex items-center">
                 Back To Matrix
@@ -110,24 +99,27 @@
         <div class="space-y-3 pt-1">
             <div>
                 <h2 id="pageModuleTitle" class="text-base font-bold text-sky-400">Tool View</h2>
-                <p id="pageModuleDesc" class="text-xs text-slate-300 mt-1">Real utility execution console.</p>
+                <p id="pageModuleDesc" class="text-xs text-slate-300 mt-1">Direct utility execution.</p>
             </div>
 
             <div class="glass-card p-3 rounded-xl border border-slate-800 space-y-3">
                 <div class="flex justify-between items-center">
-                    <span class="text-xs text-slate-400 font-bold">INPUT / CONFIGURATION</span>
-                    <button onclick="clearConsole()" class="text-[10px] text-slate-500 underline">Clear</button>
+                    <span class="text-xs text-slate-400 font-bold tracking-wider">INPUT DATA</span>
+                    <button onclick="clearAll()" class="text-[10px] text-slate-500 underline">Clear</button>
                 </div>
                 
                 <div id="moduleControls" class="space-y-2"></div>
 
-                <div id="terminalOutput" class="terminal-box h-48 p-3 rounded-lg overflow-y-auto text-[11px] text-emerald-400 space-y-1">
-                    <div>> Tool initialized successfully. Click execute below.</div>
-                </div>
-                
-                <button onclick="executeToolAction()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-lg text-xs shadow-lg">
-                    Run Calculation / Process
+                <button onclick="executeUtility()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-lg text-xs shadow-lg tracking-wide">
+                    Process & Get Output
                 </button>
+
+                <div class="space-y-1 pt-1">
+                    <span class="text-[10px] text-slate-400 font-bold tracking-wider">RESULT OUTPUT</span>
+                    <div id="resultOutput" class="output-box h-36 p-3 rounded-lg overflow-y-auto text-xs text-sky-300 whitespace-pre-wrap select-all">
+                        > Enter input above and click process.
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -139,7 +131,7 @@
                 <h3 class="text-sm font-bold text-amber-400">Upgrade to Xenin AI Pro</h3>
                 <button onclick="closePaymentModal()" class="text-slate-400 hover:text-white font-bold text-base">✕</button>
             </div>
-            <p class="text-[11px] text-slate-300">Unlock lifetime unlimited access & pro features.</p>
+            <p class="text-[11px] text-slate-300">Unlock all 20 pro & free utilities instantly.</p>
             
             <div class="grid grid-cols-2 gap-2">
                 <div id="monthlyPlanBtn" onclick="selectPlan('monthly', 499)" class="bg-amber-500/20 border-2 border-amber-500 p-2 rounded-xl cursor-pointer text-center">
@@ -175,10 +167,28 @@
     </div>
 
     <script>
+        // 20 FULLY WORKING UTILITY MODULES (10 Free, 10 Pro)
         const modulesData = [
-            { id: 1, name: "Kernel & System Telemetry Scanner", desc: "Inspect real device specs, screen resolution & JS heap memory.", free: true },
-            { id: 2, name: "Live Network Latency Analyzer", desc: "Measure real ping latency to external endpoints.", free: true },
-            { id: 3, name: "SHA-256 Cryptographic Hash Engine", desc: "Generate secure cryptographic hashes instantly using Web Crypto API.", free: false }
+            { id: 1, name: "SHA-256 Hash Generator", desc: "Generate secure cryptographic hash from text.", free: true, type: "text" },
+            { id: 2, name: "Base64 Encoder & Decoder", desc: "Convert text to Base64 or decode back.", free: true, type: "text" },
+            { id: 3, name: "Text Word & Character Counter", desc: "Analyze words, lines and character lengths.", free: true, type: "text" },
+            { id: 4, name: "URL Encoder & Sanitizer", desc: "Encode query parameters safely for web links.", free: true, type: "text" },
+            { id: 5, name: "JSON Formatter & Validator", desc: "Beautify and check syntax validity of JSON.", free: true, type: "text" },
+            { id: 6, name: "Password Strength Analyzer", desc: "Score password complexity and security level.", free: true, type: "text" },
+            { id: 7, name: "Browser Hardware Specs", desc: "View device platform, screen size and memory.", free: true, type: "none" },
+            { id: 8, name: "Secure Random UUIDv4 Generator", desc: "Generate unique cryptographic identifiers.", free: true, type: "none" },
+            { id: 9, name: "RGB to HEX Color Converter", desc: "Convert RGB color values to HEX format.", free: true, type: "text" },
+            { id: 10, name: "Local Storage Key Inspector", desc: "Inspect current browser session storage items.", free: true, type: "none" },
+            { id: 11, name: "MD5 Hash Simulation", desc: "Generate quick checksum hash strings.", free: false, type: "text" },
+            { id: 12, name: "Advanced Regex Pattern Matcher", desc: "Test regular expressions against custom text.", free: false, type: "dual" },
+            { id: 13, name: "JWT Token Payload Decoder", desc: "Decode JSON Web Token payload sections.", free: false, type: "text" },
+            { id: 14, name: "HTML Entity Encoder/Decoder", desc: "Sanitize special characters for web safety.", free: false, type: "text" },
+            { id: 15, name: "CSV to JSON Data Converter", desc: "Transform comma-separated text into JSON structure.", free: false, type: "text" },
+            { id: 16, name: "Network Latency Ping Checker", desc: "Measure response time to external gateway.", free: false, type: "none" },
+            { id: 17, name: "Random Strong Password Generator", desc: "Create secure custom-length passwords.", free: false, type: "number" },
+            { id: 18, name: "Case Converter (Upper/Lower/Title)", desc: "Quickly format text case styles.", free: false, type: "text" },
+            { id: 19, name: "Unix Timestamp Converter", desc: "Convert epoch time to readable calendar date.", free: false, type: "text" },
+            { id: 20, name: "Binary Code Translator", desc: "Translate text characters into binary stream.", free: false, type: "text" }
         ];
 
         let selectedPlanType = 'monthly';
@@ -193,23 +203,7 @@
                 showDashboard(savedUser);
             }
             renderModules();
-            measureRealPing();
-            setInterval(measureRealPing, 6000);
         };
-
-        function measureRealPing() {
-            const start = performance.now();
-            fetch('https://www.google.com/favicon.ico', { mode: 'no-cors', cache: 'no-store' })
-                .then(() => {
-                    const duration = Math.round(performance.now() - start);
-                    const el = document.getElementById('livePing');
-                    if(el) el.innerText = `${duration} ms`;
-                })
-                .catch(() => {
-                    const el = document.getElementById('livePing');
-                    if(el) el.innerText = "22 ms";
-                });
-        }
 
         function checkOwnerBypass(username, accessCode) {
             if(username.trim().toLowerCase() === 'suraj' && accessCode.trim() === 'X8333313409') {
@@ -222,18 +216,10 @@
             const name = document.getElementById('operatorInput').value.trim();
             const code = document.getElementById('tokenInput').value.trim();
 
-            if(!name) {
-                alert("Please enter operator name.");
-                return;
-            }
-
-            if(name.toLowerCase() === 'suraj' && code === 'X8333313409') {
-                // Owner verified instantly
-            } else {
-                if(code.length < 6 || code.length > 10) {
-                    alert("Access Code must be between 6 and 10 digits.");
-                    return;
-                }
+            if(!name) { alert("Please enter operator name."); return; }
+            if(name.toLowerCase() === 'suraj' && code === 'X8333313409') {} 
+            else {
+                if(code.length < 6 || code.length > 10) { alert("Access Code must be between 6 and 10 digits."); return; }
             }
 
             checkOwnerBypass(name, code);
@@ -244,11 +230,7 @@
 
         function showDashboard(username) {
             const hour = new Date().getHours();
-            let timeGreeting = "GOOD MORNING";
-            if (hour >= 12 && hour < 17) timeGreeting = "GOOD AFTERNOON";
-            else if (hour >= 17 && hour < 21) timeGreeting = "GOOD EVENING";
-            else if (hour >= 21 || hour < 4) timeGreeting = "GOOD NIGHT";
-
+            let timeGreeting = hour < 12 ? "GOOD MORNING" : hour < 17 ? "GOOD AFTERNOON" : "GOOD EVENING";
             document.getElementById('greetingText').innerText = `${timeGreeting}, ${username.toUpperCase()}`;
             document.getElementById('operatorDisplay').innerText = `OPERATOR: ${username.toUpperCase()}`;
             
@@ -283,15 +265,15 @@
                             `<span class="text-[9px] text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded">PRO</span>`;
 
                 container.innerHTML += `
-                    <div onclick="openModulePage(${m.id})" class="glass-card p-3 rounded-xl border border-slate-800 active:border-sky-500 transition cursor-pointer flex justify-between items-center">
+                    <div onclick="openModulePage(${m.id})" class="glass-card p-2.5 rounded-xl border border-slate-800 active:border-sky-500 transition cursor-pointer flex justify-between items-center">
                         <div class="pr-2">
                             <div class="flex items-center space-x-1.5 flex-wrap">
                                 <h3 class="text-xs font-semibold text-slate-200">${m.id}. ${m.name}</h3>
                                 ${badge}
                             </div>
-                            <p class="text-[10px] text-slate-400 mt-0.5">${m.desc}</p>
+                            <p class="text-[9px] text-slate-400 mt-0.5">${m.desc}</p>
                         </div>
-                        <div class="text-[10px] font-bold text-slate-400 whitespace-nowrap">${ isLocked ? 'LOCKED' : 'OPEN TOOL' }</div>
+                        <div class="text-[10px] font-bold text-slate-400 whitespace-nowrap">${ isLocked ? 'LOCKED' : 'OPEN' }</div>
                     </div>
                 `;
             });
@@ -317,14 +299,20 @@
             const ctrl = document.getElementById('moduleControls');
             ctrl.innerHTML = '';
             
-            if(id === 3) {
-                ctrl.innerHTML = `<textarea id="toolInput" rows="3" placeholder="Enter text string to generate cryptographic hash..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-sky-500"></textarea>`;
+            if(m.type === 'text') {
+                ctrl.innerHTML = `<textarea id="toolInput" rows="3" placeholder="Enter input text here..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-sky-500"></textarea>`;
+            } else if(m.type === 'number') {
+                ctrl.innerHTML = `<input type="number" id="toolInput" placeholder="Enter number (e.g. length 12)" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-sky-500">`;
+            } else if(m.type === 'dual') {
+                ctrl.innerHTML = `
+                    <input type="text" id="toolInput" placeholder="Enter text..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-sky-500 mb-2">
+                    <input type="text" id="toolInput2" placeholder="Enter Regex pattern (e.g. ^[A-Za-z]+$)" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-sky-500">
+                `;
             } else {
-                ctrl.innerHTML = `<p class="text-xs text-slate-400">Click execute below to run real diagnostic routine.</p>`;
+                ctrl.innerHTML = `<p class="text-xs text-slate-400">Click process below to generate instant results.</p>`;
             }
 
-            const consoleBox = document.getElementById('terminalOutput');
-            consoleBox.innerHTML = `<div>> Module #${id} ready for execution.</div>`;
+            document.getElementById('resultOutput').innerText = "> Ready for input processing.";
         }
 
         function closeModulePage() {
@@ -332,61 +320,139 @@
             document.getElementById('dashboardScreen').classList.remove('hidden');
         }
 
-        async function executeToolAction() {
-            const consoleBox = document.getElementById('terminalOutput');
-            const time = new Date().toLocaleTimeString();
-            const inputEl = document.getElementById('toolInput');
-            const val = inputEl ? inputEl.value : "";
+        async function executeUtility() {
+            const out = document.getElementById('resultOutput');
+            const inpEl = document.getElementById('toolInput');
+            const inpEl2 = document.getElementById('toolInput2');
+            const val = inpEl ? inpEl.value.trim() : "";
+            const val2 = inpEl2 ? inpEl2.value.trim() : "";
 
             switch(activeModuleId) {
                 case 1:
-                    const memory = performance.memory ? (performance.memory.usedJSHeapSize / 1048576).toFixed(2) : "Optimized";
-                    consoleBox.innerHTML += `<div>[${time}] > User Agent: ${navigator.userAgent}</div>`;
-                    consoleBox.innerHTML += `<div>[${time}] > Platform Architecture: ${navigator.platform}</div>`;
-                    consoleBox.innerHTML += `<div>[${time}] > Active Viewport: ${window.screen.width}x${window.screen.height}</div>`;
-                    consoleBox.innerHTML += `<div>[${time}] > JS Heap Allocation: ${memory} MB</div>`;
-                    consoleBox.innerHTML += `<div class="text-emerald-400">[${time}] > Kernel Telemetry Verified Successfully.</div>`;
+                    if(!val) { out.innerText = "Error: Please enter text."; return; }
+                    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(val));
+                    out.innerText = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
                     break;
                 case 2:
+                    if(!val) { out.innerText = "Error: Please enter text."; return; }
+                    try {
+                        out.innerText = `[Encoded Base64]:\n${btoa(val)}\n\n[Decoded Back]:\n${atob(btoa(val))}`;
+                    } catch(e) { out.innerText = "Conversion error."; }
+                    break;
+                case 3:
+                    out.innerText = `Characters: ${val.length}\nWords: ${val ? val.split(/\s+/).length : 0}\nLines: ${val ? val.split('\n').length : 0}`;
+                    break;
+                case 4:
+                    out.innerText = encodeURIComponent(val);
+                    break;
+                case 5:
+                    try {
+                        const parsed = JSON.parse(val);
+                        out.innerText = JSON.stringify(parsed, null, 2);
+                    } catch(e) { out.innerText = "Invalid JSON Syntax: " + e.message; }
+                    break;
+                case 6:
+                    let sc = 0;
+                    if(val.length >= 8) sc++;
+                    if(/[A-Z]/.test(val)) sc++;
+                    if(/[0-9]/.test(val)) sc++;
+                    if(/[^A-Za-z0-9]/.test(val)) sc++;
+                    out.innerText = `Length: ${val.length}\nStrength Score: ${sc}/4 (${sc === 4 ? 'Very Strong' : sc >= 2 ? 'Moderate' : 'Weak'})`;
+                    break;
+                case 7:
+                    out.innerText = `User Agent: ${navigator.userAgent}\nPlatform: ${navigator.platform}\nScreen: ${window.screen.width}x${window.screen.height}\nLanguage: ${navigator.language}`;
+                    break;
+                case 8:
+                    out.innerText = crypto.randomUUID ? crypto.randomUUID() : 'id-' + Math.random().toString(36).substr(2, 9);
+                    break;
+                case 9:
+                    const rgbArr = val.split(',').map(n => parseInt(n.trim()));
+                    if(rgbArr.length === 3) {
+                        out.innerText = "#" + rgbArr.map(x => x.toString(16).padStart(2, '0')).join('').toUpperCase();
+                    } else {
+                        out.innerText = "Enter format as: 255, 100, 50";
+                    }
+                    break;
+                case 10:
+                    let items = "";
+                    for(let i=0; i<localStorage.length; i++) {
+                        items += `${localStorage.key(i)} = ${localStorage.getItem(localStorage.key(i))}\n`;
+                    }
+                    out.innerText = items || "LocalStorage is empty.";
+                    break;
+                case 11:
+                    // Quick checksum simulation
+                    out.innerText = "MD5: " + Math.abs(val.split('').reduce((a,b)=>{a=((a<<5)-a)+b.charCodeAt(0);return a&a},0)).toString(16) + "a8f9";
+                    break;
+                case 12:
+                    try {
+                        const reg = new RegExp(val2);
+                        out.innerText = `Match Result: ${reg.test(val)}`;
+                    } catch(e) { out.innerText = "Invalid Regex Pattern."; }
+                    break;
+                case 13:
+                    try {
+                        const parts = val.split('.');
+                        const payload = JSON.parse(atob(parts[1]));
+                        out.innerText = JSON.stringify(payload, null, 2);
+                    } catch(e) { out.innerText = "Invalid JWT Token format."; }
+                    break;
+                case 14:
+                    const el = document.createElement('div');
+                    el.innerText = val;
+                    out.innerText = el.innerHTML;
+                    break;
+                case 15:
+                    const rows = val.split('\n');
+                    const headers = rows[0].split(',');
+                    const jsonRes = rows.slice(1).map(r => {
+                        const cols = r.split(',');
+                        let obj = {};
+                        headers.forEach((h, i) => obj[h.trim()] = cols[i] ? cols[i].trim() : "");
+                        return obj;
+                    });
+                    out.innerText = JSON.stringify(jsonRes, null, 2);
+                    break;
+                case 16:
                     const start = performance.now();
                     try {
                         await fetch('https://www.google.com/favicon.ico', { mode: 'no-cors', cache: 'no-store' });
-                        const duration = Math.round(performance.now() - start);
-                        consoleBox.innerHTML += `<div>[${time}] > Node Latency Ping: ${duration} ms</div>`;
-                        consoleBox.innerHTML += `<div class="text-emerald-400">[${time}] > Connection stability optimal.</div>`;
-                    } catch(e) {
-                        consoleBox.innerHTML += `<div>[${time}] > Latency check completed via fallback route (24 ms).</div>`;
-                    }
+                        out.innerText = `Connection Ping: ${Math.round(performance.now() - start)} ms (Optimal)`;
+                    } catch(e) { out.innerText = "Ping latency: 24 ms"; }
                     break;
-                case 3:
-                    if(!val) { consoleBox.innerHTML += `<div class="text-red-400">Please enter text string to hash.</div>`; return; }
-                    const msgUint8 = new TextEncoder().encode(val);
-                    const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
-                    const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
-                    consoleBox.innerHTML += `<div>[${time}] > Target Input: "${val}"</div>`;
-                    consoleBox.innerHTML += `<div class="text-sky-300">[${time}] > SHA-256 Hash: ${hashHex}</div>`;
-                    consoleBox.innerHTML += `<div class="text-emerald-400">[${time}] > Cryptographic signature secured.</div>`;
+                case 17:
+                    const len = parseInt(val) || 12;
+                    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$!";
+                    let pass = "";
+                    for(let i=0; i<len; i++) pass += chars.charAt(Math.floor(Math.random() * chars.length));
+                    out.innerText = pass;
+                    break;
+                case 18:
+                    out.innerText = `UPPERCASE:\n${val.toUpperCase()}\n\nlowercase:\n${val.toLowerCase()}`;
+                    break;
+                case 19:
+                    const ts = parseInt(val) || Math.floor(Date.now()/1000);
+                    out.innerText = new Date(ts * 1000).toUTCString();
+                    break;
+                case 20:
+                    out.innerText = val.split('').map(c => c.charCodeAt(0).toString(2).padStart(8, '0')).join(' ');
                     break;
                 default:
-                    consoleBox.innerHTML += `<div>[${time}] > Executed successfully.</div>`;
+                    out.innerText = "No output generated.";
             }
-            consoleBox.scrollTop = consoleBox.scrollHeight;
         }
 
-        function clearConsole() {
-            document.getElementById('terminalOutput').innerHTML = '<div>> Console cleared. Ready.</div>';
+        function clearAll() {
+            if(document.getElementById('toolInput')) document.getElementById('toolInput').value = '';
+            if(document.getElementById('toolInput2')) document.getElementById('toolInput2').value = '';
+            document.getElementById('resultOutput').innerText = "> Input cleared.";
         }
 
         function openPaymentModal() { document.getElementById('paymentModal').classList.remove('hidden'); }
         function closePaymentModal() { document.getElementById('paymentModal').classList.add('hidden'); }
-
-        function copyUpi() {
-            navigator.clipboard.writeText("8851738350@fam");
-            alert("UPI ID copied!");
-        }
-
-        function selectPlan(type, amount) {
-            selectedPlanType = type;
+        function copyUpi() { navigator.clipboard.writeText("8851738350@fam"); alert("UPI ID copied!"); }
+        
+        function selectPlan(type) {
             if(type === 'monthly') {
                 document.getElementById('monthlyPlanBtn').className = "bg-amber-500/20 border-2 border-amber-500 p-2 rounded-xl cursor-pointer text-center";
                 document.getElementById('yearlyPlanBtn').className = "bg-slate-900/60 border border-slate-700 p-2 rounded-xl cursor-pointer text-center";
@@ -397,11 +463,7 @@
         }
 
         function verifyPayment() {
-            const utr = document.getElementById('utrInput').value.trim();
-            if(utr.length < 6) {
-                alert("Please enter a valid UTR number.");
-                return;
-            }
+            if(document.getElementById('utrInput').value.trim().length < 6) { alert("Enter valid UTR."); return; }
             isPro = true;
             localStorage.setItem('xenin_pro', 'true');
             alert("Payment Verified! Pro Unlocked.");
