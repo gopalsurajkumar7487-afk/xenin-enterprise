@@ -7,8 +7,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Space Grotesk', sans-serif; background-color: #050b14; color: #e2e8f0; touch-action: pan-y; overscroll-behavior-y: none; }
-        .glass-card { background: rgba(13, 25, 45, 0.9); backdrop-filter: blur(12px); border: 1px solid rgba(56, 189, 248, 0.2); }
+        body { font-family: 'Space Grotesk', sans-serif; background-color: #050b14; color: #e2e8f0; touch-action: manipulation; overscroll-behavior-y: none; overflow-x: hidden; }
+        .glass-card { background: rgba(13, 25, 45, 0.95); backdrop-filter: blur(12px); border: 1px solid rgba(56, 189, 248, 0.2); }
         .output-box { background-color: #020617; font-family: monospace; border: 1px solid #1e293b; }
     </style>
 </head>
@@ -21,8 +21,8 @@
                 <div class="w-full h-full bg-[#050b14] rounded-[14px] flex items-center justify-center relative overflow-hidden">
                     <div class="absolute top-1.5 left-1.5 w-1.5 h-1.5 bg-yellow-400 rounded-full shadow-[0_0_6px_#facc15]"></div>
                     <div class="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-yellow-400 rounded-full shadow-[0_0_6px_#facc15]"></div>
-                    <div class="absolute bottom-1.5 left-1.5 w-1.5 h-1.5 bg-yellow-400 rounded-full shadow-[0_0_6px_#facc15]"></div>
-                    <div class="absolute bottom-1.5 right-1.5 w-1.5 h-1.5 bg-yellow-400 rounded-full shadow-[0_0_6px_#facc15]"></div>
+                    <div class="absolute bottom-1.5 left-1.5 w-1.5 h-1.5 bg-sky-400 rounded-full shadow-[0_0_6px_#38bdf8]"></div>
+                    <div class="absolute bottom-1.5 right-1.5 w-1.5 h-1.5 bg-sky-400 rounded-full shadow-[0_0_6px_#38bdf8]"></div>
                     
                     <svg class="w-10 h-10 text-sky-400 drop-shadow-[0_0_8px_rgba(56,189,248,0.8)]" viewBox="0 0 24 24" fill="none">
                         <polygon points="12 2, 20.5 7, 20.5 17, 12 22, 3.5 17, 3.5 7" stroke="#38bdf8" stroke-width="1.8" fill="rgba(56,189,248,0.05)"/>
@@ -125,41 +125,45 @@
     </div>
 
     <!-- PAYMENT MODAL -->
-    <div id="paymentModal" class="hidden fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4">
-        <div class="glass-card w-full max-w-md rounded-2xl p-4 border border-amber-500/40 space-y-3 text-center">
+    <div id="paymentModal" class="hidden fixed inset-0 bg-black/95 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md rounded-2xl p-4 border-2 border-amber-500/60 space-y-3 text-center shadow-2xl">
             <div class="flex justify-between items-center border-b border-slate-800 pb-2">
-                <h3 class="text-sm font-bold text-amber-400">Upgrade to Xenin AI Pro</h3>
-                <button onclick="closePaymentModal()" class="text-slate-400 hover:text-white font-bold text-base">✕</button>
+                <div>
+                    <h3 class="text-sm font-bold text-amber-400 text-left">XENIN AI PRO ACCESS</h3>
+                    <p class="text-[9px] text-slate-400 text-left">Unlock all 20 advanced utility modules</p>
+                </div>
+                <button onclick="closePaymentModal()" class="text-slate-400 hover:text-white font-bold text-base bg-slate-800 px-2.5 py-1 rounded-lg">✕</button>
             </div>
-            <p class="text-[11px] text-slate-300">Unlock all 20 pro & free utilities instantly.</p>
             
-            <div class="grid grid-cols-2 gap-2">
-                <div id="monthlyPlanBtn" onclick="selectPlan('monthly', 499)" class="bg-amber-500/20 border-2 border-amber-500 p-2 rounded-xl cursor-pointer text-center">
+            <div class="grid grid-cols-2 gap-2 pt-1">
+                <div id="monthlyPlanBtn" onclick="selectPlan('monthly', 499)" class="bg-amber-500/20 border-2 border-amber-500 p-2.5 rounded-xl cursor-pointer text-center relative overflow-hidden">
+                    <span class="absolute top-0 right-0 bg-amber-500 text-slate-950 text-[7px] font-extrabold px-1.5 py-0.5 rounded-bl">POPULAR</span>
                     <p class="text-[9px] font-bold text-amber-400">MONTHLY PRO</p>
-                    <p class="text-xs font-extrabold text-white mt-0.5">₹499 <span class="text-[8px] text-slate-400">/mo</span></p>
+                    <p class="text-sm font-extrabold text-white mt-0.5">₹499 <span class="text-[9px] text-slate-400">/mo</span></p>
                 </div>
-                <div id="yearlyPlanBtn" onclick="selectPlan('yearly', 2999)" class="bg-slate-900/60 border border-slate-700 p-2 rounded-xl cursor-pointer text-center">
+                <div id="yearlyPlanBtn" onclick="selectPlan('yearly', 2999)" class="bg-slate-900/60 border border-slate-700 p-2.5 rounded-xl cursor-pointer text-center relative overflow-hidden">
+                    <span class="absolute top-0 right-0 bg-sky-500 text-slate-950 text-[7px] font-extrabold px-1.5 py-0.5 rounded-bl">SAVE 50%</span>
                     <p class="text-[9px] font-bold text-sky-400">YEARLY PRO</p>
-                    <p class="text-xs font-extrabold text-white mt-0.5">₹2,999 <span class="text-[8px] text-slate-400">/yr</span></p>
+                    <p class="text-sm font-extrabold text-white mt-0.5">₹2,999 <span class="text-[9px] text-slate-400">/yr</span></p>
                 </div>
             </div>
 
-            <div class="bg-black/40 p-2 rounded-xl border border-slate-700 inline-block">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi%3A%2F%2Fpay%3Fpa%3D8851738350%40fam%26pn%3DSuraj%2520Kumar%26cu%3DINR" alt="FamApp UPI QR" class="w-32 h-auto mx-auto rounded-lg">
-            </div>
-
-            <div class="bg-slate-900/90 p-2 rounded-xl border border-slate-800 text-left space-y-0.5">
-                <p class="text-[11px] text-slate-400">Payee: <span class="text-white font-bold">Suraj Kumar</span></p>
-                <div class="flex justify-between items-center">
-                    <span class="text-xs font-mono font-bold text-amber-300">8851738350@fam</span>
-                    <button onclick="copyUpi()" class="bg-slate-800 text-[10px] px-2 py-0.5 rounded text-sky-400">Copy</button>
+            <div class="bg-black/50 p-2.5 rounded-xl border border-slate-700 flex items-center justify-center space-x-3">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi%3A%2F%2Fpay%3Fpa%3D8851738350%40fam%26pn%3DSuraj%2520Kumar%26cu%3DINR" alt="FamApp UPI QR" class="w-24 h-24 rounded-lg bg-white p-1">
+                <div class="text-left space-y-1">
+                    <p class="text-[10px] text-slate-400">Scan & Pay via any UPI App</p>
+                    <p class="text-xs text-white font-bold">Suraj Kumar</p>
+                    <div class="flex items-center space-x-1.5">
+                        <span class="text-[11px] font-mono font-bold text-amber-300">8851738350@fam</span>
+                        <button onclick="copyUpi()" class="bg-slate-800 hover:bg-slate-700 text-[10px] px-2 py-0.5 rounded text-sky-400">Copy</button>
+                    </div>
                 </div>
             </div>
 
-            <div class="space-y-2 text-left">
+            <div class="space-y-2 text-left pt-1">
                 <label class="text-[10px] text-slate-400 font-semibold">ENTER TRANSACTION UTR / REF NO:</label>
-                <input type="text" id="utrInput" placeholder="Enter 12-digit UTR number" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-amber-500">
-                <button onclick="verifyPayment()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold py-2.5 rounded-lg text-xs shadow-lg">
+                <input type="text" id="utrInput" placeholder="Enter 12-digit UTR number after payment" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-amber-500">
+                <button onclick="verifyPayment()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold py-3 rounded-lg text-xs shadow-lg tracking-wide">
                     Verify & Activate Pro
                 </button>
             </div>
@@ -167,7 +171,6 @@
     </div>
 
     <script>
-        // 20 FULLY WORKING UTILITY MODULES (10 Free, 10 Pro)
         const modulesData = [
             { id: 1, name: "SHA-256 Hash Generator", desc: "Generate secure cryptographic hash from text.", free: true, type: "text" },
             { id: 2, name: "Base64 Encoder & Decoder", desc: "Convert text to Base64 or decode back.", free: true, type: "text" },
@@ -273,7 +276,7 @@
                             </div>
                             <p class="text-[9px] text-slate-400 mt-0.5">${m.desc}</p>
                         </div>
-                        <div class="text-[10px] font-bold text-slate-400 whitespace-nowrap">${ isLocked ? 'LOCKED' : 'OPEN' }</div>
+                        <div class="text-[10px] font-bold ${isLocked ? 'text-amber-400' : 'text-slate-400'} whitespace-nowrap">${ isLocked ? 'LOCKED' : 'OPEN' }</div>
                     </div>
                 `;
             });
@@ -284,7 +287,6 @@
             const isLocked = !m.free && !isPro;
 
             if(isLocked) {
-                alert(`Locked Feature! Upgrade to Pro to access ${m.name}.`);
                 openPaymentModal();
                 return;
             }
@@ -381,7 +383,6 @@
                     out.innerText = items || "LocalStorage is empty.";
                     break;
                 case 11:
-                    // Quick checksum simulation
                     out.innerText = "MD5: " + Math.abs(val.split('').reduce((a,b)=>{a=((a<<5)-a)+b.charCodeAt(0);return a&a},0)).toString(16) + "a8f9";
                     break;
                 case 12:
@@ -452,13 +453,14 @@
         function closePaymentModal() { document.getElementById('paymentModal').classList.add('hidden'); }
         function copyUpi() { navigator.clipboard.writeText("8851738350@fam"); alert("UPI ID copied!"); }
         
-        function selectPlan(type) {
+        function selectPlan(type, amount) {
+            selectedPlanType = type;
             if(type === 'monthly') {
-                document.getElementById('monthlyPlanBtn').className = "bg-amber-500/20 border-2 border-amber-500 p-2 rounded-xl cursor-pointer text-center";
-                document.getElementById('yearlyPlanBtn').className = "bg-slate-900/60 border border-slate-700 p-2 rounded-xl cursor-pointer text-center";
+                document.getElementById('monthlyPlanBtn').className = "bg-amber-500/20 border-2 border-amber-500 p-2.5 rounded-xl cursor-pointer text-center relative overflow-hidden";
+                document.getElementById('yearlyPlanBtn').className = "bg-slate-900/60 border border-slate-700 p-2.5 rounded-xl cursor-pointer text-center relative overflow-hidden";
             } else {
-                document.getElementById('yearlyPlanBtn').className = "bg-sky-500/20 border-2 border-sky-500 p-2 rounded-xl cursor-pointer text-center";
-                document.getElementById('monthlyPlanBtn').className = "bg-slate-900/60 border border-slate-700 p-2 rounded-xl cursor-pointer text-center";
+                document.getElementById('yearlyPlanBtn').className = "bg-sky-500/20 border-2 border-sky-500 p-2.5 rounded-xl cursor-pointer text-center relative overflow-hidden";
+                document.getElementById('monthlyPlanBtn').className = "bg-slate-900/60 border border-slate-700 p-2.5 rounded-xl cursor-pointer text-center relative overflow-hidden";
             }
         }
 
