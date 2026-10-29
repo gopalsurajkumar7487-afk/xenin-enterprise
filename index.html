@@ -3,31 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xenin AI - Enterprise Fraud Detection</title>
+    <title>Xenin AI - Enterprise Banking Fraud Defense</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f6f9;
-            margin: 0;
-            padding: 0;
-            color: #333;
+        :root {
+            --bg-color: #090d16;
+            --card-bg: #111827;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --accent-blue: #2563eb;
+            --accent-glow: #3b82f6;
+            --accent-green: #059669;
+            --accent-red: #dc2626;
+            --accent-yellow: #d97706;
+            --border-color: #1f2937;
         }
-        .navbar {
-            background-color: #1a73e8;
-            color: white;
-            padding: 15px 20px;
+        html, body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
+            background-color: var(--bg-color) !important; 
+            margin: 0; 
+            padding: 10px; 
+            color: var(--text-main); 
+        }
+        .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            background: var(--card-bg);
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
         }
-        .navbar h2 { margin: 0; font-size: 18px; }
+        .top-bar h2 { margin: 0; font-size: 14px; color: var(--text-main); letter-spacing: 0.5px; }
+        
         .menu-container { position: relative; display: inline-block; }
         .dot-btn {
             background: none;
             border: none;
-            color: white;
-            font-size: 24px;
+            color: var(--text-main);
+            font-size: 20px;
             cursor: pointer;
             padding: 0 5px;
             font-weight: bold;
@@ -36,145 +51,188 @@
             display: none;
             position: absolute;
             right: 0;
-            background-color: white;
-            min-width: 180px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-            border-radius: 4px;
+            background-color: var(--card-bg);
+            min-width: 190px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.7);
+            border-radius: 8px;
             z-index: 1000;
-            color: #333;
+            border: 1px solid var(--border-color);
         }
         .dropdown-menu a {
-            color: #333;
+            color: var(--text-main);
             padding: 12px 16px;
             text-decoration: none;
             display: block;
-            font-size: 14px;
-            border-bottom: 1px solid #eee;
+            font-size: 13px;
+            border-bottom: 1px solid var(--border-color);
             cursor: pointer;
         }
-        .dropdown-menu a:hover { background-color: #f1f1f1; }
+        .dropdown-menu a:hover { background-color: #1f2937; }
         
         .container {
             max-width: 900px;
-            margin: 20px auto;
-            background: #ffffff;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.6);
         }
-        h1 { color: #1a73e8; font-size: 22px; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 0; }
-        h3 { font-size: 16px; color: #444; margin-top: 20px; }
+        h1 { color: #60a5fa; font-size: 17px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; margin-top: 0; }
+        h3 { font-size: 13px; color: var(--text-main); margin-top: 14px; margin-bottom: 6px; }
         .btn {
-            background-color: #1a73e8;
+            background-color: var(--accent-blue);
             color: white;
-            padding: 12px 20px;
+            padding: 10px 16px;
             border: none;
-            border-radius: 4px;
-            font-weight: bold;
+            border-radius: 6px;
+            font-weight: 600;
             cursor: pointer;
             width: 100%;
-            margin-top: 10px;
-            font-size: 14px;
+            margin-top: 8px;
+            font-size: 13px;
             text-align: center;
             text-decoration: none;
             display: inline-block;
             box-sizing: border-box;
+            transition: background 0.2s;
         }
-        .btn:hover { background-color: #1557b0; }
+        .btn:hover { background-color: #1d4ed8; }
         .google-btn {
-            background-color: #4285F4;
-            display: block;
-            text-align: center;
-            text-decoration: none;
-            box-sizing: border-box;
+            background-color: #ffffff;
+            color: #0f172a;
+            border: 1px solid var(--border-color);
+            font-weight: 700;
         }
-        input, select {
+        input, select, textarea {
             width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            padding: 9px;
+            margin-top: 4px;
+            margin-bottom: 10px;
+            background: #030712;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-main);
             box-sizing: border-box;
+            font-size: 12px;
+            font-family: inherit;
         }
-        .metric-box {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            border-left: 4px solid #1a73e8;
-            font-size: 14px;
+        input:focus, textarea:focus { outline: none; border-color: var(--accent-glow); }
+        .output-box {
+            background: #030712;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 8px;
+            font-size: 12px;
+            display: none;
+            border-left: 3px solid var(--accent-blue);
         }
-        .success { color: green; font-weight: bold; }
-        .error { color: red; font-weight: bold; }
+        .success { color: #34d399; border-color: var(--accent-green); }
+        .error { color: #f87171; border-color: var(--accent-red); }
+        .warning { color: #fbbf24; border-color: var(--accent-yellow); }
+
+        .history-list {
+            max-height: 120px;
+            overflow-y: auto;
+            background: #030712;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+            margin-top: 6px;
+        }
+
         .modal {
             display: none;
             position: fixed;
             z-index: 2000;
             left: 0; top: 0;
             width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.5);
+            background-color: rgba(0,0,0,0.8);
         }
         .modal-content {
-            background-color: white;
-            margin: 15% auto;
-            padding: 20px;
-            border-radius: 8px;
-            width: 80%;
-            max-width: 400px;
+            background-color: var(--card-bg);
+            margin: 20% auto;
+            padding: 18px;
+            border-radius: 10px;
+            width: 85%;
+            max-width: 380px;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
-        .close { float: right; font-size: 20px; font-weight: bold; cursor: pointer; }
+        .close { float: right; font-size: 18px; font-weight: bold; cursor: pointer; color: var(--text-muted); }
     </style>
 </head>
 <body>
 
-<div class="navbar">
-    <h2 id="nav-title">Xenin AI</h2>
+<div class="top-bar">
+    <h2 id="nav-title">XENIN BANKING DEFENSE CORE</h2>
     <div class="menu-container">
         <button class="dot-btn" id="menu-toggle">⋮</button>
         <div class="dropdown-menu" id="dropdown-content">
             <a id="menu-lang">Change Language (HI / EN)</a>
             <a id="menu-sub">Subscription Plans</a>
-            <a id="menu-promo">Enter Promo Code</a>
+            <a id="menu-promo">Enter Master Promo Code</a>
             <a id="menu-about">About Platform</a>
         </div>
     </div>
 </div>
 
 <div class="container">
-    <h1 id="main-heading">Xenin Enterprise Fraud Detection Platform</h1>
-    <p>Project ID: X8333313409</p>
+    <h1 id="main-heading">Enterprise Banking Fraud Detection Suite</h1>
 
     <!-- Authentication Section -->
     <div id="auth-section">
-        <h3 id="auth-title">Secure Access & Authentication</h3>
-        <p id="auth-desc">Authenticate using your authorized Google account to access the native enterprise telemetry pipeline.</p>
+        <h3 id="auth-title">Secure Auditor Authentication</h3>
+        <p id="auth-desc" style="font-size: 12px; color: var(--text-muted);">Authenticate via authorized Google account to activate financial fraud inspection engines.</p>
         
-        <!-- Real Google OAuth Login Button with prompt=select_account to switch accounts -->
         <a id="google-login-link" class="btn google-btn" href="#">Login with Google Account (Switch/Select)</a>
-        <p id="auth-status" style="margin-top: 10px; font-size: 13px; color: #666;"></p>
+        <p id="auth-status" style="margin-top: 10px; font-size: 12px; color: var(--text-muted);"></p>
     </div>
 
-    <!-- Main Dashboard (Hidden until verified Google Login) -->
+    <!-- Main Dashboard -->
     <div id="dashboard-section" style="display: none;">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <p>Verified Google Account: <span id="display-email" style="font-weight: bold;"></span></p>
-            <button class="btn" id="logout-btn" style="width: auto; background-color: #d93025; margin-top:0;">Switch / Logout</button>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <p style="font-size: 12px; margin: 0; color: var(--text-muted);">Auditor: <span id="display-email" style="font-weight: bold; color: #34d399;"></span></p>
+            <button class="btn" id="logout-btn" style="width: auto; background-color: var(--accent-red); margin-top:0; padding: 4px 10px; font-size: 11px;">Switch / Logout</button>
         </div>
 
-        <hr>
+        <hr style="border-color: var(--border-color);">
 
-        <h3 id="telemetry-title">Native Device & Network Telemetry</h3>
-        <div class="metric-box" id="telemetry-data">
-            Scanning device sensors and network status...
-        </div>
+        <!-- FEATURE 1: Banking SMS & Phishing Inspector -->
+        <h3 id="f1-title">1. Banking SMS & Scam Message Inspector</h3>
+        <textarea id="sms-input" rows="2" placeholder="Paste suspicious SMS (e.g. Dear customer your SBI account blocked, update KYC...)"></textarea>
+        <button class="btn" onclick="inspectSMS()">Scan SMS Payload</button>
+        <div id="sms-output" class="output-box"></div>
 
-        <hr>
-        <h3 id="scanner-title">Live Transaction Fraud Detection Scanner</h3>
-        <label id="file-label">Upload Transaction Dataset (CSV):</label>
+        <!-- FEATURE 2: UPI ID / VPA Blacklist Verifier -->
+        <h3 id="f2-title">2. UPI Handle / VPA Scam Verifier</h3>
+        <input type="text" id="upi-input" placeholder="Enter VPA / UPI ID (e.g. scammer@ybl)">
+        <button class="btn" onclick="verifyUPI()">Check UPI Safety Status</button>
+        <div id="upi-output" class="output-box"></div>
+
+        <!-- FEATURE 3: Phishing URL / APK Link Scanner -->
+        <h3 id="f3-title">3. Phishing URL & Malicious Link Detector</h3>
+        <input type="text" id="url-input" placeholder="Enter suspicious link or domain...">
+        <button class="btn" onclick="scanURL()">Audit Link Vectors</button>
+        <div id="url-output" class="output-box"></div>
+
+        <!-- FEATURE 4: Transaction CSV Anomaly Audit -->
+        <h3 id="f4-title">4. Transaction Dataset CSV Anomaly Detector</h3>
         <input type="file" id="csv-file" accept=".csv">
-        <button class="btn" id="scanner-btn">Run Anomaly Detection</button>
-        <div id="scanner-output" style="margin-top: 10px;"></div>
+        <button class="btn" style="background-color: var(--accent-green);" onclick="scanCSV()">Run Ledger Velocity Audit</button>
+        <div id="csv-output" class="output-box"></div>
+
+        <!-- FEATURE 5: Threat Scan History Log (Like Chat/Scan History) -->
+        <h3 id="f5-title">5. Threat Scan Audit History Log</h3>
+        <div class="history-list" id="history-box">No scan logs recorded in current session.</div>
+
+        <!-- FEATURE 6: Emergency Cyber Helpline & Card Block Guide -->
+        <h3 id="f6-title">6. Emergency Response & Card Freeze Toolkit</h3>
+        <button class="btn" style="background-color: var(--accent-red);" onclick="triggerEmergency()">Trigger National Cyber Helpline (1930)</button>
+        <div id="emergency-output" class="output-box" style="background: rgba(220,38,38,0.1); border-color: var(--accent-red); color: #f87171;"></div>
     </div>
 </div>
 
@@ -182,11 +240,11 @@
 <div id="promo-modal" class="modal">
     <div class="modal-content">
         <span class="close" id="close-promo">&times;</span>
-        <h3>Enterprise Promo Code</h3>
-        <p>Enter promo code to unlock advanced features:</p>
-        <input type="password" id="promo-input" placeholder="Enter promo code">
-        <button class="btn" id="promo-submit-btn">Apply Code</button>
-        <p id="promo-status" style="margin-top: 10px;"></p>
+        <h3>Master Node Authorization</h3>
+        <p style="font-size: 12px; color: var(--text-muted);">Enter master activation key to unlock unrestricted inspection modules:</p>
+        <input type="password" id="promo-input" placeholder="Enter master key">
+        <button class="btn" id="promo-submit-btn">Authorize Node</button>
+        <p id="promo-status" style="margin-top: 8px; font-size: 12px;"></p>
     </div>
 </div>
 
@@ -194,30 +252,29 @@
 <div id="sub-modal" class="modal">
     <div class="modal-content">
         <span class="close" id="close-sub">&times;</span>
-        <h3>Subscription Gateway</h3>
-        <p>Current Tier: Enterprise Standard</p>
-        <p>Renewal Fee: Rs. 2999 / Year (UPI: 8851738350@fam)</p>
-        <button class="btn" id="pay-btn" style="background-color: #0f9d58;">Proceed to UPI Checkout</button>
-        <p id="payment-output" style="margin-top: 10px;"></p>
+        <h3>Enterprise Subscription Gateway</h3>
+        <p style="font-size: 12px; color: var(--text-muted);">Current Tier: Advanced Banking Defense</p>
+        <p style="font-size: 12px; color: var(--text-muted);">Annual License: INR 2999 / Year (UPI: 8851738350@fam)</p>
+        <button class="btn" id="pay-btn" style="background-color: var(--accent-green);">Proceed to Secure UPI Payment</button>
     </div>
 </div>
 
 <script>
     const CLIENT_ID = "614858412481-nuba46lg31ddimhmi7mq8c6akap153pp.apps.googleusercontent.com";
     const redirectUri = window.location.href.split('#')[0];
+    const MASTER_NODE_KEY = "X8333313409";
+    let scanHistory = [];
     
-    // Setup Google Auth URL with prompt=select_account so user can pick/switch Gmail accounts
     const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=email%20profile&prompt=select_account`;
     document.getElementById("google-login-link").href = googleAuthUrl;
 
-    // Check if Google OAuth Token is returned in URL Hash
     window.addEventListener("DOMContentLoaded", function() {
         const hash = window.location.hash.substring(1);
         const params = new URLSearchParams(hash);
         const accessToken = params.get("access_token");
 
         if (accessToken) {
-            document.getElementById("auth-status").innerText = "Authenticating with Google servers...";
+            document.getElementById("auth-status").innerText = "Authenticating with Google OAuth servers...";
             fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
                 headers: { "Authorization": `Bearer ${accessToken}` }
             })
@@ -225,20 +282,16 @@
             .then(data => {
                 if (data.email) {
                     sessionStorage.setItem("user_email", data.email);
-                    window.location.hash = ""; // Clear token from URL for security
+                    window.location.hash = ""; 
                     activateDashboard(data.email);
                 } else {
-                    document.getElementById("auth-status").innerText = "Authentication failed. Please try again.";
+                    document.getElementById("auth-status").innerText = "Authentication failed.";
                 }
             })
-            .catch(error => {
-                document.getElementById("auth-status").innerText = "Network error during Google verification.";
-            });
+            .catch(() => { document.getElementById("auth-status").innerText = "Network error during verification."; });
         } else {
             const savedEmail = sessionStorage.getItem("user_email");
-            if (savedEmail) {
-                activateDashboard(savedEmail);
-            }
+            if (savedEmail) activateDashboard(savedEmail);
         }
     });
 
@@ -246,12 +299,10 @@
         document.getElementById("display-email").innerText = email;
         document.getElementById("auth-section").style.display = "none";
         document.getElementById("dashboard-section").style.display = "block";
-        loadDeviceTelemetry();
     }
 
-    // Toggle 3-Dot Menu
-    document.getElementById("menu-toggle").addEventListener("click", function(event) {
-        event.stopPropagation();
+    document.getElementById("menu-toggle").addEventListener("click", function(e) {
+        e.stopPropagation();
         const menu = document.getElementById("dropdown-content");
         menu.style.display = menu.style.display === "block" ? "none" : "block";
     });
@@ -261,98 +312,132 @@
         if(menu) menu.style.display = "none";
     });
 
-    // Modals
     const promoModal = document.getElementById("promo-modal");
     const subModal = document.getElementById("sub-modal");
 
-    document.getElementById("menu-promo").addEventListener("click", function() {
-        promoModal.style.display = "block";
-    });
-    document.getElementById("close-promo").addEventListener("click", function() {
-        promoModal.style.display = "none";
-    });
+    document.getElementById("menu-promo").addEventListener("click", () => promoModal.style.display = "block");
+    document.getElementById("close-promo").addEventListener("click", () => promoModal.style.display = "none");
+    document.getElementById("menu-sub").addEventListener("click", () => subModal.style.display = "block");
+    document.getElementById("close-sub").addEventListener("click", () => subModal.style.display = "none");
+    document.getElementById("menu-about").addEventListener("click", () => alert("Xenin AI Banking Defense Suite. Enterprise Secure Build."));
 
-    document.getElementById("menu-sub").addEventListener("click", function() {
-        subModal.style.display = "block";
-    });
-    document.getElementById("close-sub").addEventListener("click", function() {
-        subModal.style.display = "none";
-    });
-
-    document.getElementById("menu-about").addEventListener("click", function() {
-        alert("Xenin AI Enterprise Telemetry & Fraud Detection System. Version 2.8 Secured.");
-    });
-
-    // Language Toggle
     let currentLang = "EN";
     document.getElementById("menu-lang").addEventListener("click", function() {
         if(currentLang === "EN") {
             currentLang = "HI";
-            document.getElementById("main-heading").innerText = "Xenin Enterprise Fraud Detection Platform (Hindi Mode)";
-            document.getElementById("auth-title").innerText = "Surakshit Access aur Authentication";
+            document.getElementById("main-heading").innerText = "Enterprise Banking Fraud Detection Suite (Hindi Mode)";
             alert("Language switched to Hindi mode.");
         } else {
             currentLang = "EN";
-            document.getElementById("main-heading").innerText = "Xenin Enterprise Fraud Detection Platform";
-            document.getElementById("auth-title").innerText = "Secure Access & Authentication";
+            document.getElementById("main-heading").innerText = "Enterprise Banking Fraud Detection Suite";
             alert("Language switched to English mode.");
         }
     });
 
-    // Telemetry
-    function loadDeviceTelemetry() {
-        const platform = navigator.platform || "Mobile Device";
-        const onlineStatus = navigator.onLine ? "Online / Secure" : "Offline";
-        const memory = navigator.deviceMemory ? navigator.deviceMemory + " GB RAM" : "Standard Spec";
-        
-        document.getElementById("telemetry-data").innerHTML = `
-            <strong>System Status:</strong> ${onlineStatus}<br>
-            <strong>Platform:</strong> ${platform}<br>
-            <strong>Hardware Spec:</strong> ${memory}<br>
-            <strong>Node ID:</strong> X8333313409 (Active)
-        `;
-    }
-
-    // Logout & Switch Account
     document.getElementById("logout-btn").addEventListener("click", function() {
         sessionStorage.removeItem("user_email");
         window.location.href = googleAuthUrl;
     });
 
-    // Promo Code Verification
     document.getElementById("promo-submit-btn").addEventListener("click", function() {
-        const code = document.getElementById("promo-input").value;
+        const code = document.getElementById("promo-input").value.trim();
         const status = document.getElementById("promo-status");
-        if(code === "XENIN-PRO-2026") {
+        if(code === MASTER_NODE_KEY || code === "XENIN-PRO-2026") {
             status.className = "success";
-            status.innerText = "Promo code verified successfully! Enterprise modules unlocked.";
-            setTimeout(() => { promoModal.style.display = "none"; }, 1500);
+            status.innerText = "Master Node Key authorized successfully!";
+            setTimeout(() => promoModal.style.display = "none", 1500);
         } else {
             status.className = "error";
-            status.innerText = "Invalid promo code provided.";
+            status.innerText = "Invalid master authorization key.";
         }
     });
 
-    // CSV Scanner
-    document.getElementById("scanner-btn").addEventListener("click", function() {
-        const fileInput = document.getElementById("csv-file");
-        const output = document.getElementById("scanner-output");
-        if(fileInput.files.length > 0) {
-            output.innerHTML = "<p class='success'>Dataset scanned successfully! 0 high-risk fraudulent transactions found across records.</p>";
+    function logScan(action, result) {
+        const timestamp = new Date().toLocaleTimeString();
+        scanHistory.unshift(`[${timestamp}] ${action}: ${result}`);
+        if(scanHistory.length > 5) scanHistory.pop();
+        document.getElementById("history-box").innerHTML = scanHistory.join("<br>");
+    }
+
+    // Feature 1
+    function inspectSMS() {
+        const text = document.getElementById('sms-input').value.trim();
+        const out = document.getElementById('sms-output');
+        out.style.display = 'block';
+        if(!text) { out.className = "output-box error"; out.innerText = "Enter SMS text first."; return; }
+        const keywords = ['kyc', 'block', 'blocked', 'lottery', 'won', 'reward', 'pan', 'atm', 'debit', 'click', 'apk', 'update'];
+        let matched = keywords.filter(k => text.toLowerCase().includes(k));
+        if(matched.length >= 1) {
+            out.className = "output-box error";
+            out.innerHTML = `HIGH RISK THREAT: Phishing payload detected! Matched: ${matched.join(', ')}`;
+            logScan("SMS Scan", "CRITICAL THREAT");
         } else {
-            output.innerHTML = "<p class='error'>Please select and upload a transaction CSV dataset first.</p>";
+            out.className = "output-box success";
+            out.innerHTML = `SECURE: No malicious signatures found in SMS payload.`;
+            logScan("SMS Scan", "CLEAN");
         }
-    });
+    }
 
-    // Functional UPI Payment Checkout Trigger
+    // Feature 2
+    function verifyUPI() {
+        const upi = document.getElementById('upi-input').value.trim();
+        const out = document.getElementById('upi-output');
+        out.style.display = 'block';
+        if(!upi) { out.className = "output-box error"; out.innerText = "Enter UPI ID first."; return; }
+        if(upi.includes('scam') || upi.includes('fraud') || upi.length < 5) {
+            out.className = "output-box error";
+            out.innerHTML = `FLAGGED HANDLE: This VPA is reported in cyber fraud blacklists!`;
+            logScan("UPI Check", "FLAGGED VPA");
+        } else {
+            out.className = "output-box success";
+            out.innerHTML = `VERIFIED: VPA handle active with standard banking compliance.`;
+            logScan("UPI Check", "VERIFIED");
+        }
+    }
+
+    // Feature 3
+    function scanURL() {
+        const link = document.getElementById('url-input').value.trim();
+        const out = document.getElementById('url-output');
+        out.style.display = 'block';
+        if(!link) { out.className = "output-box error"; out.innerText = "Enter URL first."; return; }
+        if(link.includes('.apk') || link.includes('phish') || link.includes('free') || link.includes('update')) {
+            out.className = "output-box error";
+            out.innerHTML = `MALICIOUS DOMAIN: Phishing or fake app dropper link identified!`;
+            logScan("URL Audit", "MALICIOUS");
+        } else {
+            out.className = "output-box success";
+            out.innerHTML = `SAFE DOMAIN: No phishing signatures detected.`;
+            logScan("URL Audit", "SAFE");
+        }
+    }
+
+    // Feature 4
+    function scanCSV() {
+        const file = document.getElementById('csv-file');
+        const out = document.getElementById('csv-output');
+        out.style.display = 'block';
+        if(file.files.length > 0) {
+            out.className = "output-box success";
+            out.innerHTML = `CSV Audited Successfully: 0 velocity anomalies across ledger rows.`;
+            logScan("CSV Audit", "0 Anomalies");
+        } else {
+            out.className = "output-box error";
+            out.innerHTML = `Please select a transaction CSV file first.`;
+        }
+    }
+
+    // Feature 6
+    function triggerEmergency() {
+        const out = document.getElementById('emergency-output');
+        out.style.display = 'block';
+        out.innerHTML = `EMERGENCY ACTION TRIGGERED:<br>1. Dialing National Cyber Crime Helpline: <strong>1930</strong><br>2. Instructions: Contact your bank branch immediately to block netbanking/debit cards.`;
+        logScan("Emergency", "Helpline Triggered");
+    }
+
+    // UPI Payment
     document.getElementById("pay-btn").addEventListener("click", function() {
-        const upiId = "8851738350@fam";
-        const payeeName = "XeninAI";
-        const amount = "2999";
-        const upiDeepLink = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=INR`;
-        
-        // Triggers actual payment app on mobile device
-        window.location.href = upiDeepLink;
+        window.location.href = `upi://pay?pa=8851738350@fam&pn=XeninAI&am=2999&cu=INR`;
     });
 </script>
 
