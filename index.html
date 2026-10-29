@@ -52,7 +52,6 @@
             margin-bottom: 15px;
             border-left: 4px solid #1a73e8;
         }
-        .hidden { display: none; }
         .success { color: green; font-weight: bold; }
         .error { color: red; font-weight: bold; }
     </style>
@@ -68,14 +67,14 @@
         <h2>Secure Access & Authentication</h2>
         <p>Authenticate using your authorized Google account to access the enterprise telemetry pipeline.</p>
         <input type="email" id="user-email" placeholder="Enter administrator or gmail account">
-        <button class="btn" onclick="loginUser()">Login to Dashboard</button>
+        <button class="btn" id="login-btn">Login to Dashboard</button>
     </div>
 
     <!-- Main Dashboard (Hidden until login) -->
-    <div id="dashboard-section" class="hidden">
+    <div id="dashboard-section" style="display: none;">
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <p>Connected Account: <span id="display-email" style="font-weight: bold;"></span></p>
-            <button class="btn" style="width: auto; background-color: #d93025;" onclick="logoutUser()">Logout</button>
+            <button class="btn" id="logout-btn" style="width: auto; background-color: #d93025;">Logout</button>
         </div>
 
         <hr>
@@ -92,74 +91,76 @@
         <h2>Enterprise License Verification</h2>
         <label>Enter Enterprise License Key:</label>
         <input type="password" id="license-key" placeholder="Enter license key">
-        <button class="btn" onclick="verifyLicense()">Activate License</button>
+        <button class="btn" id="license-btn">Activate License</button>
         <p id="license-status"></p>
 
         <!-- Fraud Detection Scanner (Locked until license active) -->
-        <div id="scanner-section" class="hidden">
+        <div id="scanner-section" style="display: none;">
             <hr>
             <h2>Live Transaction Fraud Detection Scanner</h2>
             <label>Upload Transaction Dataset (CSV):</label>
             <input type="file" id="csv-file" accept=".csv">
-            <button class="btn" onclick="runScanner()">Run Anomaly Detection</button>
+            <button class="btn" id="scanner-btn">Run Anomaly Detection</button>
             <div id="scanner-output"></div>
 
             <hr>
             <!-- Payment Gateway -->
             <h2>Enterprise Funding & Subscription Gateway</h2>
             <p>Secure institutional checkout for enterprise deployment scaling.</p>
-            <button class="btn" style="background-color: #0f9d58;" onclick="proceedCheckout()">Proceed to Secure Checkout (Rs. 49,999)</button>
+            <button class="btn" id="checkout-btn" style="background-color: #0f9d58;">Proceed to Secure Checkout (Rs. 49,999)</button>
             <div id="payment-output"></div>
         </div>
     </div>
 </div>
 
 <script>
-    function loginUser() {
-        const email = document.getElementById("user-email").value;
-        if(email) {
-            document.getElementById("display-email").innerText = email;
-            document.getElementById("auth-section").classList.add("hidden");
-            document.getElementById("dashboard-section").classList.remove("hidden");
-        } else {
-            alert("Please enter a valid email address.");
-        }
-    }
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("login-btn").addEventListener("click", function() {
+            const email = document.getElementById("user-email").value;
+            if(email) {
+                document.getElementById("display-email").innerText = email;
+                document.getElementById("auth-section").style.display = "none";
+                document.getElementById("dashboard-section").style.display = "block";
+            } else {
+                alert("Please enter a valid email address.");
+            }
+        });
 
-    function logoutUser() {
-        document.getElementById("auth-section").classList.remove("hidden");
-        document.getElementById("dashboard-section").classList.add("hidden");
-        document.getElementById("user-email").value = "";
-    }
+        document.getElementById("logout-btn").addEventListener("click", function() {
+            document.getElementById("auth-section").style.display = "block";
+            document.getElementById("dashboard-section").style.display = "none";
+            document.getElementById("user-email").value = "";
+        });
 
-    function verifyLicense() {
-        const key = document.getElementById("license-key").value;
-        const status = document.getElementById("license-status");
-        if(key === "XENIN-PRO-2026") {
-            status.className = "success";
-            status.innerText = "License activated successfully! Full enterprise modules unlocked.";
-            document.getElementById("scanner-section").classList.remove("hidden");
-        } else {
-            status.className = "error";
-            status.innerText = "Invalid license key. Enter correct key for full access.";
-        }
-    }
+        document.getElementById("license-btn").addEventListener("click", function() {
+            const key = document.getElementById("license-key").value;
+            const status = document.getElementById("license-status");
+            if(key === "XENIN-PRO-2026") {
+                status.className = "success";
+                status.innerText = "License activated successfully! Full enterprise modules unlocked.";
+                document.getElementById("scanner-section").style.display = "block";
+            } else {
+                status.className = "error";
+                status.innerText = "Invalid license key. Enter correct key for full access.";
+            }
+        });
 
-    function runScanner() {
-        const fileInput = document.getElementById("csv-file");
-        const output = document.getElementById("scanner-output");
-        if(fileInput.files.length > 0) {
-            output.innerHTML = "<p class='success'>Dataset loaded successfully! 0 fraudulent transactions detected across 1,420 records.</p>";
-        } else {
-            output.innerHTML = "<p class='error'>Please upload a CSV transaction file first.</p>";
-        }
-    }
+        document.getElementById("scanner-btn").addEventListener("click", function() {
+            const fileInput = document.getElementById("csv-file");
+            const output = document.getElementById("scanner-output");
+            if(fileInput.files.length > 0) {
+                output.innerHTML = "<p class='success'>Dataset loaded successfully! 0 fraudulent transactions detected across 1,420 records.</p>";
+            } else {
+                output.innerHTML = "<p class='error'>Please upload a CSV transaction file first.</p>";
+            }
+        });
 
-    function proceedCheckout() {
-        const txId = "TXN_" + Math.random().toString(36.substring(2, 10)).toUpperCase();
-        const pOutput = document.getElementById("payment-output");
-        pOutput.innerHTML = `<p class='success'>Sandbox Transaction Reference: ${txId} | Status: PENDING_APPROVAL</p>`;
-    }
+        document.getElementById("checkout-btn").addEventListener("click", function() {
+            const txId = "TXN_" + Math.random().toString(36).substring(2, 10).toUpperCase();
+            const pOutput = document.getElementById("payment-output");
+            pOutput.innerHTML = `<p class='success'>Sandbox Transaction Reference: ${txId} | Status: PENDING_APPROVAL</p>`;
+        });
+    });
 </script>
 
 </body>
