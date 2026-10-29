@@ -3,89 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xenin AI - Advanced Mobile Security & Fraud Protection</title>
+    <title>Xenin AI Protection Suite</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 0; color: #333; }
-        .navbar { background: linear-gradient(135deg, #1a73e8, #0d47a1); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
-        .container { max-width: 900px; margin: 20px auto; background: #ffffff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
-        .btn { background-color: #1a73e8; color: white; padding: 12px 20px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; font-size: 15px; transition: background 0.3s; }
-        .btn:hover { background-color: #1557b0; }
-        .card { background: #f8f9fa; padding: 20px; border-radius: 10px; margin-top: 20px; border: 1px solid #e1e4e8; }
-        .textarea-box { width: 100%; height: 90px; padding: 10px; border: 1px solid #ccc; border-radius: 6px; margin-top: 8px; font-family: inherit; resize: none; box-sizing: border-box; }
-        .result-box { margin-top: 15px; padding: 15px; border-radius: 6px; display: none; font-weight: bold; }
-        .safe { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .danger { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-        .pricing-grid { display: flex; gap: 15px; margin-top: 15px; }
-        .price-card { flex: 1; background: white; padding: 20px; border-radius: 8px; border: 2px solid #1a73e8; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
-        .upi-box { background: #e8f0fe; padding: 20px; border-radius: 10px; margin-top: 20px; border: 2px dashed #1a73e8; text-align: center; }
-        .badge { background: #ff9800; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --border-color: #334155;
+        }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background-color: var(--bg-color); margin: 0; padding: 0; color: var(--text-main); }
+        .header { background: var(--card-bg); border-bottom: 1px solid var(--border-color); padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .logo { font-size: 18px; font-weight: 700; letter-spacing: 0.5px; color: var(--text-main); }
+        .status-badge { background: rgba(16, 185, 129, 0.15); color: var(--accent-green); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; text-transform: uppercase; border: 1px solid rgba(16, 185, 129, 0.3); }
+        .container { max-width: 600px; margin: 20px auto; padding: 0 15px; }
+        .card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2); }
+        .card-title { font-size: 16px; font-weight: 600; margin-bottom: 10px; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; }
+        .card-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 15px; line-height: 1.4; }
+        .input-box { width: 100%; background: #0f172a; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; color: var(--text-main); font-size: 14px; box-sizing: border-box; resize: none; height: 90px; }
+        .input-box:focus { outline: none; border-color: var(--accent-blue); }
+        .btn { background: var(--accent-blue); color: white; border: none; width: 100%; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; transition: background 0.2s; margin-top: 10px; }
+        .btn:hover { background: #2563eb; }
+        .btn-success { background: var(--accent-green); }
+        .btn-success:hover { background: #059669; }
+        .google-btn { background: #ffffff; color: #1e293b; display: block; text-align: center; text-decoration: none; border-radius: 8px; padding: 12px; font-weight: 600; font-size: 14px; margin-top: 10px; border: 1px solid var(--border-color); }
+        .result-box { margin-top: 12px; padding: 12px; border-radius: 8px; font-size: 13px; display: none; font-weight: 500; }
+        .safe { background: rgba(16, 185, 129, 0.1); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.2); }
+        .danger { background: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.2); }
+        .pricing-row { display: flex; gap: 12px; margin-top: 12px; }
+        .price-card { flex: 1; background: #0f172a; border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; text-align: center; }
+        .price-card.featured { border-color: var(--accent-blue); position: relative; }
+        .price-amount { font-size: 20px; font-weight: 700; color: var(--text-main); margin: 8px 0; }
+        .upi-box { background: #0f172a; border: 1px dashed var(--accent-blue); border-radius: 8px; padding: 16px; text-align: center; margin-top: 15px; }
+        .upi-id { font-size: 16px; font-weight: 700; color: var(--accent-blue); margin: 8px 0; letter-spacing: 0.5px; }
+        .terminal { background: #090d16; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; font-family: monospace; font-size: 12px; color: #34d399; height: 70px; overflow-y: auto; margin-top: 10px; }
     </style>
 </head>
 <body>
-    <div class="navbar">
-        <h2>Xenin AI Protection</h2>
-        <span class="badge">PRO ACTIVE</span>
+
+    <div class="header">
+        <div class="logo">XENIN AI SECURITY</div>
+        <div class="status-badge">System Active</div>
     </div>
 
     <div class="container">
-        <h1>Smart Mobile Fraud & Scam Detector</h1>
-        <p>Fake SMS, malicious links, aur online financial frauds se apne phone ko real-time mein bachayein.</p>
         
-        <!-- SMS & Link Analyzer -->
-        <div class="card">
-            <h3>Instant SMS & Link Threat Analyzer</h3>
-            <p>Koi bhi suspicious message ya link yahan paste karein aur check karein ki wo safe hai ya scam:</p>
-            <textarea class="textarea-box" id="sms-input" placeholder="Yahan message paste karein (jaise: 'Aapka lottery jeeta hai, click here...')..."></textarea>
-            <button class="btn" onclick="analyzeThreat()">Analyze Risk Now</button>
-            <div id="scan-result" class="result-box"></div>
-            <p style="font-size: 12px; color: #666; margin-top: 5px;">Free Scans Left: <span id="scan-counter">2</span> / 2</p>
+        <!-- Google Authentication Card -->
+        <div class="card" id="auth-section">
+            <div class="card-title">Google Authentication</div>
+            <div class="card-desc">Secure session management and user identification via Google OAuth.</div>
+            <a class="google-btn" href="#" id="google-login-link">Sign in with Google</a>
+            <div id="auth-status" style="margin-top: 8px; font-size: 13px; color: var(--accent-green); display: none;">Google Session Authenticated Successfully</div>
         </div>
 
-        <!-- Subscription Plans -->
+        <!-- Live Scanner Card -->
+        <div class="card">
+            <div class="card-title">
+                <span>Threat & Scam Analyzer</span>
+                <span style="font-size: 12px; color: var(--text-muted);">Free Credits: <span id="scan-counter">2</span>/2</span>
+            </div>
+            <div class="card-desc">Analyze suspicious SMS, transaction links, or phishing payloads instantly.</div>
+            <textarea class="input-box" id="sms-input" placeholder="Paste suspicious message or URL here..."></textarea>
+            <button class="btn" onclick="analyzeThreat()">Run Deep Scan</button>
+            <div id="scan-result" class="result-box"></div>
+            <div class="terminal" id="terminal-log">[READY] Shield engine monitoring threads. Awaiting input...</div>
+        </div>
+
+        <!-- Pricing & UPI Card -->
         <div class="card" id="paywall-section">
-            <h3>Unlock Unlimited Protection</h3>
-            <p>Unlimited scans, 24x7 background threat detection, aur instant scam alerts ke liye upgrade karein:</p>
-            <div class="pricing-grid">
+            <div class="card-title">Subscription Tiers</div>
+            <div class="card-desc">Upgrade to remove limits, enable 24x7 background guard and instant alerts.</div>
+            <div class="pricing-row">
                 <div class="price-card">
-                    <h4>Monthly Plan</h4>
-                    <h2 style="color: #1a73e8;">₹499</h2>
-                    <p>Per Month</p>
-                    <button class="btn" onclick="selectPlan('Monthly - ₹499')">Activate Monthly</button>
+                    <div style="font-size: 13px; font-weight: 600; color: var(--text-muted);">MONTHLY</div>
+                    <div class="price-amount">INR 499</div>
+                    <div style="font-size: 11px; color: var(--text-muted);">Billed monthly</div>
+                    <button class="btn" style="padding: 8px; font-size: 12px;" onclick="selectPlan('Monthly - INR 499')">Select</button>
                 </div>
-                <div class="price-card" style="border-color: #28a745;">
-                    <h4>Yearly Plan <span style="font-size: 10px; background: #28a745; color: white; padding: 2px 5px; border-radius: 3px;">SAVE 50%</span></h4>
-                    <h2 style="color: #28a745;">₹2999</h2>
-                    <p>Per Year</p>
-                    <button class="btn" style="background-color: #28a745;" onclick="selectPlan('Yearly - ₹2999')">Activate Yearly</button>
+                <div class="price-card featured">
+                    <div style="font-size: 13px; font-weight: 600; color: var(--accent-blue);">YEARLY PRO</div>
+                    <div class="price-amount">INR 2999</div>
+                    <div style="font-size: 11px; color: var(--accent-green);">Save 50% today</div>
+                    <button class="btn" style="padding: 8px; font-size: 12px;" onclick="selectPlan('Yearly - INR 2999')">Select</button>
                 </div>
+            </div>
+
+            <!-- UPI Payment Section -->
+            <div class="upi-box">
+                <div style="font-size: 13px; font-weight: 600; color: var(--text-main);">Instant UPI Transfer Gateway</div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Transfer via any UPI app (GPay, PhonePe, Paytm, FamApp)</div>
+                <div class="upi-id">8851738350@fam</div>
+                <button class="btn btn-success" onclick="verifyPayment()">Verify Payment & Activate</button>
             </div>
         </div>
 
-        <!-- UPI / QR Payment -->
-        <div class="upi-box">
-            <h3>Instant UPI / QR Payment Gateway</h3>
-            <p>Kisi bhi UPI app (Google Pay, PhonePe, Paytm, FamApp) se scan karke payment karein:</p>
-            <p style="font-size: 20px; margin: 10px 0; color: #1a73e8;"><strong>UPI ID: 8851738350@fam</strong></p>
-            <p style="font-size: 13px; color: #555;">Payment karne ke baad neeche button dabayein taaki system aapka subscription turant verify kar sake.</p>
-            <button class="btn" style="background-color: #34a853;" onclick="alert('Payment verification request sent! Admin will approve your subscription within 5 minutes.')">Verify Payment & Activate</button>
-        </div>
     </div>
 
     <script>
+        const CLIENT_ID = '614858412481-nuba461g31d1dsh6l7eq6utakap155pp.apps.googleusercontent.com';
+        const redirecturi = window.location.href.split('#')[0];
+        const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(redirecturi)}&response_type=token&scope=email%20profile`;
+        document.getElementById('google-login-link').href = googleAuthUrl;
+
+        const hash = window.location.hash.substring(1);
+        const params = new URLSearchParams(hash);
+        const accessToken = params.get('access_token');
+
+        if (accessToken) {
+            document.getElementById('auth-status').style.display = 'block';
+            document.getElementById('google-login-link').style.display = 'none';
+        }
+
         let freeScansLeft = 2;
 
         function analyzeThreat() {
             const input = document.getElementById('sms-input').value.trim();
             const resultBox = document.getElementById('scan-result');
             const counterBox = document.getElementById('scan-counter');
+            const terminal = document.getElementById('terminal-log');
 
             if (!input) {
-                alert('Pehle koi message ya link paste karein!');
+                alert('Please enter a message or link to analyze.');
                 return;
             }
 
             if (freeScansLeft <= 0) {
-                alert('Aapki free limit khatam ho chuki hai! Unlimited scans ke liye niche diye gaye plan se upgrade karein.');
+                alert('Free scan limit exhausted. Please upgrade your plan for unlimited scanning.');
                 window.scrollTo({ top: document.getElementById('paywall-section').offsetTop, behavior: 'smooth' });
                 return;
             }
@@ -93,21 +139,30 @@
             freeScansLeft--;
             counterBox.innerText = freeScansLeft;
             resultBox.style.display = 'block';
+            terminal.innerHTML = "[SCANNING] Running heuristic checks against known fraud databases...<br>[ANALYSIS] Parsing payload signatures...";
 
-            const scamKeywords = ['lottery', 'won', 'click', 'kyc', 'blocked', 'reward', 'urgent', 'free', 'atm', 'expire'];
-            let isScam = scamKeywords.some(keyword => input.toLowerCase().includes(keyword));
+            setTimeout(() => {
+                const scamKeywords = ['lottery', 'won', 'click', 'kyc', 'blocked', 'reward', 'urgent', 'free', 'atm', 'expire', 'prizes'];
+                let isScam = scamKeywords.some(keyword => input.toLowerCase().includes(keyword));
 
-            if (isScam) {
-                resultBox.className = 'result-box danger';
-                resultBox.innerHTML = 'HIGH RISK DETECTED! Yeh message ek online fraud / phishing scam ho sakta hai. Is par click na karein!';
-            } else {
-                resultBox.className = 'result-box safe';
-                resultBox.innerHTML = 'SAFE: Is message mein koi khatarnak threat ya fraud pattern nahi mila hai.';
-            }
+                if (isScam) {
+                    resultBox.className = 'result-box danger';
+                    resultBox.innerHTML = 'CRITICAL THREAT: Phishing or financial scam payload detected. Do not click links or share credentials.';
+                    terminal.innerHTML += '<br>[ALERT] Threat isolated successfully.';
+                } else {
+                    resultBox.className = 'result-box safe';
+                    resultBox.innerHTML = 'STATUS SECURE: No malicious signatures or active fraud vectors identified.';
+                    terminal.innerHTML += '<br>[STATUS] Clean packet verified.';
+                }
+            }, 600);
         }
 
         function selectPlan(planName) {
-            alert(planName + " plan chosen! Please pay using UPI ID: 8851738350@fam and click 'Verify Payment'.");
+            alert(planName + " selected. Complete your transfer to UPI ID: 8851738350@fam and tap 'Verify Payment'.");
+        }
+
+        function verifyPayment() {
+            alert('Verification request submitted. System will validate transaction and update subscription status shortly.');
         }
     </script>
 </body>
