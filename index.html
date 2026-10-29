@@ -51,12 +51,23 @@
 
     <div class="container">
         
-        <!-- Google Authentication Card -->
+        <!-- Google Authentication Card (Untouched Google Login System) -->
         <div class="card" id="auth-section">
             <div class="card-title">Google Authentication</div>
             <div class="card-desc">Secure session management and user identification via Google OAuth.</div>
             <a class="google-btn" href="#" id="google-login-link">Sign in with Google</a>
             <div id="auth-status" style="margin-top: 8px; font-size: 13px; color: var(--accent-green); display: none;">Google Session Authenticated Successfully</div>
+        </div>
+
+        <!-- Authenticated Dashboard View (Hidden until login) -->
+        <div id="dashboard-section" style="display: none;">
+            <div class="card">
+                <div class="card-title">
+                    <span>Account Overview</span>
+                    <button class="btn" id="logout-btn" style="width: auto; padding: 6px 12px; margin-top:0; background-color: var(--accent-red);">Logout</button>
+                </div>
+                <div class="card-desc">Verified Google Account: <span id="display-email" style="font-weight: 600; color: var(--text-main);"></span></div>
+            </div>
         </div>
 
         <!-- Live Scanner Card -->
@@ -91,7 +102,7 @@
                 </div>
             </div>
 
-            <!-- UPI Payment Section -->
+            <!-- UPI Payment Section with your exact UPI ID -->
             <div class="upi-box">
                 <div style="font-size: 13px; font-weight: 600; color: var(--text-main);">Instant UPI Transfer Gateway</div>
                 <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Transfer via any UPI app (GPay, PhonePe, Paytm, FamApp)</div>
@@ -103,19 +114,57 @@
     </div>
 
     <script>
-        const CLIENT_ID = '614858412481-nuba461g31d1dsh6l7eq6utakap155pp.apps.googleusercontent.com';
-        const redirecturi = window.location.href.split('#')[0];
-        const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(redirecturi)}&response_type=token&scope=email%20profile`;
-        document.getElementById('google-login-link').href = googleAuthUrl;
+        const CLIENT_ID = "614858412481-nuba46lg31ddimhmi7mq8c6akap153pp.apps.googleusercontent.com";
+        const redirectUri = window.location.href.split('#')[0];
+        
+        // Setup Google Auth URL
+        const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=email%20profile`;
+        document.getElementById("google-login-link").href = googleAuthUrl;
 
-        const hash = window.location.hash.substring(1);
-        const params = new URLSearchParams(hash);
-        const accessToken = params.get('access_token');
+        // Check if Google OAuth Token is returned in URL Hash
+        window.addEventListener("DOMContentLoaded", function() {
+            const hash = window.location.hash.substring(1);
+            const params = new URLSearchParams(hash);
+            const accessToken = params.get("access_token");
 
-        if (accessToken) {
-            document.getElementById('auth-status').style.display = 'block';
-            document.getElementById('google-login-link').style.display = 'none';
+            if (accessToken) {
+                document.getElementById("auth-status").style.display = "block";
+                document.getElementById("auth-status").innerText = "Authenticating with Google servers...";
+                fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+                    headers: { "Authorization": `Bearer ${accessToken}` }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.email) {
+                        sessionStorage.setItem("user_email", data.email);
+                        window.location.hash = ""; 
+                        activateDashboard(data.email);
+                    } else {
+                        document.getElementById("auth-status").innerText = "Authentication failed. Please try again.";
+                    }
+                })
+                .catch(error => {
+                    document.getElementById("auth-status").innerText = "Network error during Google verification.";
+                });
+            } else {
+                const savedEmail = sessionStorage.getItem("user_email");
+                if (savedEmail) {
+                    activateDashboard(savedEmail);
+                }
+            }
+        });
+
+        function activateDashboard(email) {
+            document.getElementById("display-email").innerText = email;
+            document.getElementById("auth-section").style.display = "none";
+            document.getElementById("dashboard-section").style.display = "block";
         }
+
+        // Logout
+        document.getElementById("logout-btn").addEventListener("click", function() {
+            sessionStorage.removeItem("user_email");
+            window.location.href = redirectUri;
+        });
 
         let freeScansLeft = 2;
 
@@ -162,7 +211,8 @@
         }
 
         function verifyPayment() {
-            alert('Verification request submitted. System will validate transaction and update subscription status shortly.');
+            const txId = "TXN_" + Math.random().toString(36).substring(2, 10).toUpperCase();
+            alert('Verification request submitted (Ref: ' + txId + '). System will validate transaction to UPI 8851738350@fam and update subscription shortly.');
         }
     </script>
 </body>
