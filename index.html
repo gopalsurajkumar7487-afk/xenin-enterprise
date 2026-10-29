@@ -153,7 +153,7 @@
         }
         .modal-content {
             background-color: var(--card-bg);
-            margin: 20% auto;
+            margin: 15% auto;
             padding: 18px;
             border-radius: 10px;
             width: 85%;
@@ -225,7 +225,7 @@
         <button class="btn" style="background-color: var(--accent-green);" onclick="scanCSV()">Run Ledger Velocity Audit</button>
         <div id="csv-output" class="output-box"></div>
 
-        <!-- FEATURE 5: Threat Scan History Log (Like Chat/Scan History) -->
+        <!-- FEATURE 5: Threat Scan History Log -->
         <h3 id="f5-title">5. Threat Scan Audit History Log</h3>
         <div class="history-list" id="history-box">No scan logs recorded in current session.</div>
 
@@ -248,14 +248,26 @@
     </div>
 </div>
 
-<!-- Subscription Modal -->
+<!-- Subscription Modal with Monthly & Yearly Options -->
 <div id="sub-modal" class="modal">
     <div class="modal-content">
         <span class="close" id="close-sub">&times;</span>
         <h3>Enterprise Subscription Gateway</h3>
-        <p style="font-size: 12px; color: var(--text-muted);">Current Tier: Advanced Banking Defense</p>
-        <p style="font-size: 12px; color: var(--text-muted);">Annual License: INR 2999 / Year (UPI: 8851738350@fam)</p>
-        <button class="btn" id="pay-btn" style="background-color: var(--accent-green);">Proceed to Secure UPI Payment</button>
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">Select your protection tier (UPI: 8851738350@fam):</p>
+        
+        <!-- Monthly Plan Box -->
+        <div style="background: #030712; padding: 12px; border-radius: 6px; margin-bottom: 10px; border: 1px solid var(--border-color);">
+            <div style="font-size: 13px; font-weight: bold; color: var(--text-main);">Monthly Plan</div>
+            <div style="font-size: 11px; color: var(--text-muted); margin: 2px 0 8px 0;">INR 499 / Month - Standard access</div>
+            <button class="btn" style="padding: 7px; font-size: 12px; margin-top: 0;" onclick="payMonthly()">Pay INR 499 via UPI</button>
+        </div>
+
+        <!-- Yearly Plan Box -->
+        <div style="background: #030712; padding: 12px; border-radius: 6px; border: 1px solid var(--border-color);">
+            <div style="font-size: 13px; font-weight: bold; color: var(--accent-green);">Annual Plan (Pro)</div>
+            <div style="font-size: 11px; color: var(--text-muted); margin: 2px 0 8px 0;">INR 2999 / Year - Save 50%</div>
+            <button class="btn" style="padding: 7px; font-size: 12px; margin-top: 0; background-color: var(--accent-green);" onclick="payYearly()">Pay INR 2999 via UPI</button>
+        </div>
     </div>
 </div>
 
@@ -435,10 +447,14 @@
         logScan("Emergency", "Helpline Triggered");
     }
 
-    // UPI Payment
-    document.getElementById("pay-btn").addEventListener("click", function() {
+    // Functional UPI Checkout Handlers for Monthly & Yearly
+    function payMonthly() {
+        window.location.href = `upi://pay?pa=8851738350@fam&pn=XeninAI&am=499&cu=INR`;
+    }
+
+    function payYearly() {
         window.location.href = `upi://pay?pa=8851738350@fam&pn=XeninAI&am=2999&cu=INR`;
-    });
+    }
 </script>
 
 </body>
