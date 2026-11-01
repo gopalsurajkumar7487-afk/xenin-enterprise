@@ -16,6 +16,9 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#0b0f19;color:#f3f4f6
 .glass-panel{background:rgba(17,24,39,.85);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.08)}
 .glow-red{box-shadow:0 0 30px rgba(239,68,68,.2)}
 .sidebar{transition:transform .3s ease-in-out}
+.field{width:100%;background:#111827;border:1px solid #374151;border-radius:8px;padding:10px;font-size:12px;color:white;outline:none}
+.scan-button{width:100%;padding:10px;background:#dc2626;color:white;border-radius:8px;font-size:12px;font-weight:bold}
+.output{display:none;padding:10px;background:#111827;border-radius:8px;font-size:12px;white-space:pre-wrap;overflow-wrap:anywhere}
 </style>
 </head>
 
@@ -31,9 +34,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#0b0f19;color:#f3f4f6
    <h2 class="text-2xl font-bold text-white">XENIN AI</h2>
    <p class="text-xs text-gray-400 mt-1 uppercase tracking-widest">Secure Auditor Authentication</p>
   </div>
-
   <div id="google-login-button" class="flex justify-center min-h-10"></div>
-  <p id="auth-status" class="text-xs text-gray-400">Sign in with your Google account.</p>
+  <p id="auth-status" class="text-xs text-gray-400">Checking your session...</p>
  </div>
 </div>
 
@@ -87,7 +89,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#0b0f19;color:#f3f4f6
 
 <main class="flex-grow p-4 max-w-3xl mx-auto w-full">
 
-<!-- CHAT -->
 <section id="section-chat" class="flex flex-col gap-4">
  <div class="text-center py-2">
   <h2 class="text-lg font-bold">Namaste! Main Xenin AI hoon.</h2>
@@ -106,7 +107,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#0b0f19;color:#f3f4f6
  </div>
 </section>
 
-<!-- MODULES -->
 <section id="section-modules" class="hidden space-y-4 pb-6">
  <h3 class="text-sm font-bold border-b border-gray-800 pb-2">10 Enterprise Banking Fraud Modules</h3>
 
@@ -185,7 +185,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#0b0f19;color:#f3f4f6
  </div>
 </section>
 
-<!-- HISTORY -->
 <section id="section-history" class="hidden space-y-4">
  <h3 class="text-sm font-bold border-b border-gray-800 pb-2">Threat Scan History Log</h3>
  <div id="history-box" class="glass-panel p-4 rounded-xl text-xs text-gray-300 font-mono min-h-40">
@@ -217,7 +216,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#0b0f19;color:#f3f4f6
    <h3 class="font-bold">XENIN AI PRO SUBSCRIPTION</h3>
    <p class="text-xs text-gray-400">Payment options</p>
   </div>
-
   <div class="bg-gray-900 p-4 rounded-xl text-xs">
    <b>Weekly Plan — ₹99</b>
    <p class="text-gray-400 mt-1">Standard access to core modules.</p>
@@ -234,32 +232,56 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#0b0f19;color:#f3f4f6
  </div>
 </div>
 
-<style>
-.field{width:100%;background:#111827;border:1px solid #374151;border-radius:8px;padding:10px;font-size:12px;color:white;outline:none}
-.scan-button{width:100%;padding:10px;background:#dc2626;color:white;border-radius:8px;font-size:12px;font-weight:bold}
-.output{display:none;padding:10px;background:#111827;border-radius:8px;font-size:12px;white-space:pre-wrap;overflow-wrap:anywhere}
-</style>
-
 <script>
-const CLIENT_ID="614858412481-nuba46lg31ddimhmi7mq8c6akap153pp.apps.googleusercontent.com";
-let scanHistory=[];
+const CLIENT_ID = "614858412481-nuba46lg31ddimhmi7mq8c6akap153pp.apps.googleusercontent.com";
+let scanHistory = [];
 
-function setStatus(message,isError=false){
- const el=document.getElementById("auth-status");
- el.textContent=message;
- el.className="text-xs "+(isError?"text-red-400":"text-gray-400");
+function setStatus(message, isError = false) {
+ const el = document.getElementById("auth-status");
+ el.textContent = message;
+ el.className = "text-xs " + (isError ? "text-red-400" : "text-gray-400");
 }
 
-function initializeGoogleLogin(){
- if(!window.google?.accounts?.id){
-  setTimeout(initializeGoogleLogin,300);
+function activateDashboard(user) {
+ document.getElementById("sidebar-email").textContent = user.email || "Xenin User";
+ document.getElementById("auth-container").classList.add("hidden");
+ document.getElementById("dashboard-container").classList.remove("hidden");
+ document.getElementById("dashboard-container").classList.add("flex");
+}
+
+async function checkExistingSession() {
+ try {
+  const response = await fetch("/api/auth/session", {
+   method: "GET",
+   credentials: "same-origin",
+   cache: "no-store"
+  });
+
+  if (!response.ok) return false;
+
+  const data = await response.json();
+
+  if (data.authenticated && data.user && data.user.email) {
+   activateDashboard(data.user);
+   return true;
+  }
+ } catch (error) {
+  console.error("Session check failed:", error);
+ }
+
+ return false;
+}
+
+function initializeGoogleLogin() {
+ if (!window.google?.accounts?.id) {
+  setTimeout(initializeGoogleLogin, 300);
   return;
  }
 
  google.accounts.id.initialize({
-  client_id:CLIENT_ID,
-  callback:handleGoogleLogin,
-  auto_select:false
+  client_id: CLIENT_ID,
+  callback: handleGoogleLogin,
+  auto_select: false
  });
 
  google.accounts.id.renderButton(
@@ -268,208 +290,253 @@ function initializeGoogleLogin(){
  );
 }
 
-window.addEventListener("load",initializeGoogleLogin);
-
-async function handleGoogleLogin(response){
- if(!response || !response.credential){
-  setStatus("Google credential not received.",true);
+async function handleGoogleLogin(response) {
+ if (!response || !response.credential) {
+  setStatus("Google credential not received.", true);
   return;
  }
 
  setStatus("Verifying your Google account...");
 
- try{
-  const result=await fetch("/api/auth/google",{
-   method:"POST",
-   headers:{"Content-Type":"application/json"},
-   body:JSON.stringify({credential:response.credential})
+ try {
+  const result = await fetch("/api/auth/google", {
+   method: "POST",
+   credentials: "same-origin",
+   headers: {"Content-Type":"application/json"},
+   body: JSON.stringify({credential:response.credential})
   });
 
-  const data=await result.json();
+  const data = await result.json();
 
-  if(!result.ok || !data.success){
-   throw new Error(data.error||"Google verification failed.");
+  if (!result.ok || !data.success) {
+   throw new Error(data.error || "Google verification failed.");
   }
 
-  activateDashboard(data.email);
+  const user = data.user || data;
 
- }catch(error){
-  console.error(error);
-  setStatus(error.message||"Login failed. Please try again.",true);
+  if (!user.email) {
+   throw new Error("User information was not returned by the server.");
+  }
+
+  activateDashboard(user);
+
+ } catch (error) {
+  console.error("Google login error:", error);
+  setStatus(error.message || "Login failed. Please try again.", true);
  }
 }
 
-function activateDashboard(email){
- document.getElementById("sidebar-email").textContent=email;
- document.getElementById("auth-container").classList.add("hidden");
- document.getElementById("dashboard-container").classList.remove("hidden");
- document.getElementById("dashboard-container").classList.add("flex");
-}
+async function handleLogout() {
+ try {
+  const response = await fetch("/api/auth/logout", {
+   method: "POST",
+   credentials: "same-origin",
+   cache: "no-store"
+  });
 
-function handleLogout(){
- if(window.google?.accounts?.id) google.accounts.id.disableAutoSelect();
+  if (!response.ok) {
+   setStatus("Logout could not be completed. Please try again.", true);
+   return;
+  }
+ } catch (error) {
+  console.error("Logout request failed:", error);
+  setStatus("Logout service is unavailable.", true);
+  return;
+ }
+
+ if (window.google?.accounts?.id) google.accounts.id.disableAutoSelect();
  window.location.reload();
 }
 
-function toggleSidebar(){
+window.addEventListener("load", async () => {
+ setStatus("Checking your secure session...");
+ const authenticated = await checkExistingSession();
+
+ if (!authenticated) {
+  setStatus("Sign in with your Google account.");
+  initializeGoogleLogin();
+ }
+});
+
+function toggleSidebar() {
  document.getElementById("sidebar-drawer").classList.toggle("-translate-x-full");
  document.getElementById("sidebar-overlay").classList.toggle("hidden");
 }
 
-function switchSection(section){
- ["chat","modules","history"].forEach(s=>{
-  document.getElementById("section-"+s).classList.add("hidden");
+function switchSection(section) {
+ ["chat","modules","history"].forEach(s => {
+  document.getElementById("section-" + s).classList.add("hidden");
  });
- document.getElementById("section-"+section).classList.remove("hidden");
+ document.getElementById("section-" + section).classList.remove("hidden");
  document.getElementById("sidebar-drawer").classList.add("-translate-x-full");
  document.getElementById("sidebar-overlay").classList.add("hidden");
 }
 
-function openModal(id){document.getElementById(id).classList.remove("hidden")}
-function closeModal(id){document.getElementById(id).classList.add("hidden")}
+function openModal(id) { document.getElementById(id).classList.remove("hidden"); }
+function closeModal(id) { document.getElementById(id).classList.add("hidden"); }
 
-function applyPromocode(){
- document.getElementById("promo-status").textContent="Promocode authorization is not connected to a secure server yet.";
- document.getElementById("promo-status").className="text-xs text-yellow-400";
+function applyPromocode() {
+ document.getElementById("promo-status").textContent = "Promocode authorization is not connected to a secure server yet.";
+ document.getElementById("promo-status").className = "text-xs text-yellow-400";
 }
 
-function addMessage(text,fromUser=false){
- const box=document.getElementById("ai-chat-box");
- const bubble=document.createElement("div");
- bubble.className=fromUser
-  ?"bg-red-600/30 p-3 rounded-xl ml-auto max-w-[85%] text-white"
-  :"glass-panel p-3 rounded-xl max-w-[85%] text-gray-200";
- bubble.textContent=text;
+function addMessage(text, fromUser = false) {
+ const box = document.getElementById("ai-chat-box");
+ const bubble = document.createElement("div");
+ bubble.className = fromUser
+  ? "bg-red-600/30 p-3 rounded-xl ml-auto max-w-[85%] text-white"
+  : "glass-panel p-3 rounded-xl max-w-[85%] text-gray-200";
+ bubble.textContent = text;
  box.appendChild(bubble);
- box.scrollTop=box.scrollHeight;
+ box.scrollTop = box.scrollHeight;
 }
 
-function askXeninAI(){
- const input=document.getElementById("ai-user-input");
- const query=input.value.trim();
- if(!query)return;
+function askXeninAI() {
+ const input = document.getElementById("ai-user-input");
+ const query = input.value.trim();
+ if (!query) return;
 
- addMessage(query,true);
- input.value="";
+ addMessage(query, true);
+ input.value = "";
 
- const q=query.toLowerCase();
- let reply="Main basic cyber safety guidance de sakta hoon. Kisi unknown link par click na karein aur OTP/UPI PIN share na karein.";
+ const q = query.toLowerCase();
+ let reply = "Main basic cyber safety guidance de sakta hoon. Kisi unknown link par click na karein aur OTP/UPI PIN share na karein.";
 
- if(q.includes("upi")||q.includes("payment"))
-  reply="Unknown UPI collect requests approve na karein. Payment karne se pehle recipient ka naam aur amount verify karein.";
- else if(q.includes("sms")||q.includes("message")||q.includes("fraud"))
-  reply="KYC update, account block ya urgent payment wale suspicious SMS ko independently verify karein. SMS ke link par click na karein.";
- else if(q.includes("1930")||q.includes("scam")||q.includes("help"))
-  reply="Agar financial cyber fraud hua hai, India mein 1930 par jaldi call karein aur cybercrime.gov.in par report karein.";
- else if(q.includes("plan")||q.includes("price"))
-  reply="Subscription section mein listed plans dekhein. Payment abhi automatically verify nahi hoti.";
+ if (q.includes("upi") || q.includes("payment"))
+  reply = "Unknown UPI collect requests approve na karein. Payment karne se pehle recipient ka naam aur amount verify karein.";
+ else if (q.includes("sms") || q.includes("message") || q.includes("fraud"))
+  reply = "KYC update, account block ya urgent payment wale suspicious SMS ko independently verify karein. SMS ke link par click na karein.";
+ else if (q.includes("1930") || q.includes("scam") || q.includes("help"))
+  reply = "Agar financial cyber fraud hua hai, India mein 1930 par jaldi call karein aur cybercrime.gov.in par report karein.";
+ else if (q.includes("plan") || q.includes("price"))
+  reply = "Subscription section mein listed plans dekhein. Payment abhi automatically verify nahi hoti.";
 
- setTimeout(()=>addMessage(reply),400);
+ setTimeout(() => addMessage(reply), 400);
 }
 
-function logScan(action,result){
- scanHistory.unshift("["+new Date().toLocaleTimeString()+"] "+action+": "+result);
- if(scanHistory.length>20)scanHistory.pop();
- const box=document.getElementById("history-box");
- box.textContent=scanHistory.join("\n");
+function logScan(action, result) {
+ scanHistory.unshift("[" + new Date().toLocaleTimeString() + "] " + action + ": " + result);
+ if (scanHistory.length > 20) scanHistory.pop();
+ document.getElementById("history-box").textContent = scanHistory.join("\n");
 }
 
-function showResult(id,message,isWarning=false){
- const out=document.getElementById(id);
- out.style.display="block";
- out.className="output "+(isWarning?"text-red-400":"text-gray-300");
- out.textContent=message;
+function showResult(id, message, isWarning = false) {
+ const out = document.getElementById(id);
+ out.style.display = "block";
+ out.className = "output " + (isWarning ? "text-red-400" : "text-gray-300");
+ out.textContent = message;
 }
 
-function inspectSMS(){
- const value=document.getElementById("sms-input").value.trim();
- if(!value)return showResult("sms-output","Enter SMS text first.",true);
- const suspicious=/otp|kyc|blocked|urgent|verify|click here|account suspended|prize/i.test(value);
- showResult("sms-output",suspicious
-  ?"Warning: This SMS contains common scam indicators. Verify through your bank's official channel."
-  :"No obvious keyword warning found. This does not prove the SMS is genuine.",suspicious);
- logScan("SMS inspection",suspicious?"Warning indicators":"No obvious indicators");
+function inspectSMS() {
+ const value = document.getElementById("sms-input").value.trim();
+ if (!value) return showResult("sms-output", "Enter SMS text first.", true);
+
+ const suspicious = /otp|kyc|blocked|urgent|verify|click here|account suspended|prize/i.test(value);
+
+ showResult("sms-output", suspicious
+  ? "Warning: This SMS contains common scam indicators. Verify through your bank's official channel."
+  : "No obvious keyword warning found. This does not prove the SMS is genuine.", suspicious);
+
+ logScan("SMS inspection", suspicious ? "Warning indicators" : "No obvious indicators");
 }
 
-function verifyUPI(){
- const value=document.getElementById("upi-input").value.trim();
- if(!value)return showResult("upi-output","Enter UPI ID first.",true);
- const valid=/^[\w.-]+@[\w.-]+$/.test(value);
- showResult("upi-output",valid
-  ?"UPI ID format looks valid. The actual account holder and safety have NOT been verified."
-  :"UPI ID format does not look valid.",!valid);
- logScan("UPI inspection",valid?"Format valid":"Invalid format");
+function verifyUPI() {
+ const value = document.getElementById("upi-input").value.trim();
+ if (!value) return showResult("upi-output", "Enter UPI ID first.", true);
+
+ const valid = /^[\w.-]+@[\w.-]+$/.test(value);
+
+ showResult("upi-output", valid
+  ? "UPI ID format looks valid. The actual account holder and safety have NOT been verified."
+  : "UPI ID format does not look valid.", !valid);
+
+ logScan("UPI inspection", valid ? "Format valid" : "Invalid format");
 }
 
-function scanURL(){
- const value=document.getElementById("url-input").value.trim();
- if(!value)return showResult("url-output","Enter a URL first.",true);
- let suspicious=false;
- try{
-  const url=new URL(value);
-  suspicious=url.protocol!=="https:"||/login|verify|secure|bank|wallet/i.test(url.hostname);
- }catch(e){suspicious=true}
- showResult("url-output",suspicious
-  ?"Caution: This link needs independent verification. Do not open unknown links."
-  :"Basic URL format looks acceptable. This does not prove the website is safe.",suspicious);
- logScan("URL inspection",suspicious?"Caution":"Basic format check");
+function scanURL() {
+ const value = document.getElementById("url-input").value.trim();
+ if (!value) return showResult("url-output", "Enter a URL first.", true);
+
+ let suspicious = false;
+ try {
+  const url = new URL(value);
+  suspicious = url.protocol !== "https:" || /login|verify|secure|bank|wallet/i.test(url.hostname);
+ } catch (e) {
+  suspicious = true;
+ }
+
+ showResult("url-output", suspicious
+  ? "Caution: This link needs independent verification. Do not open unknown links."
+  : "Basic URL format looks acceptable. This does not prove the website is safe.", suspicious);
+
+ logScan("URL inspection", suspicious ? "Caution" : "Basic format check");
 }
 
-function scanCSV(){
- const file=document.getElementById("csv-file").files[0];
- if(!file)return showResult("csv-output","Please select a CSV file first.",true);
- if(file.size>2000000)return showResult("csv-output","File is too large for this basic browser demo.",true);
- const reader=new FileReader();
- reader.onload=()=>{
-  const lines=String(reader.result).split(/\r?\n/).filter(Boolean);
-  showResult("csv-output","CSV file loaded. Rows (including header): "+lines.length+". No transaction fraud analysis has been performed.");
-  logScan("CSV file loaded",lines.length+" rows");
+function scanCSV() {
+ const file = document.getElementById("csv-file").files[0];
+ if (!file) return showResult("csv-output", "Please select a CSV file first.", true);
+ if (file.size > 2000000) return showResult("csv-output", "File is too large for this basic browser demo.", true);
+
+ const reader = new FileReader();
+ reader.onload = () => {
+  const lines = String(reader.result).split(/\r?\n/).filter(Boolean);
+  showResult("csv-output", "CSV file loaded. Rows (including header): " + lines.length + ". No transaction fraud analysis has been performed.");
+  logScan("CSV file loaded", lines.length + " rows");
  };
- reader.onerror=()=>showResult("csv-output","Could not read this file.",true);
+ reader.onerror = () => showResult("csv-output", "Could not read this file.", true);
  reader.readAsText(file);
 }
 
-function scanSIM(){
- const value=document.getElementById("sim-input").value.trim();
- const valid=/^[6-9]\d{9}$/.test(value);
- showResult("sim-output",valid
-  ?"Number format looks valid. SIM swap history cannot be checked by this demo."
-  :"Enter a valid 10-digit Indian mobile number.",!valid);
- logScan("SIM inspection",valid?"Format valid":"Invalid format");
+function scanSIM() {
+ const value = document.getElementById("sim-input").value.trim();
+ const valid = /^[6-9]\d{9}$/.test(value);
+
+ showResult("sim-output", valid
+  ? "Number format looks valid. SIM swap history cannot be checked by this demo."
+  : "Enter a valid 10-digit Indian mobile number.", !valid);
+
+ logScan("SIM inspection", valid ? "Format valid" : "Invalid format");
 }
 
-function verifyBankRouting(){
- const ifsc=document.getElementById("ifsc-input").value.trim().toUpperCase();
- const valid=/^[A-Z]{4}0[A-Z0-9]{6}$/.test(ifsc);
- showResult("bank-output",valid
-  ?"IFSC format looks valid. Bank branch status and account ownership have not been verified."
-  :"IFSC format appears invalid.",!valid);
- logScan("IFSC format check",valid?"Format valid":"Invalid format");
+function verifyBankRouting() {
+ const ifsc = document.getElementById("ifsc-input").value.trim().toUpperCase();
+ const valid = /^[A-Z]{4}0[A-Z0-9]{6}$/.test(ifsc);
+
+ showResult("bank-output", valid
+  ? "IFSC format looks valid. Bank branch status and account ownership have not been verified."
+  : "IFSC format appears invalid.", !valid);
+
+ logScan("IFSC format check", valid ? "Format valid" : "Invalid format");
 }
 
-function scanIdentity(){
- const value=document.getElementById("id-input").value.trim().toUpperCase();
- const pan=/^[A-Z]{5}[0-9]{4}[A-Z]$/.test(value);
- const aadhaar=/^\d{12}$/.test(value);
- showResult("id-output",pan||aadhaar
-  ?"Input format looks valid. Identity or data leaks have NOT been checked. Do not enter real identity numbers in this demo."
-  :"Input does not match basic PAN or Aadhaar format.",!(pan||aadhaar));
- logScan("Identity format check",pan?"PAN format":aadhaar?"Aadhaar format":"Invalid format");
+function scanIdentity() {
+ const value = document.getElementById("id-input").value.trim().toUpperCase();
+ const pan = /^[A-Z]{5}[0-9]{4}[A-Z]$/.test(value);
+ const aadhaar = /^\d{12}$/.test(value);
+
+ showResult("id-output", pan || aadhaar
+  ? "Input format looks valid. Identity or data leaks have NOT been checked. Do not enter real identity numbers in this demo."
+  : "Input does not match basic PAN or Aadhaar format.", !(pan || aadhaar));
+
+ logScan("Identity format check", pan ? "PAN format" : aadhaar ? "Aadhaar format" : "Invalid format");
 }
 
-function scanQRCodePayload(){
- const value=document.getElementById("qr-input").value.trim();
- if(!value)return showResult("qr-output","Paste QR text first.",true);
- const suspicious=/collect|reqpay/i.test(value);
- showResult("qr-output",suspicious
-  ?"Caution: This text may contain a payment collection request. Verify before approving."
-  :"Text inspected. This does not prove the QR code or recipient is safe.",suspicious);
- logScan("QR text inspection",suspicious?"Caution":"Text inspected");
+function scanQRCodePayload() {
+ const value = document.getElementById("qr-input").value.trim();
+ if (!value) return showResult("qr-output", "Paste QR text first.", true);
+
+ const suspicious = /collect|reqpay/i.test(value);
+
+ showResult("qr-output", suspicious
+  ? "Caution: This text may contain a payment collection request. Verify before approving."
+  : "Text inspected. This does not prove the QR code or recipient is safe.", suspicious);
+
+ logScan("QR text inspection", suspicious ? "Caution" : "Text inspected");
 }
 
-function triggerEmergency(){
- showResult("emergency-output","If you suspect financial cyber fraud in India, call 1930 immediately and report at https://cybercrime.gov.in. Contact your bank using its official number.",true);
- logScan("Emergency guidance","1930 information displayed");
+function triggerEmergency() {
+ showResult("emergency-output", "If you suspect financial cyber fraud in India, call 1930 immediately and report at https://cybercrime.gov.in. Contact your bank using its official number.", true);
+ logScan("Emergency guidance", "1930 information displayed");
 }
 </script>
 
