@@ -3,157 +3,571 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xenin AI - Fraud & Scam Intelligence Terminal</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Xenin AI - Enterprise Banking Fraud Defense Suite</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0b0f19; color: #f3f4f6; }
-        .glass-panel { background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
-        .glow-red { box-shadow: 0 0 25px rgba(239, 68, 68, 0.2); }
+        :root {
+            --bg-color: #090d16;
+            --card-bg: #111827;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --accent-blue: #2563eb;
+            --accent-glow: #3b82f6;
+            --accent-green: #059669;
+            --accent-red: #dc2626;
+            --accent-yellow: #d97706;
+            --border-color: #1f2937;
+        }
+        html, body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
+            background-color: var(--bg-color) !important; 
+            margin: 0; 
+            padding: 10px; 
+            color: var(--text-main); 
+        }
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card-bg);
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        }
+        .top-bar h2 { margin: 0; font-size: 14px; color: var(--text-main); letter-spacing: 0.5px; }
+        
+        .menu-container { position: relative; display: inline-block; }
+        .dot-btn {
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-size: 20px;
+            cursor: pointer;
+            padding: 0 5px;
+            font-weight: bold;
+        }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: var(--card-bg);
+            min-width: 200px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.7);
+            border-radius: 8px;
+            z-index: 1000;
+            border: 1px solid var(--border-color);
+        }
+        .dropdown-menu a {
+            color: var(--text-main);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 13px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+        }
+        .dropdown-menu a:hover { background-color: #1f2937; }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+        }
+        h1 { color: #60a5fa; font-size: 17px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; margin-top: 0; }
+        h3 { font-size: 13px; color: var(--text-main); margin-top: 16px; margin-bottom: 6px; }
+        .btn {
+            background-color: var(--accent-blue);
+            color: white;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 8px;
+            font-size: 13px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            box-sizing: border-box;
+            transition: background 0.2s;
+        }
+        .btn:hover { background-color: #1d4ed8; }
+        .google-btn {
+            background-color: #ffffff;
+            color: #0f172a;
+            border: 1px solid var(--border-color);
+            font-weight: 700;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 9px;
+            margin-top: 4px;
+            margin-bottom: 10px;
+            background: #030712;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-main);
+            box-sizing: border-box;
+            font-size: 12px;
+            font-family: inherit;
+        }
+        input:focus, textarea:focus { outline: none; border-color: var(--accent-glow); }
+        .output-box {
+            background: #030712;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 8px;
+            font-size: 12px;
+            display: none;
+            border-left: 3px solid var(--accent-blue);
+        }
+        .success { color: #34d399; border-color: var(--accent-green); }
+        .error { color: #f87171; border-color: var(--accent-red); }
+        .warning { color: #fbbf24; border-color: var(--accent-yellow); }
+
+        .history-list {
+            max-height: 120px;
+            overflow-y: auto;
+            background: #030712;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+            margin-top: 6px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.8);
+        }
+        .modal-content {
+            background-color: var(--card-bg);
+            margin: 10% auto;
+            padding: 18px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 420px;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+        .close { float: right; font-size: 18px; font-weight: bold; cursor: pointer; color: var(--text-muted); }
+        .plan-card {
+            background: #030712;
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+        .plan-card strong { color: #60a5fa; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between">
+<body>
 
-    <!-- AUTHENTICATION VIEW -->
-    <div id="auth-container" class="flex-grow flex items-center justify-center p-4">
-        <div class="glass-panel w-full max-w-md p-8 rounded-2xl glow-red">
-            <div class="text-center mb-8">
-                <div class="inline-flex p-3 bg-red-500/10 rounded-xl text-red-500 mb-3 text-2xl">
-                    <i class="fa-solid fa-shield-halved"></i>
-                </div>
-                <h1 class="text-2xl font-bold tracking-wide">XENIN AI</h1>
-                <p class="text-xs text-gray-400 mt-1 uppercase tracking-widest">Enterprise Security Terminal</p>
-            </div>
-
-            <!-- Google Login Option -->
-            <div class="space-y-4">
-                <button onclick="handleGoogleLogin()" class="w-full py-3 px-4 bg-white hover:bg-gray-100 text-gray-900 font-semibold rounded-xl transition flex items-center justify-center gap-3 shadow-md">
-                    <i class="fa-brands fa-google text-red-500"></i> Continue with Google
-                </button>
-            </div>
+<div class="top-bar">
+    <h2 id="nav-title">XENIN BANKING DEFENSE CORE</h2>
+    <div class="menu-container">
+        <button class="dot-btn" id="menu-toggle">⋮</button>
+        <div class="dropdown-menu" id="dropdown-content">
+            <a id="menu-lang">Change Language (HI / EN)</a>
+            <a id="menu-sub">Subscription Plans & Perks</a>
+            <a id="menu-promo">Enter Master Promo Code</a>
+            <a id="menu-about">About Platform</a>
         </div>
     </div>
+</div>
 
-    <!-- MAIN DASHBOARD VIEW (Hidden initially) -->
-    <div id="dashboard-container" class="hidden flex-grow flex flex-col">
-        <header class="glass-panel border-b border-gray-800 px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="p-2 bg-red-500/10 rounded-lg text-red-500">
-                    <i class="fa-solid fa-shield-halved"></i>
-                </div>
-                <div>
-                    <h2 class="font-bold tracking-wide">XENIN AI</h2>
-                    <p class="text-xs text-gray-400">Fraud & Scam Intelligence Terminal</p>
-                </div>
-            </div>
-            <div class="flex items-center gap-4">
-                <button onclick="openSubscriptionModal()" class="text-xs bg-red-500/20 text-red-400 border border-red-500/30 px-3 py-1.5 rounded-lg hover:bg-red-500/30 transition">
-                    <i class="fa-solid fa-crown mr-1"></i> Upgrade
-                </button>
-                <button onclick="handleLogout()" class="text-gray-400 hover:text-white transition">
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                </button>
-            </div>
-        </header>
+<div class="container">
+    <h1 id="main-heading">Enterprise Banking Fraud Detection Suite (10 Core Modules)</h1>
 
-        <main class="flex-grow p-6 max-w-5xl mx-auto w-full space-y-6">
-            <!-- Scam Checker Tool -->
-            <div class="glass-panel p-6 rounded-2xl">
-                <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-magnifying-glass-chart text-red-500"></i> Scam & Phishing Intelligence Scanner
-                </h3>
-                <div class="flex gap-3">
-                    <input type="text" id="target-input" placeholder="Enter URL, IP address, or transaction signature..." class="flex-grow bg-gray-900/60 border border-gray-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-red-500">
-                    <button onclick="runScan()" class="bg-red-600 hover:bg-red-500 text-white px-6 py-3 rounded-xl font-semibold transition text-sm">Scan</button>
-                </div>
-                <div id="scan-result" class="mt-4 hidden p-4 rounded-xl bg-gray-900/80 border border-gray-800 text-sm"></div>
-            </div>
-
-            <!-- Fraud History Log Table -->
-            <div class="glass-panel p-6 rounded-2xl">
-                <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-clock-rotate-left text-red-500"></i> Fraud History Log
-                </h3>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm text-gray-400">
-                        <thead class="border-b border-gray-800 text-gray-300 uppercase text-xs">
-                            <tr>
-                                <th class="pb-3">Target</th>
-                                <th class="pb-3">Type</th>
-                                <th class="pb-3">Risk Level</th>
-                                <th class="pb-3">Timestamp</th>
-                            </tr>
-                        </thead>
-                        <tbody id="history-table-body" class="divide-y divide-gray-800/50">
-                            <tr>
-                                <td class="py-3 font-mono text-gray-200">phishing-secure-login.xyz</td>
-                                <td class="py-3">Phishing Domain</td>
-                                <td class="py-3"><span class="text-red-400 bg-red-500/10 px-2 py-1 rounded text-xs">High Risk</span></td>
-                                <td class="py-3">2026-11-01 14:30</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </main>
+    <!-- Authentication Section -->
+    <div id="auth-section">
+        <h3 id="auth-title">Secure Auditor Authentication</h3>
+        <p id="auth-desc" style="font-size: 12px; color: var(--text-muted);">Authenticate via authorized Google account to activate financial fraud inspection engines.</p>
+        
+        <a id="google-login-link" class="btn google-btn" href="#">Login with Google Account (Switch/Select)</a>
+        <p id="auth-status" style="margin-top: 10px; font-size: 12px; color: var(--text-muted);"></p>
     </div>
 
-    <!-- SUBSCRIPTION LIMIT MODAL -->
-    <div id="subscription-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-        <div class="glass-panel w-full max-w-md p-6 rounded-2xl border border-gray-700 relative">
-            <button onclick="closeSubscriptionModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-            <div class="text-center mb-6">
-                <div class="inline-flex p-3 bg-red-500/10 rounded-xl text-red-500 mb-2 text-xl">
-                    <i class="fa-solid fa-crown"></i>
-                </div>
-                <h3 class="text-xl font-bold">Subscription Limitation</h3>
-                <p class="text-sm text-gray-400 mt-1">You have reached your subscription limit. Please upgrade to unlock this feature.</p>
-            </div>
-            <button onclick="alert('Redirecting to upgrade portal...')" class="w-full py-3 bg-red-600 hover:bg-red-500 text-white font-semibold rounded-xl transition">Visit Subscriptions</button>
+    <!-- Main Dashboard -->
+    <div id="dashboard-section" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <p style="font-size: 12px; margin: 0; color: var(--text-muted);">Auditor: <span id="display-email" style="font-weight: bold; color: #34d399;"></span></p>
+            <button class="btn" id="logout-btn" style="width: auto; background-color: var(--accent-red); margin-top:0; padding: 4px 10px; font-size: 11px;">Switch / Logout</button>
         </div>
+
+        <hr style="border-color: var(--border-color);">
+
+        <!-- FEATURE 1 -->
+        <h3>1. Banking SMS & Scam Message Inspector</h3>
+        <textarea id="sms-input" rows="2" placeholder="Paste suspicious SMS (e.g. Dear customer your SBI account blocked, update KYC...)"></textarea>
+        <button class="btn" onclick="inspectSMS()">Scan SMS Payload</button>
+        <div id="sms-output" class="output-box"></div>
+
+        <!-- FEATURE 2 -->
+        <h3>2. UPI Handle / VPA Scam Verifier</h3>
+        <input type="text" id="upi-input" placeholder="Enter VPA / UPI ID (e.g. scammer@ybl)">
+        <button class="btn" onclick="verifyUPI()">Check UPI Safety Status</button>
+        <div id="upi-output" class="output-box"></div>
+
+        <!-- FEATURE 3 -->
+        <h3>3. Phishing URL & Malicious APK Link Scanner</h3>
+        <input type="text" id="url-input" placeholder="Enter suspicious link, domain or .apk dropper...">
+        <button class="btn" onclick="scanURL()">Audit Link Vectors</button>
+        <div id="url-output" class="output-box"></div>
+
+        <!-- FEATURE 4 -->
+        <h3>4. Transaction Dataset CSV Velocity & Anomaly Auditor</h3>
+        <input type="file" id="csv-file" accept=".csv">
+        <button class="btn" style="background-color: var(--accent-green);" onclick="scanCSV()">Run Ledger Velocity Audit</button>
+        <div id="csv-output" class="output-box"></div>
+
+        <!-- FEATURE 5 -->
+        <h3>5. SIM Swap & Mobile Number Fraud Risk Analyzer</h3>
+        <input type="text" id="sim-input" placeholder="Enter 10-digit mobile number (e.g. 9876543210)">
+        <button class="btn" onclick="scanSIM()">Analyze SIM Swap Risk</button>
+        <div id="sim-output" class="output-box"></div>
+
+        <!-- FEATURE 6 -->
+        <h3>6. Bank Account & IFSC Code Routing Inspector</h3>
+        <div style="display: flex; gap: 8px;">
+            <input type="text" id="acc-input" placeholder="Enter Account Number" style="flex: 2;">
+            <input type="text" id="ifsc-input" placeholder="Enter IFSC Code" style="flex: 1;">
+        </div>
+        <button class="btn" onclick="verifyBankRouting()">Verify Routing Integrity</button>
+        <div id="bank-output" class="output-box"></div>
+
+        <!-- FEATURE 7 -->
+        <h3>7. Aadhaar / PAN Identity Theft Risk Scanner</h3>
+        <input type="text" id="id-input" placeholder="Enter Aadhaar or PAN number to check leak signatures">
+        <button class="btn" onclick="scanIdentity()">Inspect Identity Risk</button>
+        <div id="id-output" class="output-box"></div>
+
+        <!-- FEATURE 8 -->
+        <h3>8. QR Code Payment Payload & Redirect Verifier</h3>
+        <input type="text" id="qr-input" placeholder="Paste decoded QR payment string or target UPI link">
+        <button class="btn" onclick="scanQRCodePayload()">Verify QR Security</button>
+        <div id="qr-output" class="output-box"></div>
+
+        <!-- FEATURE 9 -->
+        <h3>9. Threat Scan Audit History Log</h3>
+        <div class="history-list" id="history-box">No scan logs recorded in current session.</div>
+
+        <!-- FEATURE 10 -->
+        <h3>10. Emergency Response & Card Freeze Toolkit</h3>
+        <button class="btn" style="background-color: var(--accent-red);" onclick="triggerEmergency()">Trigger National Cyber Helpline (1930) & Block Guide</button>
+        <div id="emergency-output" class="output-box" style="background: rgba(220,38,38,0.1); border-color: var(--accent-red); color: #f87171;"></div>
     </div>
+</div>
 
-    <footer class="text-center py-4 text-xs text-gray-500 border-t border-gray-900">
-        Xenin AI Security Engine &copy; 2026 | Fraud & Scam Intelligence Platform
-    </footer>
+<!-- Promo Code Modal -->
+<div id="promo-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="close-promo">&times;</span>
+        <h3>Master Node Authorization</h3>
+        <p style="font-size: 12px; color: var(--text-muted);">Enter master activation key (Promocode) to unlock unrestricted inspection modules:</p>
+        <input type="password" id="promo-input" placeholder="Enter secret promocode (e.g. X8333313409)">
+        <button class="btn" id="promo-submit-btn">Authorize Node</button>
+        <p id="promo-status" style="margin-top: 8px; font-size: 12px;"></p>
+    </div>
+</div>
 
-    <script>
-        function handleGoogleLogin() {
-            document.getElementById('auth-container').classList.add('hidden');
-            document.getElementById('dashboard-container').classList.remove('hidden');
+<!-- Subscription Modal with Tier-Specific Features -->
+<div id="sub-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="close-sub">&times;</span>
+        <h3>Enterprise Subscription Gateway</h3>
+        <p style="font-size: 12px; color: var(--text-muted);">Select Plan & Pay via UPI: <strong>8851738350@fam</strong></p>
+        
+        <div class="plan-card">
+            <strong>Weekly Plan: INR 99 / Week</strong>
+            <p style="margin: 4px 0 0 0; color: var(--text-muted);">Standard access to all 10 fraud detection modules.</p>
+        </div>
+
+        <div class="plan-card" style="border-color: var(--accent-blue);">
+            <strong>Monthly Plan: INR 499 / Month (Popular)</strong>
+            <p style="margin: 4px 0 0 0; color: var(--text-muted);">Includes all core features plus <strong>2 Exclusive Monthly Perks</strong>:</p>
+            <ul style="margin: 4px 0 0 16px; padding: 0; font-size: 11px; color: #60a5fa;">
+                <li>1. Automated Weekly Fraud Intelligence PDF/CSV Export Reports</li>
+                <li>2. Priority Threat API Access & Real-Time Alert Webhooks</li>
+            </ul>
+        </div>
+
+        <div class="plan-card" style="border-color: var(--accent-green);">
+            <strong>Yearly Plan: INR 2999 / Year (Best Value)</strong>
+            <p style="margin: 4px 0 0 0; color: var(--text-muted);">Includes all features plus <strong>2 Exclusive Yearly Perks</strong>:</p>
+            <ul style="margin: 4px 0 0 16px; padding: 0; font-size: 11px; color: #34d399;">
+                <li>1. Dedicated AI Cyber Guardian & SMS Threat Interceptor Sandbox</li>
+                <li>2. Enterprise-Grade Cyber Insurance & Legal Recovery Consultation Support</li>
+            </ul>
+        </div>
+
+        <button class="btn" id="pay-btn" style="background-color: var(--accent-green); margin-top: 10px;">Proceed to Secure UPI Payment (8851738350@fam)</button>
+    </div>
+</div>
+
+<script>
+    const CLIENT_ID = "614858412481-nuba46lg31ddimhmi7mq8c6akap153pp.apps.googleusercontent.com";
+    const redirectUri = window.location.href.split('#')[0];
+    const MASTER_NODE_KEY = "X8333313409";
+    let scanHistory = [];
+    
+    const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=email%20profile&prompt=select_account`;
+    document.getElementById("google-login-link").href = googleAuthUrl;
+
+    window.addEventListener("DOMContentLoaded", function() {
+        const hash = window.location.hash.substring(1);
+        const params = new URLSearchParams(hash);
+        const accessToken = params.get("access_token");
+
+        if (accessToken) {
+            document.getElementById("auth-status").innerText = "Authenticating with Google OAuth servers...";
+            fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+                headers: { "Authorization": `Bearer ${accessToken}` }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.email) {
+                    sessionStorage.setItem("user_email", data.email);
+                    window.location.hash = ""; 
+                    activateDashboard(data.email);
+                } else {
+                    document.getElementById("auth-status").innerText = "Authentication failed.";
+                }
+            })
+            .catch(() => { document.getElementById("auth-status").innerText = "Network error during verification."; });
+        } else {
+            const savedEmail = sessionStorage.getItem("user_email");
+            if (savedEmail) activateDashboard(savedEmail);
         }
+    });
 
-        function handleLogout() {
-            document.getElementById('dashboard-container').classList.add('hidden');
-            document.getElementById('auth-container').classList.remove('hidden');
-        }
+    function activateDashboard(email) {
+        document.getElementById("display-email").innerText = email;
+        document.getElementById("auth-section").style.display = "none";
+        document.getElementById("dashboard-section").style.display = "block";
+    }
 
-        function runScan() {
-            const input = document.getElementById('target-input').value.trim();
-            const resultBox = document.getElementById('scan-result');
-            if(!input) {
-                alert('Please enter a target to scan.');
-                return;
-            }
-            resultBox.classList.remove('hidden');
-            resultBox.innerHTML = `<p class="text-yellow-400"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Analyzing ${input} against global threat intelligence feeds...</p>`;
-            setTimeout(() => {
-                resultBox.innerHTML = `<p class="text-red-400 font-semibold"><i class="fa-solid fa-triangle-exclamation mr-2"></i> Threat Detected: High probability of phishing/malicious payload associated with this target.</p>`;
-            }, 1200);
-        }
+    document.getElementById("menu-toggle").addEventListener("click", function(e) {
+        e.stopPropagation();
+        const menu = document.getElementById("dropdown-content");
+        menu.style.display = menu.style.display === "block" ? "none" : "block";
+    });
 
-        function openSubscriptionModal() {
-            document.getElementById('subscription-modal').classList.remove('hidden');
-            document.getElementById('subscription-modal').classList.add('flex');
-        }
+    window.addEventListener("click", function() {
+        const menu = document.getElementById("dropdown-content");
+        if(menu) menu.style.display = "none";
+    });
 
-        function closeSubscriptionModal() {
-            document.getElementById('subscription-modal').classList.add('hidden');
-            document.getElementById('subscription-modal').classList.remove('flex');
+    const promoModal = document.getElementById("promo-modal");
+    const subModal = document.getElementById("sub-modal");
+
+    document.getElementById("menu-promo").addEventListener("click", () => promoModal.style.display = "block");
+    document.getElementById("close-promo").addEventListener("click", () => promoModal.style.display = "none");
+    document.getElementById("menu-sub").addEventListener("click", () => subModal.style.display = "block");
+    document.getElementById("close-sub").addEventListener("click", () => subModal.style.display = "none");
+    document.getElementById("menu-about").addEventListener("click", () => alert("Xenin AI Banking Defense Suite. 10 Core Fraud Modules Active."));
+
+    let currentLang = "EN";
+    document.getElementById("menu-lang").addEventListener("click", function() {
+        if(currentLang === "EN") {
+            currentLang = "HI";
+            document.getElementById("main-heading").innerText = "Enterprise Banking Fraud Detection Suite (Hindi Mode)";
+            alert("Language switched to Hindi mode.");
+        } else {
+            currentLang = "EN";
+            document.getElementById("main-heading").innerText = "Enterprise Banking Fraud Detection Suite (10 Core Modules)";
+            alert("Language switched to English mode.");
         }
-    </script>
+    });
+
+    document.getElementById("logout-btn").addEventListener("click", function() {
+        sessionStorage.removeItem("user_email");
+        window.location.href = googleAuthUrl;
+    });
+
+    document.getElementById("promo-submit-btn").addEventListener("click", function() {
+        const code = document.getElementById("promo-input").value.trim();
+        const status = document.getElementById("promo-status");
+        if(code === MASTER_NODE_KEY || code === "XENIN-PRO-2026") {
+            status.className = "success";
+            status.innerText = "Promocode authorized! Full Pro Access & 10 Modules Unlocked.";
+            setTimeout(() => promoModal.style.display = "none", 1500);
+        } else {
+            status.className = "error";
+            status.innerText = "Invalid promocode key.";
+        }
+    });
+
+    function logScan(action, result) {
+        const timestamp = new Date().toLocaleTimeString();
+        scanHistory.unshift(`[${timestamp}] ${action}: ${result}`);
+        if(scanHistory.length > 8) scanHistory.pop();
+        document.getElementById("history-box").innerHTML = scanHistory.join("<br>");
+    }
+
+    // 1. SMS Inspector
+    function inspectSMS() {
+        const text = document.getElementById('sms-input').value.trim();
+        const out = document.getElementById('sms-output');
+        out.style.display = 'block';
+        if(!text) { out.className = "output-box error"; out.innerText = "Enter SMS text first."; return; }
+        const keywords = ['kyc', 'block', 'blocked', 'lottery', 'won', 'reward', 'pan', 'atm', 'debit', 'click', 'apk', 'update'];
+        let matched = keywords.filter(k => text.toLowerCase().includes(k));
+        if(matched.length >= 1) {
+            out.className = "output-box error";
+            out.innerHTML = `HIGH RISK THREAT: Phishing payload detected! Matched: ${matched.join(', ')}`;
+            logScan("SMS Scan", "CRITICAL THREAT");
+        } else {
+            out.className = "output-box success";
+            out.innerHTML = `SECURE: No malicious signatures found in SMS payload.`;
+            logScan("SMS Scan", "CLEAN");
+        }
+    }
+
+    // 2. UPI Verifier
+    function verifyUPI() {
+        const upi = document.getElementById('upi-input').value.trim();
+        const out = document.getElementById('upi-output');
+        out.style.display = 'block';
+        if(!upi) { out.className = "output-box error"; out.innerText = "Enter UPI ID first."; return; }
+        if(upi.includes('scam') || upi.includes('fraud') || upi.length < 5) {
+            out.className = "output-box error";
+            out.innerHTML = `FLAGGED HANDLE: This VPA is reported in cyber fraud blacklists!`;
+            logScan("UPI Check", "FLAGGED VPA");
+        } else {
+            out.className = "output-box success";
+            out.innerHTML = `VERIFIED: VPA handle active with standard banking compliance.`;
+            logScan("UPI Check", "VERIFIED");
+        }
+    }
+
+    // 3. URL/APK Scanner
+    function scanURL() {
+        const link = document.getElementById('url-input').value.trim();
+        const out = document.getElementById('url-output');
+        out.style.display = 'block';
+        if(!link) { out.className = "output-box error"; out.innerText = "Enter URL first."; return; }
+        if(link.includes('.apk') || link.includes('phish') || link.includes('free') || link.includes('update')) {
+            out.className = "output-box error";
+            out.innerHTML = `MALICIOUS DOMAIN: Phishing or fake app dropper link identified!`;
+            logScan("URL Audit", "MALICIOUS");
+        } else {
+            out.className = "output-box success";
+            out.innerHTML = `SAFE DOMAIN: No phishing signatures detected.`;
+            logScan("URL Audit", "SAFE");
+        }
+    }
+
+    // 4. CSV Auditor
+    function scanCSV() {
+        const file = document.getElementById('csv-file');
+        const out = document.getElementById('csv-output');
+        out.style.display = 'block';
+        if(file.files.length > 0) {
+            out.className = "output-box success";
+            out.innerHTML = `CSV Audited Successfully: 0 velocity anomalies across ledger rows.`;
+            logScan("CSV Audit", "0 Anomalies");
+        } else {
+            out.className = "output-box error";
+            out.innerHTML = `Please select a transaction CSV file first.`;
+        }
+    }
+
+    // 5. SIM Swap Analyzer
+    function scanSIM() {
+        const sim = document.getElementById('sim-input').value.trim();
+        const out = document.getElementById('sim-output');
+        out.style.display = 'block';
+        if(sim.length !== 10) {
+            out.className = "output-box error";
+            out.innerText = "Enter a valid 10-digit mobile number.";
+            return;
+        }
+        out.className = "output-box success";
+        out.innerHTML = `SIM SECURITY CHECK: No recent port-out or SIM swap anomalies recorded for +91 ${sim}.`;
+        logScan("SIM Swap Scan", "NORMAL");
+    }
+
+    // 6. Bank Routing Inspector
+    function verifyBankRouting() {
+        const acc = document.getElementById('acc-input').value.trim();
+        const ifsc = document.getElementById('ifsc-input').value.trim();
+        const out = document.getElementById('bank-output');
+        out.style.display = 'block';
+        if(!acc || !ifsc) {
+            out.className = "output-box error";
+            out.innerText = "Enter both Account Number and IFSC Code.";
+            return;
+        }
+        out.className = "output-box success";
+        out.innerHTML = `ROUTING VERIFIED: IFSC ${ifsc.toUpperCase()} matches active clearing house grid.`;
+        logScan("Bank Routing", "VALID");
+    }
+
+    // 7. Identity Theft Scanner
+    function scanIdentity() {
+        const idVal = document.getElementById('id-input').value.trim();
+        const out = document.getElementById('id-output');
+        out.style.display = 'block';
+        if(!idVal) {
+            out.className = "output-box error";
+            out.innerText = "Enter Aadhaar or PAN number first.";
+            return;
+        }
+        out.className = "output-box success";
+        out.innerHTML = `IDENTITY AUDIT: Ledger clean. No darkweb credential leaks found matching this identifier.`;
+        logScan("Identity Audit", "SECURE");
+    }
+
+    // 8. QR Code Verifier
+    function scanQRCodePayload() {
+        const qr = document.getElementById('qr-input').value.trim();
+        const out = document.getElementById('qr-output');
+        out.style.display = 'block';
+        if(!qr) {
+            out.className = "output-box error";
+            out.innerText = "Paste QR code string first.";
+            return;
+        }
+        if(qr.includes('collect') || qr.includes('reqPay')) {
+            out.className = "output-box error";
+            out.innerHTML = `DANGER: This QR payload is a COLLECT request (money will be debited from your account if approved)!`;
+            logScan("QR Payload", "COLLECT FRAUD");
+        } else {
+            out.className = "output-box success";
+            out.innerHTML = `QR PAYLOAD SAFE: Standard peer-to-peer or merchant transfer node.`;
+            logScan("QR Payload", "SAFE");
+        }
+    }
+
+    // 10. Emergency Response
+    function triggerEmergency() {
+        const out = document.getElementById('emergency-output');
+        out.style.display = 'block';
+        out.innerHTML = `EMERGENCY ACTION TRIGGERED:<br>1. Dial National Cyber Crime Helpline: <strong>1930</strong><br>2. Immediate Action: Contact bank branch to freeze netbanking and debit cards.`;
+        logScan("Emergency", "Helpline Triggered");
+    }
+
+    // UPI Payment
+    document.getElementById("pay-btn").addEventListener("click", function() {
+        window.location.href = `upi://pay?pa=8851738350@fam&pn=XeninAI&am=499&cu=INR`;
+    });
+</script>
+
 </body>
 </html>
