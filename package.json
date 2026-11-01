@@ -1,0 +1,9 @@
+
+{
+  "name": "xenin-enterprise",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "google-auth-library": "^10.3.0"
+  }
+}
