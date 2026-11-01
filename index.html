@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xenin AI - Enterprise Banking & Fraud Intelligence</title>
+    <title>Xenin AI - Enterprise Fraud & Scam Intelligence</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- EmailJS SDK -->
@@ -11,22 +11,22 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-[#030712] text-slate-100 font-sans min-h-screen flex flex-col justify-between selection:bg-cyan-500 selection:text-black">
+<body class="bg-[#030712] text-slate-100 font-sans min-h-screen flex flex-col justify-between selection:bg-rose-500 selection:text-white">
 
     <!-- Top Navbar -->
-    <header class="bg-slate-900/80 backdrop-blur-xl border-b border-slate-800 px-6 py-4 flex justify-between items-center sticky top-0 z-50 shadow-2xl">
+    <header class="bg-slate-900/90 backdrop-blur-xl border-b border-slate-800 px-6 py-4 flex justify-between items-center sticky top-0 z-50 shadow-2xl">
         <div class="flex items-center space-x-3">
-            <div class="bg-gradient-to-tr from-cyan-600 to-blue-600 p-2.5 rounded-xl text-white shadow-lg shadow-cyan-500/20">
+            <div class="bg-gradient-to-tr from-rose-600 to-red-600 p-2.5 rounded-xl text-white shadow-lg shadow-rose-500/20">
                 <i class="fa-solid fa-shield-halved text-lg"></i>
             </div>
             <div>
-                <h1 class="text-base font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">XENIN AI</h1>
-                <p class="text-[10px] text-slate-400 tracking-widest uppercase font-semibold">Enterprise Security Terminal</p>
+                <h1 class="text-base font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-red-500">XENIN AI</h1>
+                <p class="text-[10px] text-slate-400 tracking-widest uppercase font-semibold">Fraud & Scam Intelligence Terminal</p>
             </div>
         </div>
         <div id="nav-actions" class="hidden flex items-center space-x-4">
-            <button onclick="openSubscriptionModal()" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-cyan-400 text-xs font-semibold px-4 py-2 rounded-xl transition duration-200 shadow-md">
-                <i class="fa-solid fa-crown mr-1.5"></i> Subscription: <span id="subStatusText" class="text-white">Free Plan (<span id="limitCount">3</span> left)</span>
+            <button onclick="openSubscriptionModal()" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-rose-400 text-xs font-semibold px-4 py-2 rounded-xl transition duration-200 shadow-md">
+                <i class="fa-solid fa-crown mr-1.5"></i> Subscription: <span id="subStatusText" class="text-white">Free Plan (<span id="limitCount">3</span> scans left)</span>
             </button>
             <div class="text-right hidden sm:block">
                 <span class="text-xs text-emerald-400 bg-emerald-950/80 border border-emerald-500/30 px-3 py-1.5 rounded-xl font-medium"><i class="fa-solid fa-circle text-[8px] mr-1.5 animate-pulse"></i> Session Secure</span>
@@ -37,46 +37,52 @@
     <!-- Main Container -->
     <main class="flex-grow flex items-center justify-center p-4 sm:p-6">
 
-        <!-- WORLD-CLASS LOGIN & AUTHENTICATION SCREEN -->
+        <!-- LOGIN & AUTHENTICATION SCREEN -->
         <div id="auth-section" class="w-full max-w-md relative">
-            <div class="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-3xl blur-xl opacity-25 animate-pulse"></div>
-            <div class="relative bg-slate-900/90 backdrop-blur-2xl p-8 rounded-3xl shadow-2xl border border-slate-800/80">
-                <div class="text-center mb-8">
-                    <div class="inline-flex p-4 bg-slate-800 border border-slate-700 rounded-2xl text-cyan-400 mb-3 shadow-inner">
+            <div class="absolute -inset-1 bg-gradient-to-r from-rose-500 to-red-600 rounded-3xl blur-xl opacity-25 animate-pulse"></div>
+            <div class="relative bg-slate-900/95 backdrop-blur-2xl p-8 rounded-3xl shadow-2xl border border-slate-800">
+                <div class="text-center mb-6">
+                    <div class="inline-flex p-4 bg-slate-800 border border-slate-700 rounded-2xl text-rose-400 mb-3 shadow-inner">
                         <i class="fa-solid fa-fingerprint text-3xl"></i>
                     </div>
-                    <h2 class="text-2xl font-bold text-white tracking-tight">Client Portal Access</h2>
-                    <p class="text-xs text-slate-400 mt-1.5">Secure biometric & AI verification gateway</p>
+                    <h2 class="text-2xl font-bold text-white tracking-tight">Security Portal Access</h2>
+                    <p class="text-xs text-slate-400 mt-1.5">Choose your login method to receive AI authentication code</p>
+                </div>
+
+                <!-- Login Method Selector Tabs -->
+                <div class="grid grid-cols-2 gap-2 p-1 bg-slate-950 rounded-xl mb-6 border border-slate-800">
+                    <button onclick="setLoginMethod('email')" id="tab-email" class="py-2 text-xs font-bold rounded-lg bg-rose-600 text-white transition shadow-md">Email OTP</button>
+                    <button onclick="setLoginMethod('google')" id="tab-google" class="py-2 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition">Google / Gmail</button>
                 </div>
 
                 <!-- Email Input Form -->
                 <div id="email-step" class="space-y-5">
                     <div>
-                        <label class="block text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-2">Corporate / Registered Email</label>
+                        <label id="inputLabel" class="block text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-2">Registered Email Address</label>
                         <div class="relative">
-                            <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-500"><i class="fa-regular fa-envelope"></i></span>
-                            <input type="email" id="userEmail" placeholder="name@company.com" class="w-full pl-11 pr-4 py-3.5 bg-slate-950/80 border border-slate-800 rounded-2xl focus:outline-none focus:border-cyan-500 text-white text-sm transition duration-200">
+                            <span id="inputIcon" class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-500"><i class="fa-regular fa-envelope"></i></span>
+                            <input type="email" id="userEmail" placeholder="name@example.com" class="w-full pl-11 pr-4 py-3.5 bg-slate-950 border border-slate-800 rounded-2xl focus:outline-none focus:border-rose-500 text-white text-sm transition duration-200">
                         </div>
                     </div>
-                    <button onclick="sendOtp()" id="sendBtn" class="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold py-3.5 rounded-2xl transition duration-200 shadow-xl shadow-cyan-600/20 text-sm tracking-wide">
-                        Request Secure OTP
+                    <button onclick="sendOtp()" id="sendBtn" class="w-full bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-bold py-3.5 rounded-2xl transition duration-200 shadow-xl shadow-rose-600/20 text-sm tracking-wide">
+                        Send Secure OTP
                     </button>
                 </div>
 
                 <!-- OTP Verification Form (Hidden Initially) -->
                 <div id="otp-step" class="hidden space-y-5">
-                    <div class="text-center bg-slate-950/50 border border-slate-800 p-3 rounded-2xl">
-                        <p class="text-xs text-slate-300">Verification code dispatched to</p>
-                        <p id="displayEmail" class="text-xs font-bold text-cyan-400 mt-0.5 truncate"></p>
+                    <div class="text-center bg-slate-950 border border-slate-800 p-3 rounded-2xl">
+                        <p class="text-xs text-slate-300">Verification code sent to</p>
+                        <p id="displayEmail" class="text-xs font-bold text-rose-400 mt-0.5 truncate"></p>
                     </div>
                     <div>
-                        <label class="block text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-2">Enter 6-Digit OTP Code</label>
-                        <input type="text" id="enteredOtp" maxlength="6" placeholder="000000" class="w-full text-center tracking-[0.75em] text-2xl font-mono py-3.5 bg-slate-950/80 border border-slate-800 rounded-2xl focus:outline-none focus:border-cyan-500 text-white transition duration-200">
+                        <label class="block text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-2">Enter 6-Digit Verification Code</label>
+                        <input type="text" id="enteredOtp" maxlength="6" placeholder="000000" class="w-full text-center tracking-[0.75em] text-2xl font-mono py-3.5 bg-slate-950 border border-slate-800 rounded-2xl focus:outline-none focus:border-rose-500 text-white transition duration-200">
                     </div>
                     <button onclick="verifyOtp()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-3.5 rounded-2xl transition duration-200 shadow-xl shadow-emerald-600/20 text-sm tracking-wide">
-                        Authenticate & Enter
+                        Verify & Access Terminal
                     </button>
-                    <button onclick="resetAuth()" class="w-full text-xs text-slate-500 hover:text-slate-300 transition mt-2">Change email address</button>
+                    <button onclick="resetAuth()" class="w-full text-xs text-slate-500 hover:text-slate-300 transition mt-2">Change login method or address</button>
                 </div>
             </div>
         </div>
@@ -86,24 +92,24 @@
             
             <!-- Quick Stats Bar -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                <div class="bg-slate-900/80 backdrop-blur-xl border border-slate-800/80 p-6 rounded-3xl shadow-xl flex items-center justify-between">
+                <div class="bg-slate-900/90 backdrop-blur-xl border border-slate-800 p-6 rounded-3xl shadow-xl flex items-center justify-between">
                     <div>
-                        <p class="text-[11px] text-slate-400 uppercase font-bold tracking-wider">Available Balance</p>
-                        <h3 class="text-2xl font-black text-white mt-1">₹ 14,85,240.00</h3>
-                    </div>
-                    <div class="p-3.5 bg-cyan-500/10 text-cyan-400 rounded-2xl border border-cyan-500/20"><i class="fa-solid fa-wallet text-xl"></i></div>
-                </div>
-                <div class="bg-slate-900/80 backdrop-blur-xl border border-slate-800/80 p-6 rounded-3xl shadow-xl flex items-center justify-between">
-                    <div>
-                        <p class="text-[11px] text-slate-400 uppercase font-bold tracking-wider">AI Security Shield</p>
-                        <h3 class="text-2xl font-black text-emerald-400 mt-1">Active (99.8%)</h3>
+                        <p class="text-[11px] text-slate-400 uppercase font-bold tracking-wider">AI Security Status</p>
+                        <h3 class="text-2xl font-black text-emerald-400 mt-1">Active & Protected</h3>
                     </div>
                     <div class="p-3.5 bg-emerald-500/10 text-emerald-400 rounded-2xl border border-emerald-500/20"><i class="fa-solid fa-shield-check text-xl"></i></div>
                 </div>
-                <div class="bg-slate-900/80 backdrop-blur-xl border border-slate-800/80 p-6 rounded-3xl shadow-xl flex items-center justify-between">
+                <div class="bg-slate-900/90 backdrop-blur-xl border border-slate-800 p-6 rounded-3xl shadow-xl flex items-center justify-between">
+                    <div>
+                        <p class="text-[11px] text-slate-400 uppercase font-bold tracking-wider">Threats Blocked</p>
+                        <h3 class="text-2xl font-black text-white mt-1">142 Scams Found</h3>
+                    </div>
+                    <div class="p-3.5 bg-rose-500/10 text-rose-400 rounded-2xl border border-rose-500/20"><i class="fa-solid fa-triangle-exclamation text-xl"></i></div>
+                </div>
+                <div class="bg-slate-900/90 backdrop-blur-xl border border-slate-800 p-6 rounded-3xl shadow-xl flex items-center justify-between">
                     <div>
                         <p class="text-[11px] text-slate-400 uppercase font-bold tracking-wider">Detection Engine</p>
-                        <h3 class="text-2xl font-black text-purple-400 mt-1">Isolation Forest</h3>
+                        <h3 class="text-2xl font-black text-purple-400 mt-1">Isolation Forest v2</h3>
                     </div>
                     <div class="p-3.5 bg-purple-500/10 text-purple-400 rounded-2xl border border-purple-500/20"><i class="fa-solid fa-microchip text-xl"></i></div>
                 </div>
@@ -112,43 +118,39 @@
             <!-- Main Workspace Grid -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 
-                <!-- Quick Payment / Transfer Module -->
-                <div class="lg:col-span-1 bg-slate-900/80 backdrop-blur-xl border border-slate-800/80 p-6 rounded-3xl shadow-xl space-y-5">
-                    <h3 class="text-base font-bold text-white flex items-center"><i class="fa-solid fa-money-bill-transfer mr-2 text-cyan-400"></i> Instant Fund Transfer</h3>
+                <!-- Scam & Phishing Checker Tool (Replaced Amount Feature) -->
+                <div class="lg:col-span-1 bg-slate-900/90 backdrop-blur-xl border border-slate-800 p-6 rounded-3xl shadow-xl space-y-5">
+                    <h3 class="text-base font-bold text-white flex items-center"><i class="fa-solid fa-magnifying-glass-shield mr-2 text-rose-400"></i> Scam & Phishing Checker</h3>
                     <div class="space-y-4">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Recipient Account / UPI ID / Spam Tag</label>
-                            <input type="text" id="payeeAcc" placeholder="Account number or ID" class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-cyan-500 transition">
+                            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Enter Phone Number / UPI ID / Link to Check</label>
+                            <input type="text" id="checkTarget" placeholder="e.g. +91 9876543210 or suspicious URL" class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-rose-500 transition">
                         </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Transfer Amount (₹)</label>
-                            <input type="number" id="payAmount" placeholder="0.00" class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white focus:outline-none focus:border-cyan-500 transition">
-                        </div>
-                        <button onclick="simulateTransaction()" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-3 rounded-xl text-sm transition shadow-lg shadow-cyan-600/20">
-                            Execute Transfer & AI Scan
+                        <button onclick="scanForScam()" class="w-full bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-bold py-3 rounded-xl text-sm transition shadow-lg shadow-rose-600/20">
+                            Run AI Scam Analysis
                         </button>
                     </div>
-                    <div id="transferStatus" class="hidden p-3.5 rounded-xl text-xs font-medium"></div>
+                    <div id="scanStatus" class="hidden p-3.5 rounded-xl text-xs font-medium"></div>
                 </div>
 
-                <!-- Transaction & Fraud History Logs -->
-                <div class="lg:col-span-2 bg-slate-900/80 backdrop-blur-xl border border-slate-800/80 p-6 rounded-3xl shadow-xl space-y-4">
+                <!-- Fraud History & Threat Logs -->
+                <div class="lg:col-span-2 bg-slate-900/90 backdrop-blur-xl border border-slate-800 p-6 rounded-3xl shadow-xl space-y-4">
                     <div class="flex justify-between items-center">
-                        <h3 class="text-base font-bold text-white"><i class="fa-solid fa-clock-rotate-left mr-2 text-cyan-400"></i> Transaction History & Threat Logs</h3>
-                        <span class="text-xs text-slate-400">Real-time Auditing</span>
+                        <h3 class="text-base font-bold text-white"><i class="fa-solid fa-clock-rotate-left mr-2 text-rose-400"></i> Fraud & Scam Detection Logs</h3>
+                        <span class="text-xs text-slate-400">Live AI Monitoring</span>
                     </div>
                     <div class="overflow-x-auto max-h-80 overflow-y-auto pr-1">
                         <table class="w-full text-left text-xs">
                             <thead class="bg-slate-950 text-slate-400 uppercase border-b border-slate-800 sticky top-0">
                                 <tr>
-                                    <th class="p-3">ID</th>
-                                    <th class="p-3">Recipient</th>
-                                    <th class="p-3">Amount</th>
-                                    <th class="p-3">Risk Assessment</th>
+                                    <th class="p-3">Log ID</th>
+                                    <th class="p-3">Target / Source</th>
+                                    <th class="p-3">Threat Type</th>
+                                    <th class="p-3">Risk Score</th>
                                     <th class="p-3">Status</th>
                                 </tr>
                             </thead>
-                            <tbody id="history-table-body" class="divide-y divide-slate-800/80 text-slate-300">
+                            <tbody id="history-table-body" class="divide-y divide-slate-800 text-slate-300">
                                 <!-- Dynamic rows -->
                             </tbody>
                         </table>
@@ -165,36 +167,36 @@
         <div class="bg-slate-900 border border-slate-800 w-full max-w-lg rounded-3xl p-8 shadow-2xl relative space-y-6">
             <button onclick="closeSubscriptionModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
             <div class="text-center">
-                <div class="inline-flex p-3 bg-cyan-500/10 text-cyan-400 rounded-2xl border border-cyan-500/20 mb-3">
+                <div class="inline-flex p-3 bg-rose-500/10 text-rose-400 rounded-2xl border border-rose-500/20 mb-3">
                     <i class="fa-solid fa-crown text-2xl"></i>
                 </div>
                 <h3 class="text-xl font-black text-white">Upgrade to Xenin AI Pro</h3>
-                <p class="text-xs text-slate-400 mt-1">Unlock unlimited secure transactions, enterprise fraud checks, and priority AI routing.</p>
+                <p class="text-xs text-slate-400 mt-1">Unlock unlimited scam checks, advanced threat databases, and priority AI routing.</p>
             </div>
             
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl space-y-3 relative">
                     <span class="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded-full font-bold uppercase">Current</span>
                     <h4 class="text-lg font-bold text-white">Free Tier</h4>
-                    <p class="text-2xl font-black text-cyan-400">₹ 0 <span class="text-xs text-slate-500 font-normal">/ lifetime</span></p>
+                    <p class="text-2xl font-black text-rose-400">₹ 0 <span class="text-xs text-slate-500 font-normal">/ lifetime</span></p>
                     <ul class="text-xs text-slate-400 space-y-2">
-                        <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i> 3 Free Transactions</li>
-                        <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i> Standard AI Engine</li>
+                        <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i> 3 Free Scam Scans</li>
+                        <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i> Standard AI Detection</li>
                     </ul>
                 </div>
-                <div class="bg-gradient-to-b from-cyan-950/40 to-slate-950 border border-cyan-500/40 p-5 rounded-2xl space-y-3 relative shadow-lg shadow-cyan-950">
-                    <span class="text-[10px] bg-cyan-500 text-black px-2.5 py-0.5 rounded-full font-black uppercase">Recommended</span>
+                <div class="bg-gradient-to-b from-rose-950/40 to-slate-950 border border-rose-500/40 p-5 rounded-2xl space-y-3 relative shadow-lg shadow-rose-950">
+                    <span class="text-[10px] bg-rose-500 text-white px-2.5 py-0.5 rounded-full font-black uppercase">Recommended</span>
                     <h4 class="text-lg font-bold text-white">Enterprise Pro</h4>
-                    <p class="text-2xl font-black text-cyan-400">₹ 999 <span class="text-xs text-slate-400 font-normal">/ month</span></p>
+                    <p class="text-2xl font-black text-rose-400">₹ 999 <span class="text-xs text-slate-400 font-normal">/ month</span></p>
                     <ul class="text-xs text-slate-300 space-y-2">
-                        <li><i class="fa-solid fa-check text-cyan-400 mr-2"></i> Unlimited Transactions</li>
-                        <li><i class="fa-solid fa-check text-cyan-400 mr-2"></i> Advanced Isolation Forest v2</li>
-                        <li><i class="fa-solid fa-check text-cyan-400 mr-2"></i> Instant Spam Blocking</li>
+                        <li><i class="fa-solid fa-check text-rose-400 mr-2"></i> Unlimited Scam Scans</li>
+                        <li><i class="fa-solid fa-check text-rose-400 mr-2"></i> Advanced Isolation Forest v2</li>
+                        <li><i class="fa-solid fa-check text-rose-400 mr-2"></i> Instant Phishing Blocking</li>
                     </ul>
                 </div>
             </div>
 
-            <button onclick="upgradeToPro()" class="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold py-3.5 rounded-2xl transition shadow-xl shadow-cyan-600/30 text-sm">
+            <button onclick="upgradeToPro()" class="w-full bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-bold py-3.5 rounded-2xl transition shadow-xl shadow-rose-600/30 text-sm">
                 Upgrade Now via Secure Gateway
             </button>
         </div>
@@ -202,7 +204,7 @@
 
     <!-- Footer -->
     <footer class="text-center py-4 text-[11px] text-slate-500 border-t border-slate-900">
-        Xenin AI Security Engine &copy; 2026 | Enterprise Banking Protection System
+        Xenin AI Security Engine &copy; 2026 | Fraud & Scam Intelligence Platform
     </footer>
 
     <!-- JavaScript Logic -->
@@ -214,25 +216,49 @@
 
         let generatedOtpCode = "";
         let targetEmail = "";
+        let currentMethod = "email";
         let freeLimitRemaining = 3;
         let isProUser = false;
 
-        let transactionHistory = [
-            { id: "#TXN-9842", recipient: "Axis Bank - 4021", amount: "₹ 25,000", risk: "0.02 (Safe)", status: "Approved", badgeClass: "bg-emerald-950 text-emerald-400 border-emerald-800" },
-            { id: "#TXN-9841", recipient: "Global Wire Transfer", amount: "₹ 2,40,000", risk: "0.89 (High Risk)", status: "Blocked by AI", badgeClass: "bg-rose-950 text-rose-400 border-rose-800" },
-            { id: "#TXN-9840", recipient: "Merchant UPI ID", amount: "₹ 1,450", risk: "0.01 (Safe)", status: "Approved", badgeClass: "bg-emerald-950 text-emerald-400 border-emerald-800" }
+        let fraudHistory = [
+            { id: "#LOG-8842", target: "phishing-bank-update.com", type: "Fake Website", risk: "0.98 (High Risk)", status: "Blocked", badgeClass: "bg-rose-950 text-rose-400 border-rose-800" },
+            { id: "#LOG-8841", target: "+91 9876543210", type: "Fraudulent Caller", risk: "0.89 (High Risk)", status: "Blacklisted", badgeClass: "bg-rose-950 text-rose-400 border-rose-800" },
+            { id: "#LOG-8840", target: "secure-upi-payment.in", type: "Phishing Link", risk: "0.02 (Safe)", status: "Verified", badgeClass: "bg-emerald-950 text-emerald-400 border-emerald-800" }
         ];
+
+        function setLoginMethod(method) {
+            currentMethod = method;
+            const tabEmail = document.getElementById("tab-email");
+            const tabGoogle = document.getElementById("tab-google");
+            const inputLabel = document.getElementById("inputLabel");
+            const inputIcon = document.getElementById("inputIcon");
+            const userInput = document.getElementById("userEmail");
+
+            if(method === 'email') {
+                tabEmail.className = "py-2 text-xs font-bold rounded-lg bg-rose-600 text-white transition shadow-md";
+                tabGoogle.className = "py-2 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition";
+                inputLabel.innerText = "Registered Email Address";
+                inputIcon.innerHTML = '<i class="fa-regular fa-envelope"></i>';
+                userInput.placeholder = "name@example.com";
+            } else {
+                tabGoogle.className = "py-2 text-xs font-bold rounded-lg bg-rose-600 text-white transition shadow-md";
+                tabEmail.className = "py-2 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition";
+                inputLabel.innerText = "Google / Gmail Account ID";
+                inputIcon.innerHTML = '<i class="fa-brands fa-google"></i>';
+                userInput.placeholder = "username@gmail.com";
+            }
+        }
 
         function renderHistory() {
             const tbody = document.getElementById("history-table-body");
             tbody.innerHTML = "";
-            transactionHistory.forEach(item => {
+            fraudHistory.forEach(item => {
                 const tr = document.createElement("tr");
                 tr.className = "hover:bg-slate-950/40 transition";
                 tr.innerHTML = `
-                    <td class="p-3 font-mono text-cyan-400">${item.id}</td>
-                    <td class="p-3">${item.recipient}</td>
-                    <td class="p-3">${item.amount}</td>
+                    <td class="p-3 font-mono text-rose-400">${item.id}</td>
+                    <td class="p-3 truncate max-w-[120px]">${item.target}</td>
+                    <td class="p-3">${item.type}</td>
                     <td class="p-3 font-semibold">${item.risk}</td>
                     <td class="p-3"><span class="${item.badgeClass} px-2 py-0.5 rounded border text-[10px] font-bold">${item.status}</span></td>
                 `;
@@ -243,7 +269,7 @@
         function sendOtp() {
             targetEmail = document.getElementById("userEmail").value.trim();
             if(!targetEmail || !targetEmail.includes("@")) {
-                alert("Please enter a valid email address!");
+                alert("Please enter a valid email or Gmail address!");
                 return;
             }
 
@@ -264,12 +290,12 @@
                     document.getElementById("email-step").classList.add("hidden");
                     document.getElementById("otp-step").classList.remove("hidden");
                     document.getElementById("displayEmail").innerText = targetEmail;
-                    btn.innerText = "Request Secure OTP";
+                    btn.innerText = "Send Secure OTP";
                     btn.disabled = false;
                 }, function(error) {
                     console.error("FAILED...", error);
-                    alert("Failed to send OTP. Please check your network connection.");
-                    btn.innerText = "Request Secure OTP";
+                    alert("Failed to send OTP. Please check your internet connection.");
+                    btn.innerText = "Send Secure OTP";
                     btn.disabled = false;
                 });
         }
@@ -302,54 +328,63 @@
 
         function upgradeToPro() {
             isProUser = true;
-            freeLimitCount = "Unlimited";
+            freeLimitRemaining = "Unlimited";
             document.getElementById("subStatusText").innerText = "Enterprise Pro (Active)";
             document.getElementById("limitCount").innerText = "Unlimited";
             closeSubscriptionModal();
-            alert("Subscription upgraded successfully! You now have unlimited enterprise access.");
+            alert("Subscription upgraded successfully! You now have unlimited scam checks.");
         }
 
-        function simulateTransaction() {
+        function scanForScam() {
             if(!isProUser && freeLimitRemaining <= 0) {
                 openSubscriptionModal();
-                alert("Your free transaction limit is exhausted! Please upgrade to Enterprise Pro to continue.");
+                alert("Your free scan limit is exhausted! Please upgrade to Enterprise Pro to continue.");
                 return;
             }
 
-            const acc = document.getElementById("payeeAcc").value.trim();
-            const amtVal = document.getElementById("payAmount").value.trim();
-            const statusDiv = document.getElementById("transferStatus");
+            const target = document.getElementById("checkTarget").value.trim();
+            const statusDiv = document.getElementById("scanStatus");
 
-            if(!acc || !amtVal) {
-                alert("Please fill in all payment details.");
+            if(!target) {
+                alert("Please enter a phone number, URL, or UPI ID to scan.");
                 return;
             }
 
             statusDiv.classList.remove("hidden");
-            statusDiv.className = "p-3.5 rounded-xl text-xs font-medium bg-slate-950 text-cyan-400 border border-cyan-800 animate-pulse";
-            statusDiv.innerText = "Analyzing transaction with Isolation Forest AI model...";
+            statusDiv.className = "p-3.5 rounded-xl text-xs font-medium bg-slate-950 text-rose-400 border border-rose-800 animate-pulse";
+            statusDiv.innerText = "Analyzing target with Isolation Forest AI model & global threat database...";
 
             setTimeout(() => {
-                const amountNum = parseFloat(amtVal);
-                let newTxnId = "#TXN-" + Math.floor(1000 + Math.random() * 9000);
-                let formattedAmount = "₹ " + amountNum.toLocaleString('en-IN');
+                let newLogId = "#LOG-" + Math.floor(1000 + Math.random() * 9000);
+                let lowerTarget = target.toLowerCase();
                 
                 let riskText = "";
                 let statusText = "";
                 let badgeStyle = "";
+                let threatType = "Suspicious Entity";
 
-                if(amountNum > 100000 || acc.toLowerCase().includes("spam") || acc.toLowerCase().includes("fraud") || acc.toLowerCase().includes("scam")) {
+                const isThreat = lowerTarget.includes("scam") || 
+                                 lowerTarget.includes("fraud") || 
+                                 lowerTarget.includes("spam") || 
+                                 lowerTarget.includes("fake") || 
+                                 lowerTarget.includes("hack") ||
+                                 lowerTarget.includes("http") ||
+                                 target.length < 5;
+
+                if (isThreat) {
                     statusDiv.className = "p-3.5 rounded-xl text-xs font-medium bg-rose-950 text-rose-300 border border-rose-800";
-                    statusDiv.innerHTML = "High Risk Detected! Transaction blocked by Xenin AI security protocols.";
-                    riskText = "0.94 (High Risk)";
-                    statusText = "Blocked by AI";
+                    statusDiv.innerHTML = "High Risk Threat Detected! Flagged as scam and blocked by Xenin AI.";
+                    riskText = "0.95 (High Risk)";
+                    statusText = "Blocked";
                     badgeStyle = "bg-rose-950 text-rose-400 border-rose-800";
+                    threatType = lowerTarget.includes("http") ? "Phishing Link" : "Fraudulent Number/ID";
                 } else {
                     statusDiv.className = "p-3.5 rounded-xl text-xs font-medium bg-emerald-950 text-emerald-300 border border-emerald-800";
-                    statusDiv.innerHTML = "Success! Transfer completed securely. Risk score: 0.02 (Safe).";
-                    riskText = "0.02 (Safe)";
-                    statusText = "Approved";
+                    statusDiv.innerHTML = "Analysis Complete. Target verified as safe by AI models.";
+                    riskText = "0.01 (Safe)";
+                    statusText = "Verified";
                     badgeStyle = "bg-emerald-950 text-emerald-400 border-emerald-800";
+                    threatType = "Clean Entity";
 
                     if(!isProUser) {
                         freeLimitRemaining--;
@@ -357,19 +392,17 @@
                     }
                 }
 
-                transactionHistory.unshift({
-                    id: newTxnId,
-                    recipient: acc,
-                    amount: formattedAmount,
+                fraudHistory.unshift({
+                    id: newLogId,
+                    target: target,
+                    type: threatType,
                     risk: riskText,
                     status: statusText,
                     badgeClass: badgeStyle
                 });
 
                 renderHistory();
-
-                document.getElementById("payeeAcc").value = "";
-                document.getElementById("payAmount").value = "";
+                document.getElementById("checkTarget").value = "";
             }, 1500);
         }
     </script>
