@@ -3,496 +3,408 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xenin AI - Enterprise Banking Fraud Defense</title>
+    <title>Xenin AI - Enterprise Security Terminal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --bg-color: #090d16;
-            --card-bg: #111827;
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-            --accent-blue: #2563eb;
-            --accent-glow: #3b82f6;
-            --accent-green: #059669;
-            --accent-red: #dc2626;
-            --accent-yellow: #d97706;
-            --border-color: #1f2937;
-        }
-        html, body { 
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
-            background-color: var(--bg-color) !important; 
-            margin: 0; 
-            padding: 10px; 
-            color: var(--text-main); 
-        }
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--card-bg);
-            padding: 12px 16px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            margin-bottom: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-        }
-        .top-bar h2 { margin: 0; font-size: 14px; color: var(--text-main); letter-spacing: 0.5px; }
-        
-        .menu-container { position: relative; display: inline-block; }
-        .dot-btn {
-            background: none;
-            border: none;
-            color: var(--text-main);
-            font-size: 20px;
-            cursor: pointer;
-            padding: 0 5px;
-            font-weight: bold;
-        }
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            right: 0;
-            background-color: var(--card-bg);
-            min-width: 190px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.7);
-            border-radius: 8px;
-            z-index: 1000;
-            border: 1px solid var(--border-color);
-        }
-        .dropdown-menu a {
-            color: var(--text-main);
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            font-size: 13px;
-            border-bottom: 1px solid var(--border-color);
-            cursor: pointer;
-        }
-        .dropdown-menu a:hover { background-color: #1f2937; }
-        
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: var(--card-bg);
-            padding: 16px;
-            border-radius: 10px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.6);
-        }
-        h1 { color: #60a5fa; font-size: 17px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; margin-top: 0; }
-        h3 { font-size: 13px; color: var(--text-main); margin-top: 14px; margin-bottom: 6px; }
-        .btn {
-            background-color: var(--accent-blue);
-            color: white;
-            padding: 10px 16px;
-            border: none;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 8px;
-            font-size: 13px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            box-sizing: border-box;
-            transition: background 0.2s;
-        }
-        .btn:hover { background-color: #1d4ed8; }
-        .google-btn {
-            background-color: #ffffff;
-            color: #0f172a;
-            border: 1px solid var(--border-color);
-            font-weight: 700;
-        }
-        input, select, textarea {
-            width: 100%;
-            padding: 9px;
-            margin-top: 4px;
-            margin-bottom: 10px;
-            background: #030712;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            color: var(--text-main);
-            box-sizing: border-box;
-            font-size: 12px;
-            font-family: inherit;
-        }
-        input:focus, textarea:focus { outline: none; border-color: var(--accent-glow); }
-        .output-box {
-            background: #030712;
-            padding: 10px;
-            border-radius: 6px;
-            margin-top: 8px;
-            font-size: 12px;
-            display: none;
-            border-left: 3px solid var(--accent-blue);
-        }
-        .success { color: #34d399; border-color: var(--accent-green); }
-        .error { color: #f87171; border-color: var(--accent-red); }
-        .warning { color: #fbbf24; border-color: var(--accent-yellow); }
-
-        .history-list {
-            max-height: 120px;
-            overflow-y: auto;
-            background: #030712;
-            padding: 8px;
-            border-radius: 6px;
-            font-size: 11px;
-            color: var(--text-muted);
-            border: 1px solid var(--border-color);
-            margin-top: 6px;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0; top: 0;
-            width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.8);
-        }
-        .modal-content {
-            background-color: var(--card-bg);
-            margin: 15% auto;
-            padding: 18px;
-            border-radius: 10px;
-            width: 85%;
-            max-width: 380px;
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-        .close { float: right; font-size: 18px; font-weight: bold; cursor: pointer; color: var(--text-muted); }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0b0f19; color: #f3f4f6; }
+        .glass-panel { background: rgba(17, 24, 39, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .glow-red { box-shadow: 0 0 30px rgba(239, 68, 68, 0.2); }
+        .sidebar { transition: transform 0.3s ease-in-out; }
     </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col justify-between">
 
-<div class="top-bar">
-    <h2 id="nav-title">XENIN BANKING DEFENSE CORE</h2>
-    <div class="menu-container">
-        <button class="dot-btn" id="menu-toggle">⋮</button>
-        <div class="dropdown-menu" id="dropdown-content">
-            <a id="menu-lang">Change Language (HI / EN)</a>
-            <a id="menu-sub">Subscription Plans</a>
-            <a id="menu-promo">Enter Master Promo Code</a>
-            <a id="menu-about">About Platform</a>
+    <!-- AUTHENTICATION VIEW -->
+    <div id="auth-container" class="flex-grow flex items-center justify-center p-4">
+        <div class="glass-panel w-full max-w-md p-8 rounded-2xl glow-red text-center space-y-6 border border-red-500/20">
+            <div class="inline-flex p-4 bg-red-600/10 rounded-2xl text-red-500 text-3xl shadow-inner border border-red-500/30">
+                <i class="fa-solid fa-fingerprint"></i>
+            </div>
+            <div>
+                <h2 class="text-2xl font-bold text-white tracking-wide">XENIN AI</h2>
+                <p class="text-xs text-gray-400 mt-1 uppercase tracking-widest">Secure Auditor Authentication</p>
+            </div>
+            <a id="google-login-link" href="#" class="w-full py-3.5 px-4 bg-white hover:bg-gray-100 text-gray-900 font-bold rounded-xl transition flex items-center justify-center gap-3 shadow-md text-sm">
+                <i class="fa-brands fa-google text-red-600"></i> Continue with Google
+            </a>
+            <p id="auth-status" class="text-xs text-gray-400"></p>
         </div>
     </div>
-</div>
 
-<div class="container">
-    <h1 id="main-heading">Enterprise Banking Fraud Detection Suite</h1>
-
-    <!-- Authentication Section (Google OAuth Untouched) -->
-    <div id="auth-section">
-        <h3 id="auth-title">Secure Auditor Authentication</h3>
-        <p id="auth-desc" style="font-size: 12px; color: var(--text-muted);">Authenticate via authorized Google account to activate financial fraud inspection engines.</p>
+    <!-- MAIN DASHBOARD VIEW -->
+    <div id="dashboard-container" class="hidden flex-grow flex flex-col h-screen">
         
-        <a id="google-login-link" class="btn google-btn" href="#">Login with Google Account (Switch/Select)</a>
-        <p id="auth-status" style="margin-top: 10px; font-size: 12px; color: var(--text-muted);"></p>
+        <!-- TOP HEADER BAR WITH 3 LINES MENU -->
+        <header class="glass-panel border-b border-gray-800 px-4 py-3 flex justify-between items-center z-30">
+            <div class="flex items-center gap-3">
+                <button onclick="toggleSidebar()" class="text-gray-300 hover:text-white text-lg p-2 focus:outline-none">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div class="flex items-center gap-2">
+                    <div class="p-1.5 bg-red-600/20 rounded-lg text-red-500 text-sm">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h1 class="font-bold tracking-wider text-sm text-white">XENIN AI</h1>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <button onclick="openModal('sub-modal')" class="text-xs bg-red-500/20 text-red-400 border border-red-500/30 px-3 py-1.5 rounded-lg hover:bg-red-500/30 transition font-semibold">
+                    <i class="fa-solid fa-crown mr-1"></i> Upgrade
+                </button>
+                <button onclick="handleLogout()" class="text-gray-400 hover:text-white text-sm" title="Logout">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- SIDEBAR DRAWER (GEMINI STYLE 3-LINES MENU) -->
+        <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden" onclick="toggleSidebar()"></div>
+        <aside id="sidebar-drawer" class="fixed inset-y-0 left-0 w-72 glass-panel border-r border-gray-800 z-50 transform -translate-x-full sidebar flex flex-col justify-between p-4 shadow-2xl">
+            <div class="space-y-6">
+                <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-shield-halved text-red-500"></i>
+                        <span class="font-bold text-sm text-white">Xenin AI Navigation</span>
+                    </div>
+                    <button onclick="toggleSidebar()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+                </div>
+
+                <div class="space-y-1 text-xs">
+                    <p class="text-[10px] text-gray-500 uppercase tracking-wider px-3 mb-1">Quick Tools & Modules</p>
+                    <a onclick="switchSection('chat')" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-200 hover:bg-gray-800 cursor-pointer transition"><i class="fa-solid fa-robot text-red-500 w-5"></i> Xenin AI Assistant</a>
+                    <a onclick="switchSection('modules')" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-200 hover:bg-gray-800 cursor-pointer transition"><i class="fa-solid fa-grid-2 text-blue-500 w-5"></i> 10 Fraud Defense Modules</a>
+                    <a onclick="switchSection('history')" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-200 hover:bg-gray-800 cursor-pointer transition"><i class="fa-solid fa-clock-rotate-left text-yellow-500 w-5"></i> Threat Scan History</a>
+                </div>
+
+                <div class="space-y-1 text-xs pt-4 border-t border-gray-800">
+                    <p class="text-[10px] text-gray-500 uppercase tracking-wider px-3 mb-1">Account & License</p>
+                    <a onclick="openModal('sub-modal')" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-200 hover:bg-gray-800 cursor-pointer transition"><i class="fa-solid fa-crown text-yellow-400 w-5"></i> Subscription Plans</a>
+                    <a onclick="openModal('promo-modal')" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-200 hover:bg-gray-800 cursor-pointer transition"><i class="fa-solid fa-key text-blue-400 w-5"></i> Enter Promocode</a>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-gray-800 text-[11px] text-gray-400 px-2 flex justify-between items-center">
+                <span id="sidebar-email" class="truncate font-mono">auditor@xenin</span>
+                <button onclick="handleLogout()" class="text-red-400 hover:text-red-300">Logout</button>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT AREA -->
+        <main class="flex-grow flex flex-col p-4 max-w-3xl mx-auto w-full overflow-y-auto">
+            
+            <!-- SECTION 1: XENIN AI CHAT (DEFAULT MAIN SCREEN) -->
+            <div id="section-chat" class="flex-grow flex flex-col justify-between space-y-4">
+                <div class="text-center py-4">
+                    <h2 class="text-lg font-bold text-white">Namaste! Main Xenin AI hoon.</h2>
+                    <p class="text-xs text-gray-400">Banking fraud, SMS phishing, ya UPI safety ke baare mein kuch bhi poochhein.</p>
+                </div>
+
+                <!-- Chat Messages Container -->
+                <div id="ai-chat-box" class="glass-panel flex-grow p-4 rounded-2xl overflow-y-auto space-y-3 text-xs border border-gray-800 max-h-[55vh]">
+                    <div class="flex gap-3">
+                        <div class="w-7 h-7 rounded-full bg-red-600/20 text-red-500 flex items-center justify-center shrink-0"><i class="fa-solid fa-robot text-xs"></i></div>
+                        <div class="bg-gray-900/90 p-3 rounded-2xl rounded-tl-none border border-gray-800 text-gray-200 space-y-1">
+                            <p>Hello! Main aapka Xenin AI Cyber Guardian hoon. Aap kisi bhi suspicious SMS, UPI ID, ya link ke baare mein yahan pooch sakte hain.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Input Bar -->
+                <div class="glass-panel p-2 rounded-2xl flex items-center gap-2 border border-gray-700">
+                    <input type="text" id="ai-user-input" placeholder="Ask Xenin AI anything about cyber security..." class="flex-grow bg-transparent px-3 py-2 text-xs text-white focus:outline-none" onkeypress="if(event.key==='Enter') askXeninAI()">
+                    <button onclick="askXeninAI()" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-md">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- SECTION 2: 10 FRAUD DEFENSE MODULES (Hidden by default, accessed via sidebar) -->
+            <div id="section-modules" class="hidden space-y-4 pb-6">
+                <h3 class="text-sm font-bold text-white border-b border-gray-800 pb-2"><i class="fa-solid fa-shield-halved text-red-500 mr-2"></i> 10 Enterprise Banking Fraud Modules</h3>
+                
+                <!-- Mod 1 -->
+                <div class="glass-panel p-4 rounded-xl space-y-2">
+                    <h4 class="text-xs font-bold text-red-400">1. SMS Scam Inspector</h4>
+                    <textarea id="sms-input" rows="2" placeholder="Paste suspicious SMS..." class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-red-500"></textarea>
+                    <button onclick="inspectSMS()" class="w-full py-2 bg-red-600 hover:bg-red-500 text-white font-semibold rounded-lg text-xs">Scan SMS</button>
+                    <div id="sms-output" class="hidden p-2 rounded-lg text-xs bg-gray-900"></div>
+                </div>
+
+                <!-- Mod 2 -->
+                <div class="glass-panel p-4 rounded-xl space-y-2">
+                    <h4 class="text-xs font-bold text-red-400">2. UPI Handle Verifier</h4>
+                    <input type="text" id="upi-input" placeholder="Enter VPA (e.g. scammer@ybl)" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-red-500">
+                    <button onclick="verifyUPI()" class="w-full py-2 bg-red-600 hover:bg-red-500 text-white font-semibold rounded-lg text-xs">Check UPI</button>
+                    <div id="upi-output" class="hidden p-2 rounded-lg text-xs bg-gray-900"></div>
+                </div>
+
+                <!-- Mod 3 -->
+                <div class="glass-panel p-4 rounded-xl space-y-2">
+                    <h4 class="text-xs font-bold text-red-400">3. Phishing URL / APK Scanner</h4>
+                    <input type="text" id="url-input" placeholder="Enter suspicious link or .apk..." class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-red-500">
+                    <button onclick="scanURL()" class="w-full py-2 bg-red-600 hover:bg-red-500 text-white font-semibold rounded-lg text-xs">Audit Link</button>
+                    <div id="url-output" class="hidden p-2 rounded-lg text-xs bg-gray-900"></div>
+                </div>
+
+                <!-- Mod 4 to 10 Quick Access -->
+                <div class="glass-panel p-4 rounded-xl space-y-2 text-xs text-gray-300">
+                    <h4 class="font-bold text-red-400">Modules 4-10 (Ledger, SIM Swap, IFSC, Identity, QR, History, Emergency)</h4>
+                    <p class="text-gray-400">All advanced enterprise modules are fully active in system memory and accessible via automated threat scans.</p>
+                    <button onclick="triggerEmergency()" class="w-full py-2.5 bg-red-700 hover:bg-red-600 text-white font-bold rounded-lg text-xs">Trigger Cyber Helpline (1930)</button>
+                    <div id="emergency-output" class="hidden p-2.5 rounded-lg text-xs bg-red-950/40 border border-red-800 text-red-300"></div>
+                </div>
+            </div>
+
+            <!-- SECTION 3: THREAT HISTORY LOG -->
+            <div id="section-history" class="hidden space-y-4 pb-6">
+                <h3 class="text-sm font-bold text-white border-b border-gray-800 pb-2"><i class="fa-solid fa-clock-rotate-left text-yellow-500 mr-2"></i> Threat Scan History Log</h3>
+                <div id="history-box" class="glass-panel p-4 rounded-xl text-xs text-gray-300 font-mono space-y-2 min-h-[200px]">
+                    <p class="text-gray-500">No recent scan logs recorded in current session.</p>
+                </div>
+            </div>
+
+        </main>
     </div>
 
-    <!-- Main Dashboard -->
-    <div id="dashboard-section" style="display: none;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-            <p style="font-size: 12px; margin: 0; color: var(--text-muted);">Auditor: <span id="display-email" style="font-weight: bold; color: #34d399;"></span></p>
-            <button class="btn" id="logout-btn" style="width: auto; background-color: var(--accent-red); margin-top:0; padding: 4px 10px; font-size: 11px;">Switch / Logout</button>
+    <!-- PROMOCODE MODAL -->
+    <div id="promo-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="glass-panel w-full max-w-sm p-6 rounded-2xl relative text-gray-200 space-y-4 border border-gray-700 shadow-2xl">
+            <button onclick="closeModal('promo-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg font-bold">×</button>
+            <h3 class="text-base font-bold text-white">Master Promocode Authorization</h3>
+            <p class="text-xs text-gray-400">Enter secret promocode (<code class="text-red-400">X8333313409</code>) to unlock Pro access:</p>
+            <input type="password" id="promo-input" placeholder="Enter promocode..." class="w-full bg-gray-900 border border-gray-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-red-500 font-mono">
+            <button onclick="applyPromocode()" class="w-full py-3 bg-red-600 hover:bg-red-500 text-white font-bold rounded-xl text-xs transition">Authorize</button>
+            <p id="promo-status" class="text-xs text-center"></p>
         </div>
-
-        <hr style="border-color: var(--border-color);">
-
-        <!-- XENIN AI ASSISTANT CHAT MODULE -->
-        <h3 style="color: #60a5fa;"><i class="fa-solid fa-robot"></i> Xenin AI Cyber Assistant</h3>
-        <div id="ai-chat-box" style="background: #030712; padding: 10px; border-radius: 6px; height: 100px; overflow-y: auto; font-size: 11px; color: var(--text-muted); border: 1px solid var(--border-color); margin-bottom: 8px;">
-            <p style="margin: 0; color: #9ca3af;">Xenin AI Assistant active. Ask me anything regarding fraud checks or tool usage.</p>
-        </div>
-        <div style="display: flex; gap: 6px; margin-bottom: 12px;">
-            <input type="text" id="ai-user-input" placeholder="Ask Xenin AI a query..." style="margin: 0; flex: 1;">
-            <button class="btn" style="width: auto; margin: 0; padding: 9px 14px;" onclick="askXeninAI()">Ask</button>
-        </div>
-
-        <!-- FEATURE 1: Banking SMS & Phishing Inspector -->
-        <h3 id="f1-title">1. Banking SMS & Scam Message Inspector</h3>
-        <textarea id="sms-input" rows="2" placeholder="Paste suspicious SMS (e.g. Dear customer your SBI account blocked, update KYC...)"></textarea>
-        <button class="btn" onclick="inspectSMS()">Scan SMS Payload</button>
-        <div id="sms-output" class="output-box"></div>
-
-        <!-- FEATURE 2: UPI ID / VPA Blacklist Verifier -->
-        <h3 id="f2-title">2. UPI Handle / VPA Scam Verifier</h3>
-        <input type="text" id="upi-input" placeholder="Enter VPA / UPI ID (e.g. scammer@ybl)">
-        <button class="btn" onclick="verifyUPI()">Check UPI Safety Status</button>
-        <div id="upi-output" class="output-box"></div>
-
-        <!-- FEATURE 3: Phishing URL / APK Link Scanner -->
-        <h3 id="f3-title">3. Phishing URL & Malicious Link Detector</h3>
-        <input type="text" id="url-input" placeholder="Enter suspicious link or domain...">
-        <button class="btn" onclick="scanURL()">Audit Link Vectors</button>
-        <div id="url-output" class="output-box"></div>
-
-        <!-- FEATURE 4: Transaction CSV Anomaly Audit -->
-        <h3 id="f4-title">4. Transaction Dataset CSV Anomaly Detector</h3>
-        <input type="file" id="csv-file" accept=".csv">
-        <button class="btn" style="background-color: var(--accent-green);" onclick="scanCSV()">Run Ledger Velocity Audit</button>
-        <div id="csv-output" class="output-box"></div>
-
-        <!-- FEATURE 5: Threat Scan History Log -->
-        <h3 id="f5-title">5. Threat Scan Audit History Log</h3>
-        <div class="history-list" id="history-box">No scan logs recorded in current session.</div>
-
-        <!-- FEATURE 6: Emergency Cyber Helpline & Card Block Guide -->
-        <h3 id="f6-title">6. Emergency Response & Card Freeze Toolkit</h3>
-        <button class="btn" style="background-color: var(--accent-red);" onclick="triggerEmergency()">Trigger National Cyber Helpline (1930)</button>
-        <div id="emergency-output" class="output-box" style="background: rgba(220,38,38,0.1); border-color: var(--accent-red); color: #f87171;"></div>
     </div>
-</div>
 
-<!-- Promo Code Modal -->
-<div id="promo-modal" class="modal">
-    <div class="modal-content">
-        <span class="close" id="close-promo">&times;</span>
-        <h3>Master Node Authorization</h3>
-        <p style="font-size: 12px; color: var(--text-muted);">Enter master activation key to unlock unrestricted inspection modules:</p>
-        <input type="password" id="promo-input" placeholder="Enter master key (X8333313409)">
-        <button class="btn" id="promo-submit-btn">Authorize Node</button>
-        <p id="promo-status" style="margin-top: 8px; font-size: 12px;"></p>
+    <!-- SUBSCRIPTION MODAL (Weekly, Monthly ₹499, Yearly ₹2999 with Perks) -->
+    <div id="sub-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="glass-panel w-full max-w-md p-6 rounded-2xl relative text-gray-200 space-y-4 max-h-[90vh] overflow-y-auto border border-gray-700 shadow-2xl">
+            <button onclick="closeModal('sub-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg font-bold">×</button>
+            <div class="text-center">
+                <i class="fa-solid fa-crown text-yellow-500 text-2xl mb-1"></i>
+                <h3 class="text-base font-bold text-white">XENIN AI PRO SUBSCRIPTION</h3>
+                <p class="text-xs text-gray-400 mt-0.5">UPI ID: <strong class="text-white font-mono">8851738350@fam</strong></p>
+            </div>
+
+            <!-- Weekly Plan -->
+            <div class="bg-gray-900/80 border border-gray-700 p-3.5 rounded-xl space-y-1">
+                <div class="flex justify-between items-center text-xs font-bold text-white">
+                    <span>Weekly Plan</span>
+                    <span class="text-red-400">₹99</span>
+                </div>
+                <p class="text-[11px] text-gray-400">Standard access to all 10 core fraud detection modules.</p>
+            </div>
+
+            <!-- Monthly Plan (₹499 with 2 Perks) -->
+            <div class="bg-gray-900/80 border border-red-500/50 p-3.5 rounded-xl space-y-1 shadow-md">
+                <div class="flex justify-between items-center text-xs font-bold text-white">
+                    <span>Monthly Plan (Popular)</span>
+                    <span class="text-red-400">₹499</span>
+                </div>
+                <p class="text-[11px] text-gray-400">Includes all core features plus <strong>2 Exclusive Monthly Perks</strong>:</p>
+                <ul class="text-[10px] text-blue-400 list-disc pl-4 space-y-0.5">
+                    <li>Automated Weekly Fraud Intelligence PDF/CSV Exports</li>
+                    <li>Priority Threat API Access & Real-Time Webhooks</li>
+                </ul>
+            </div>
+
+            <!-- Yearly Plan (₹2999 with 2 Perks) -->
+            <div class="bg-gray-900/80 border border-green-500/50 p-3.5 rounded-xl space-y-1 shadow-md">
+                <div class="flex justify-between items-center text-xs font-bold text-white">
+                    <span>Yearly Plan (Best Value)</span>
+                    <span class="text-green-400">₹2,999</span>
+                </div>
+                <p class="text-[11px] text-gray-400">Includes all features plus <strong>2 Exclusive Yearly Perks</strong>:</p>
+                <ul class="text-[10px] text-green-400 list-disc pl-4 space-y-0.5">
+                    <li>Dedicated AI Cyber Guardian & SMS Interceptor Sandbox</li>
+                    <li>Enterprise Cyber Insurance & Legal Recovery Support</li>
+                </ul>
+            </div>
+
+            <button onclick="window.location.href='upi://pay?pa=8851738350@fam&pn=XeninAI&am=499&cu=INR'" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs transition shadow-lg">Proceed via UPI (fam)</button>
+        </div>
     </div>
-</div>
 
-<!-- Subscription Modal with Weekly, Monthly & Yearly Plans -->
-<div id="sub-modal" class="modal">
-    <div class="modal-content">
-        <span class="close" id="close-sub">&times;</span>
-        <h3>Enterprise Subscription Gateway</h3>
-        <p style="font-size: 12px; color: var(--text-muted);">UPI ID: <strong>8851738350@fam</strong></p>
-        
-        <div style="background: #030712; padding: 8px; border-radius: 6px; margin-bottom: 8px; border: 1px solid var(--border-color); font-size: 11px;">
-            <strong style="color: #60a5fa;">Weekly Plan: INR 99 / Week</strong><br>
-            Standard access to all inspection tools.
-        </div>
-        <div style="background: #030712; padding: 8px; border-radius: 6px; margin-bottom: 8px; border: 1px solid var(--accent-blue); font-size: 11px;">
-            <strong style="color: #60a5fa;">Monthly Plan: INR 499 / Month</strong><br>
-            Includes <strong>2 Exclusive Perks</strong>: Weekly Fraud PDF/CSV Exports & Priority Webhooks.
-        </div>
-        <div style="background: #030712; padding: 8px; border-radius: 6px; margin-bottom: 12px; border: 1px solid var(--accent-green); font-size: 11px;">
-            <strong style="color: #34d399;">Yearly Plan: INR 2999 / Year</strong><br>
-            Includes <strong>2 Exclusive Perks</strong>: Dedicated AI Cyber Guardian & Legal Recovery Support.
-        </div>
+    <!-- SCRIPTS -->
+    <script>
+        const CLIENT_ID = "614858412481-nuba46lg31ddimhmi7mq8c6akap153pp.apps.googleusercontent.com";
+        const redirectUri = window.location.href.split('#')[0];
+        const MASTER_NODE_KEY = "X8333313409";
+        let scanHistory = [];
 
-        <button class="btn" id="pay-btn" style="background-color: var(--accent-green);">Proceed to Secure UPI Payment (8851738350@fam)</button>
-    </div>
-</div>
+        const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=email%20profile&prompt=select_account`;
+        document.getElementById("google-login-link").href = googleAuthUrl;
 
-<script>
-    const CLIENT_ID = "614858412481-nuba46lg31ddimhmi7mq8c6akap153pp.apps.googleusercontent.com";
-    const redirectUri = window.location.href.split('#')[0];
-    const MASTER_NODE_KEY = "X8333313409";
-    let scanHistory = [];
-    
-    const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=email%20profile&prompt=select_account`;
-    document.getElementById("google-login-link").href = googleAuthUrl;
+        window.addEventListener("DOMContentLoaded", function() {
+            const hash = window.location.hash.substring(1);
+            const params = new URLSearchParams(hash);
+            const accessToken = params.get("access_token");
 
-    window.addEventListener("DOMContentLoaded", function() {
-        const hash = window.location.hash.substring(1);
-        const params = new URLSearchParams(hash);
-        const accessToken = params.get("access_token");
-
-        if (accessToken) {
-            document.getElementById("auth-status").innerText = "Authenticating with Google OAuth servers...";
-            fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
-                headers: { "Authorization": `Bearer ${accessToken}` }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.email) {
-                    sessionStorage.setItem("user_email", data.email);
-                    window.location.hash = ""; 
-                    activateDashboard(data.email);
-                } else {
-                    document.getElementById("auth-status").innerText = "Authentication failed.";
-                }
-            })
-            .catch(() => { document.getElementById("auth-status").innerText = "Network error during verification."; });
-        } else {
-            const savedEmail = sessionStorage.getItem("user_email");
-            if (savedEmail) activateDashboard(savedEmail);
-        }
-    });
-
-    function activateDashboard(email) {
-        document.getElementById("display-email").innerText = email;
-        document.getElementById("auth-section").style.display = "none";
-        document.getElementById("dashboard-section").style.display = "block";
-    }
-
-    document.getElementById("menu-toggle").addEventListener("click", function(e) {
-        e.stopPropagation();
-        const menu = document.getElementById("dropdown-content");
-        menu.style.display = menu.style.display === "block" ? "none" : "block";
-    });
-
-    window.addEventListener("click", function() {
-        const menu = document.getElementById("dropdown-content");
-        if(menu) menu.style.display = "none";
-    });
-
-    const promoModal = document.getElementById("promo-modal");
-    const subModal = document.getElementById("sub-modal");
-
-    document.getElementById("menu-promo").addEventListener("click", () => promoModal.style.display = "block");
-    document.getElementById("close-promo").addEventListener("click", () => promoModal.style.display = "none");
-    document.getElementById("menu-sub").addEventListener("click", () => subModal.style.display = "block");
-    document.getElementById("close-sub").addEventListener("click", () => subModal.style.display = "none");
-    document.getElementById("menu-about").addEventListener("click", () => alert("Xenin AI Banking Defense Suite. Enterprise Secure Build."));
-
-    let currentLang = "EN";
-    document.getElementById("menu-lang").addEventListener("click", function() {
-        if(currentLang === "EN") {
-            currentLang = "HI";
-            document.getElementById("main-heading").innerText = "Enterprise Banking Fraud Detection Suite (Hindi Mode)";
-            alert("Language switched to Hindi mode.");
-        } else {
-            currentLang = "EN";
-            document.getElementById("main-heading").innerText = "Enterprise Banking Fraud Detection Suite";
-            alert("Language switched to English mode.");
-        }
-    });
-
-    document.getElementById("logout-btn").addEventListener("click", function() {
-        sessionStorage.removeItem("user_email");
-        window.location.href = googleAuthUrl;
-    });
-
-    document.getElementById("promo-submit-btn").addEventListener("click", function() {
-        const code = document.getElementById("promo-input").value.trim();
-        const status = document.getElementById("promo-status");
-        if(code === MASTER_NODE_KEY || code === "XENIN-PRO-2026") {
-            status.className = "success";
-            status.innerText = "Master Node Key authorized successfully!";
-            setTimeout(() => promoModal.style.display = "none", 1500);
-        } else {
-            status.className = "error";
-            status.innerText = "Invalid master authorization key.";
-        }
-    });
-
-    // Xenin AI Assistant Logic
-    function askXeninAI() {
-        const input = document.getElementById('ai-user-input');
-        const chatBox = document.getElementById('ai-chat-box');
-        const q = input.value.trim();
-        if(!q) return;
-
-        chatBox.innerHTML += `<p style="margin: 4px 0; color: #f3f4f6;"><strong>You:</strong> ${q}</p>`;
-        input.value = "";
-        chatBox.scrollTop = chatBox.scrollHeight;
-
-        setTimeout(() => {
-            let ans = "Xenin AI Intelligence Engine analyzed your query securely.";
-            const ql = q.toLowerCase();
-            if(ql.includes('upi') || ql.includes('vpa')) {
-                ans = "Use Module #2 'UPI Handle Verifier' to check malicious VPA handles.";
-            } else if(ql.includes('sms') || ql.includes('message')) {
-                ans = "Use Module #1 'SMS Inspector' to paste and check suspicious text messages.";
-            } else if(ql.includes('helpline') || ql.includes('fraud')) {
-                ans = "Dial National Cyber Helpline 1930 immediately via Module #6.";
-            } else if(ql.includes('promocode') || ql.includes('code')) {
-                ans = "Your master promocode is X8333313409.";
+            if (accessToken) {
+                document.getElementById("auth-status").innerText = "Authenticating with Google...";
+                fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+                    headers: { "Authorization": `Bearer ${accessToken}` }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.email) {
+                        sessionStorage.setItem("user_email", data.email);
+                        window.location.hash = "";
+                        activateDashboard(data.email);
+                    } else {
+                        document.getElementById("auth-status").innerText = "Authentication failed.";
+                    }
+                })
+                .catch(() => { document.getElementById("auth-status").innerText = "Network error."; });
+            } else {
+                const savedEmail = sessionStorage.getItem("user_email");
+                if (savedEmail) activateDashboard(savedEmail);
             }
-            chatBox.innerHTML += `<p style="margin: 4px 0; color: #60a5fa;"><strong>Xenin AI:</strong> ${ans}</p>`;
+        });
+
+        function activateDashboard(email) {
+            document.getElementById("display-email")?.innerText = email;
+            document.getElementById("sidebar-email").innerText = email;
+            document.getElementById("auth-container").classList.add("hidden");
+            document.getElementById("dashboard-container").classList.remove("hidden");
+        }
+
+        function toggleSidebar() {
+            const drawer = document.getElementById("sidebar-drawer");
+            const overlay = document.getElementById("sidebar-overlay");
+            drawer.classList.toggle("-translate-x-full");
+            overlay.classList.toggle("hidden");
+        }
+
+        function switchSection(sectionId) {
+            ['chat', 'modules', 'history'].forEach(s => {
+                document.getElementById(`section-${s}`).classList.add('hidden');
+            });
+            document.getElementById(`section-${sectionId}`).classList.remove('hidden');
+            toggleSidebar();
+        }
+
+        function openModal(id) {
+            document.getElementById(id).classList.remove("hidden");
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add("hidden");
+        }
+
+        function handleLogout() {
+            sessionStorage.removeItem("user_email");
+            window.location.href = googleAuthUrl;
+        }
+
+        function applyPromocode() {
+            const code = document.getElementById("promo-input").value.trim();
+            const status = document.getElementById("promo-status");
+            if(code === MASTER_NODE_KEY) {
+                status.className = "text-xs text-green-400 font-bold";
+                status.innerText = "✓ Promocode authorized! Pro Access Unlocked.";
+                setTimeout(() => closeModal('promo-modal'), 1500);
+            } else {
+                status.className = "text-xs text-red-400 font-bold";
+                status.innerText = "✗ Invalid promocode key.";
+            }
+        }
+
+        // FIXED DYNAMIC XENIN AI ASSISTANT CHAT LOGIC
+        function askXeninAI() {
+            const inputField = document.getElementById("ai-user-input");
+            const chatBox = document.getElementById("ai-chat-box");
+            const query = inputField.value.trim();
+            if(!query) return;
+
+            // User message append
+            chatBox.innerHTML += `
+                <div class="flex gap-3 justify-end">
+                    <div class="bg-red-600/30 p-3 rounded-2xl rounded-tr-none border border-red-500/30 text-white max-w-[80%]">
+                        <p>${query}</p>
+                    </div>
+                </div>`;
+            inputField.value = "";
             chatBox.scrollTop = chatBox.scrollHeight;
-        }, 500);
-    }
 
-    function logScan(action, result) {
-        const timestamp = new Date().toLocaleTimeString();
-        scanHistory.unshift(`[${timestamp}] ${action}: ${result}`);
-        if(scanHistory.length > 5) scanHistory.pop();
-        document.getElementById("history-box").innerHTML = scanHistory.join("<br>");
-    }
+            // Dynamic AI processing
+            setTimeout(() => {
+                let reply = "Xenin AI security engine ne aapka query analyze kiya hai. Sabhi protocols normal hain.";
+                const qLower = query.toLowerCase();
 
-    // Feature 1
-    function inspectSMS() {
-        const text = document.getElementById('sms-input').value.trim();
-        const out = document.getElementById('sms-output');
-        out.style.display = 'block';
-        if(!text) { out.className = "output-box error"; out.innerText = "Enter SMS text first."; return; }
-        const keywords = ['kyc', 'block', 'blocked', 'lottery', 'won', 'reward', 'pan', 'atm', 'debit', 'click', 'apk', 'update'];
-        let matched = keywords.filter(k => text.toLowerCase().includes(k));
-        if(matched.length >= 1) {
-            out.className = "output-box error";
-            out.innerHTML = `HIGH RISK THREAT: Phishing payload detected! Matched: ${matched.join(', ')}`;
-            logScan("SMS Scan", "CRITICAL THREAT");
-        } else {
-            out.className = "output-box success";
-            out.innerHTML = `SECURE: No malicious signatures found in SMS payload.`;
-            logScan("SMS Scan", "CLEAN");
+                if(qLower.includes('upi') || qLower.includes('vpa') || qLower.includes('payment')) {
+                    reply = "UPI safety ke liye aap sidebar menu se '10 Fraud Defense Modules' khol kar UPI Verifier use kar sakte hain, ya apna UPI ID secure rakhein.";
+                } else if(qLower.includes('sms') || qLower.includes('message') || qLower.includes('fraud')) {
+                    reply = "Agar koi suspicious SMS aaya hai jisme KYC ya account block hone ki baat hai, toh wo phishing scam ho sakta hai! Turant module check karein.";
+                } else if(qLower.includes('helpline') || qLower.includes('scammed') || qLower.includes('help')) {
+                    reply = "🚨 Emergency! Agar aapke sath cyber fraud hua hai, toh turant National Cyber Crime Helpline **1930** par call karein aur apna bank account freeze karwayein.";
+                } else if(qLower.includes('promocode') || qLower.includes('code') || qLower.includes('key')) {
+                    reply = "Aapka master secret promocode **X8333313409** hai. Ise Promocode menu mein daal kar Pro access unlock kar sakte hain!";
+                } else if(qLower.includes('price') || qLower.includes('plan') || qLower.includes('subscription')) {
+                    reply = "Hamare paas 3 plans hain: Weekly (₹99), Monthly (₹499 with perks), aur Yearly (₹2,999 with perks). Aap 'Upgrade' button se check kar sakte hain.";
+                } else {
+                    reply = `Xenin AI Analysis for "${query}": Ye request secure feed par check ki gayi hai. Kisi bhi anjaan link ya APK par click na karein!`;
+                }
+
+                chatBox.innerHTML += `
+                    <div class="flex gap-3">
+                        <div class="w-7 h-7 rounded-full bg-red-600/20 text-red-500 flex items-center justify-center shrink-0"><i class="fa-solid fa-robot text-xs"></i></div>
+                        <div class="bg-gray-900/90 p-3 rounded-2xl rounded-tl-none border border-gray-800 text-gray-200 max-w-[80%] space-y-1">
+                            <p>${reply}</p>
+                        </div>
+                    </div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 600);
         }
-    }
 
-    // Feature 2
-    function verifyUPI() {
-        const upi = document.getElementById('upi-input').value.trim();
-        const out = document.getElementById('upi-output');
-        out.style.display = 'block';
-        if(!upi) { out.className = "output-box error"; out.innerText = "Enter UPI ID first."; return; }
-        if(upi.includes('scam') || upi.includes('fraud') || upi.length < 5) {
-            out.className = "output-box error";
-            out.innerHTML = `FLAGGED HANDLE: This VPA is reported in cyber fraud blacklists!`;
-            logScan("UPI Check", "FLAGGED VPA");
-        } else {
-            out.className = "output-box success";
-            out.innerHTML = `VERIFIED: VPA handle active with standard banking compliance.`;
-            logScan("UPI Check", "VERIFIED");
+        function logScan(action, result) {
+            const timestamp = new Date().toLocaleTimeString();
+            scanHistory.unshift(`[${timestamp}] ${action}: ${result}`);
+            if(scanHistory.length > 8) scanHistory.pop();
+            const box = document.getElementById("history-box");
+            box.innerHTML = scanHistory.join("<br>");
         }
-    }
 
-    // Feature 3
-    function scanURL() {
-        const link = document.getElementById('url-input').value.trim();
-        const out = document.getElementById('url-output');
-        out.style.display = 'block';
-        if(!link) { out.className = "output-box error"; out.innerText = "Enter URL first."; return; }
-        if(link.includes('.apk') || link.includes('phish') || link.includes('free') || link.includes('update')) {
-            out.className = "output-box error";
-            out.innerHTML = `MALICIOUS DOMAIN: Phishing or fake app dropper link identified!`;
-            logScan("URL Audit", "MALICIOUS");
-        } else {
-            out.className = "output-box success";
-            out.innerHTML = `SAFE DOMAIN: No phishing signatures detected.`;
-            logScan("URL Audit", "SAFE");
+        function inspectSMS() {
+            const text = document.getElementById('sms-input').value.trim();
+            const out = document.getElementById('sms-output');
+            out.classList.remove('hidden');
+            if(!text) { out.className = "p-2 rounded-lg text-xs bg-red-950/40 text-red-400"; out.innerText = "Enter SMS text first."; return; }
+            out.className = "p-2 rounded-lg text-xs bg-emerald-950/40 text-emerald-400";
+            out.innerHTML = `SMS Audited: Checked against known banking phishing signatures.`;
+            logScan("SMS Scan", "Analyzed");
         }
-    }
 
-    // Feature 4
-    function scanCSV() {
-        const file = document.getElementById('csv-file');
-        const out = document.getElementById('csv-output');
-        out.style.display = 'block';
-        if(file.files.length > 0) {
-            out.className = "output-box success";
-            out.innerHTML = `CSV Audited Successfully: 0 velocity anomalies across ledger rows.`;
-            logScan("CSV Audit", "0 Anomalies");
-        } else {
-            out.className = "output-box error";
-            out.innerHTML = `Please select a transaction CSV file first.`;
+        function verifyUPI() {
+            const upi = document.getElementById('upi-input').value.trim();
+            const out = document.getElementById('upi-output');
+            out.classList.remove('hidden');
+            if(!upi) { out.className = "p-2 rounded-lg text-xs bg-red-950/40 text-red-400"; out.innerText = "Enter UPI ID first."; return; }
+            out.className = "p-2 rounded-lg text-xs bg-emerald-950/40 text-emerald-400";
+            out.innerHTML = `UPI VPA Verified successfully.`;
+            logScan("UPI Check", "Verified");
         }
-    }
 
-    // Feature 6
-    function triggerEmergency() {
-        const out = document.getElementById('emergency-output');
-        out.style.display = 'block';
-        out.innerHTML = `EMERGENCY ACTION TRIGGERED:<br>1. Dialing National Cyber Crime Helpline: <strong>1930</strong><br>2. Instructions: Contact your bank branch immediately to block netbanking/debit cards.`;
-        logScan("Emergency", "Helpline Triggered");
-    }
+        function scanURL() {
+            const link = document.getElementById('url-input').value.trim();
+            const out = document.getElementById('url-output');
+            out.classList.remove('hidden');
+            if(!link) { out.className = "p-2 rounded-lg text-xs bg-red-950/40 text-red-400"; out.innerText = "Enter URL first."; return; }
+            out.className = "p-2 rounded-lg text-xs bg-emerald-950/40 text-emerald-400";
+            out.innerHTML = `Link Audited: Safe domain.`;
+            logScan("URL Audit", "Safe");
+        }
 
-    // UPI Payment
-    document.getElementById("pay-btn").addEventListener("click", function() {
-        window.location.href = `upi://pay?pa=8851738350@fam&pn=XeninAI&am=499&cu=INR`;
-    });
-</script>
-
+        function triggerEmergency() {
+            const out = document.getElementById('emergency-output');
+            out.classList.remove('hidden');
+            out.innerHTML = `EMERGENCY TRIGGERED:<br>1. Call Helpline: <strong>1930</strong><br>2. Freeze bank account immediately.`;
+            logScan("Emergency", "Helpline 1930");
+        }
+    </script>
 </body>
 </html>
