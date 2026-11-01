@@ -1,12 +1,13 @@
 
 const { OAuth2Client } = require("google-auth-library");
 
-const CLIENT_ID =
-  "614858412481-nuba46lg31ddimhmi7mq8c6akap153pp.apps.googleusercontent.com";
+const client = new OAuth2Client(
+  process.env.GOOGLE_CLIENT_ID
+);
 
-const googleClient = new OAuth2Client(CLIENT_ID);
+module.exports = async function handler(req, res) {
+  res.setHeader("Content-Type", "application/json");
 
-module.exports = async (req, res) => {
   if (req.method !== "POST") {
     return res.status(405).json({
       error: "Method not allowed"
@@ -16,22 +17,28 @@ module.exports = async (req, res) => {
   try {
     const { credential } = req.body || {};
 
-    if (!credential || typeof credential !== "string") {
+    if (!credential) {
       return res.status(400).json({
-        error: "Google credential is required"
+        error: "Google credential missing"
       });
     }
 
-    const ticket = await googleClient.verifyIdToken({
+    if (!process.env.GOOGLE_CLIENT_ID) {
+      return res.status(500).json({
+        error: "Google Client ID not configured"
+      });
+    }
+
+    const ticket = await client.verifyIdToken({
       idToken: credential,
-      audience: CLIENT_ID
+      audience: process.env.GOOGLE_CLIENT_ID
     });
 
     const payload = ticket.getPayload();
 
     if (!payload || !payload.email || !payload.email_verified) {
       return res.status(401).json({
-        error: "Google account verification failed"
+        error: "Google account could not be verified"
       });
     }
 
@@ -46,7 +53,7 @@ module.exports = async (req, res) => {
     console.error("Google login error:", error.message);
 
     return res.status(401).json({
-      error: "Invalid Google login"
+      error: "Google login verification failed"
     });
   }
 };
