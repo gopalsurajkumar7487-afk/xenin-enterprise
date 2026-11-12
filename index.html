@@ -17,12 +17,12 @@
     -webkit-tap-highlight-color: transparent;
   }
   .glass {
-    background: rgba(17, 24, 39, 0.9);
+    background: rgba(17, 24, 39, 0.92);
     backdrop-filter: blur(16px);
     border: 1px solid rgba(255,255,255,0.08);
   }
   .glow-red {
-    box-shadow: 0 0 30px rgba(220, 38, 38, 0.22);
+    box-shadow: 0 0 30px rgba(220, 38, 38, 0.25);
   }
   .field {
     width: 100%;
@@ -30,13 +30,11 @@
     border: 1px solid #374151;
     border-radius: 12px;
     padding: 13px 15px;
-    font-size: 13.5px;
+    font-size: 14px;
     color: white;
     outline: none;
   }
-  .field:focus {
-    border-color: #dc2626;
-  }
+  .field:focus { border-color: #dc2626; }
   .btn-red {
     background: #dc2626;
     color: white;
@@ -46,9 +44,7 @@
     font-weight: 600;
     width: 100%;
   }
-  .btn-red:active {
-    background: #b91c1c;
-  }
+  .btn-red:active { background: #b91c1c; }
   .output {
     display: none;
     margin-top: 12px;
@@ -58,9 +54,7 @@
     line-height: 1.55;
     white-space: pre-wrap;
   }
-  .sidebar {
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
+  .sidebar { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
   .chat-bubble {
     max-width: 88%;
     padding: 13px 15px;
@@ -68,18 +62,25 @@
     font-size: 13.5px;
     line-height: 1.5;
   }
+  .pro-badge {
+    background: linear-gradient(90deg, #dc2626, #b91c1c);
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 999px;
+    margin-left: 6px;
+  }
 </style>
 </head>
 <body class="min-h-screen">
 
-<!-- LOGIN SCREEN -->
+<!-- LOGIN -->
 <div id="auth-screen" class="min-h-screen flex items-center justify-center p-5">
   <div class="glass w-full max-w-md p-8 rounded-3xl glow-red text-center space-y-7">
     <div class="inline-flex p-5 bg-red-600/10 rounded-2xl text-red-500 text-4xl border border-red-500/30">
       <i class="fa-solid fa-fingerprint"></i>
     </div>
     <div>
-      <h1 class="text-2xl font-bold tracking-tight">XENIN AI</h1>
+      <h1 class="text-2xl font-bold">XENIN AI</h1>
       <p class="text-xs text-gray-400 mt-2 uppercase tracking-widest">Enterprise Security Terminal</p>
     </div>
 
@@ -87,23 +88,17 @@
       <button onclick="continueAsGuest()" class="btn-red">
         <i class="fa-solid fa-user-shield mr-2"></i> Continue as Guest
       </button>
-      
-      <button onclick="showGoogleInfo()" class="w-full py-3 rounded-xl border border-gray-600 text-sm text-gray-300">
+      <button onclick="showGoogleInfo()" class="w-full py-3.5 rounded-xl border border-gray-600 text-sm text-gray-300">
         <i class="fa-brands fa-google mr-2"></i> Continue with Google
       </button>
     </div>
-
-    <p class="text-[11px] text-gray-500 leading-relaxed">
-      Guest mode works fully offline.<br>
-      Google Login will be fully activated after backend connection.
-    </p>
+    <p class="text-[11px] text-gray-500">Guest mode works fully offline.</p>
   </div>
 </div>
 
 <!-- MAIN APP -->
 <div id="app" class="hidden min-h-screen flex flex-col">
 
-  <!-- Header -->
   <header class="glass px-4 py-3 flex justify-between items-center sticky top-0 z-30">
     <div class="flex items-center gap-3">
       <button onclick="toggleSidebar()" class="text-gray-300 w-10 h-10 flex items-center justify-center">
@@ -112,6 +107,7 @@
       <div class="flex items-center gap-2">
         <i class="fa-solid fa-shield-halved text-red-500"></i>
         <span class="font-bold text-sm">XENIN AI</span>
+        <span id="pro-badge" class="pro-badge hidden">PRO</span>
       </div>
     </div>
     <button onclick="openModal('sub-modal')" class="text-xs bg-red-500/15 text-red-400 border border-red-500/30 px-3 py-1.5 rounded-lg">
@@ -119,10 +115,8 @@
     </button>
   </header>
 
-  <!-- Sidebar Overlay -->
   <div id="sidebar-overlay" class="hidden fixed inset-0 bg-black/70 z-40" onclick="toggleSidebar()"></div>
 
-  <!-- Sidebar -->
   <aside id="sidebar" class="fixed inset-y-0 left-0 w-72 glass z-50 -translate-x-full sidebar flex flex-col p-5">
     <div class="flex justify-between items-center mb-6">
       <span class="font-bold text-sm">Xenin AI</span>
@@ -157,12 +151,12 @@
     </nav>
 
     <div class="pt-4 border-t border-gray-800 text-xs text-gray-400">
-      <div class="truncate mb-2" id="user-email">Guest User</div>
+      <div class="truncate mb-1" id="user-email">Guest User</div>
+      <div id="plan-status" class="text-[11px] text-gray-500 mb-2">Free Plan</div>
       <button onclick="logout()" class="text-red-400">Logout</button>
     </div>
   </aside>
 
-  <!-- Main Content -->
   <main class="flex-1 p-4 max-w-lg mx-auto w-full pb-12">
 
     <!-- DASHBOARD -->
@@ -173,46 +167,30 @@
       </div>
 
       <div class="grid grid-cols-2 gap-3">
-        <button onclick="switchSection('chat')" class="glass p-4 rounded-2xl text-left active:scale-[0.97] transition">
+        <button onclick="switchSection('chat')" class="glass p-4 rounded-2xl text-left">
           <i class="fa-solid fa-robot text-red-500 text-xl mb-2"></i>
           <div class="text-sm font-semibold">AI Assistant</div>
-          <div class="text-[11px] text-gray-400">Ask anything</div>
         </button>
-        <button onclick="goToModule('sms')" class="glass p-4 rounded-2xl text-left active:scale-[0.97] transition">
+        <button onclick="goToModule('sms')" class="glass p-4 rounded-2xl text-left">
           <i class="fa-solid fa-message text-red-500 text-xl mb-2"></i>
           <div class="text-sm font-semibold">SMS Scanner</div>
-          <div class="text-[11px] text-gray-400">Check messages</div>
         </button>
-        <button onclick="goToModule('upi')" class="glass p-4 rounded-2xl text-left active:scale-[0.97] transition">
+        <button onclick="goToModule('upi')" class="glass p-4 rounded-2xl text-left">
           <i class="fa-solid fa-wallet text-red-500 text-xl mb-2"></i>
           <div class="text-sm font-semibold">UPI Check</div>
-          <div class="text-[11px] text-gray-400">Verify handle</div>
         </button>
-        <button onclick="goToModule('url')" class="glass p-4 rounded-2xl text-left active:scale-[0.97] transition">
+        <button onclick="goToModule('url')" class="glass p-4 rounded-2xl text-left">
           <i class="fa-solid fa-link text-red-500 text-xl mb-2"></i>
           <div class="text-sm font-semibold">Link Scanner</div>
-          <div class="text-[11px] text-gray-400">Phishing check</div>
         </button>
-        <button onclick="goToModule('qr')" class="glass p-4 rounded-2xl text-left active:scale-[0.97] transition">
+        <button onclick="goToModule('qr')" class="glass p-4 rounded-2xl text-left">
           <i class="fa-solid fa-qrcode text-blue-400 text-xl mb-2"></i>
           <div class="text-sm font-semibold">QR Inspector</div>
-          <div class="text-[11px] text-gray-400">Payment QR</div>
         </button>
-        <button onclick="goToModule('emergency')" class="glass p-4 rounded-2xl text-left active:scale-[0.97] transition">
+        <button onclick="goToModule('emergency')" class="glass p-4 rounded-2xl text-left">
           <i class="fa-solid fa-phone text-green-500 text-xl mb-2"></i>
           <div class="text-sm font-semibold">Emergency</div>
-          <div class="text-[11px] text-gray-400">1930 Helpline</div>
         </button>
-      </div>
-
-      <div class="glass p-4 rounded-2xl">
-        <h3 class="text-sm font-bold mb-2">Quick Safety Rules</h3>
-        <ul class="text-xs text-gray-300 space-y-1.5">
-          <li>• Never share OTP or UPI PIN</li>
-          <li>• Bank never asks password on call or SMS</li>
-          <li>• Always verify name before UPI payment</li>
-          <li>• Report fraud immediately on 1930</li>
-        </ul>
       </div>
     </section>
 
@@ -220,24 +198,11 @@
     <section id="section-chat" class="hidden flex flex-col h-[calc(100vh-140px)]">
       <div class="text-center mb-3">
         <h2 class="font-bold">Xenin AI Assistant</h2>
-        <p class="text-xs text-gray-400">Hindi + English supported</p>
+        <p class="text-xs text-gray-400">Hindi + English</p>
       </div>
-
-      <div id="chat-box" class="flex-1 overflow-y-auto space-y-3 mb-3 pr-1">
-        <div class="chat-bubble glass">
-          Namaste! Main Xenin AI hoon.<br><br>
-          Aap pooch sakte hain:<br>
-          • Kya ye SMS scam hai?<br>
-          • Ye UPI ID theek hai kya?<br>
-          • Phishing link kaise pehchane?<br>
-          • Fraud hone par kya karein?
-        </div>
-      </div>
-
+      <div id="chat-box" class="flex-1 overflow-y-auto space-y-3 mb-3"></div>
       <div class="glass p-2 rounded-2xl flex gap-2">
-        <input id="chat-input" type="text" placeholder="Apna sawal likhein..." 
-               class="flex-1 bg-transparent px-3 py-2.5 text-sm outline-none"
-               onkeydown="if(event.key==='Enter')sendChat()">
+        <input id="chat-input" type="text" placeholder="Apna sawal likhein..." class="flex-1 bg-transparent px-3 py-2.5 text-sm outline-none" onkeydown="if(event.key==='Enter')sendChat()">
         <button onclick="sendChat()" class="bg-red-600 w-12 h-12 rounded-xl flex items-center justify-center">
           <i class="fa-solid fa-paper-plane"></i>
         </button>
@@ -248,93 +213,60 @@
     <section id="section-modules" class="hidden space-y-5">
       <h2 class="text-lg font-bold">Security Modules</h2>
 
-      <!-- SMS -->
       <div class="glass p-4 rounded-2xl space-y-3" id="mod-sms">
-        <h3 class="text-sm font-bold text-red-400"><i class="fa-solid fa-message mr-2"></i>SMS Scam Inspector</h3>
-        <textarea id="sms-input" rows="3" placeholder="Suspicious SMS yahan paste karein..." class="field"></textarea>
+        <h3 class="text-sm font-bold text-red-400">SMS Scam Inspector</h3>
+        <textarea id="sms-input" rows="3" placeholder="Suspicious SMS paste karein..." class="field"></textarea>
         <button onclick="inspectSMS()" class="btn-red">Scan SMS</button>
         <div id="sms-output" class="output"></div>
       </div>
 
-      <!-- UPI -->
       <div class="glass p-4 rounded-2xl space-y-3" id="mod-upi">
-        <h3 class="text-sm font-bold text-red-400"><i class="fa-solid fa-wallet mr-2"></i>UPI Handle Verifier</h3>
-        <input id="upi-input" placeholder="name@paytm / name@ybl" class="field">
+        <h3 class="text-sm font-bold text-red-400">UPI Handle Verifier</h3>
+        <input id="upi-input" placeholder="8851738350@fam" class="field">
         <button onclick="verifyUPI()" class="btn-red">Inspect UPI</button>
         <div id="upi-output" class="output"></div>
       </div>
 
-      <!-- URL -->
       <div class="glass p-4 rounded-2xl space-y-3" id="mod-url">
-        <h3 class="text-sm font-bold text-red-400"><i class="fa-solid fa-link mr-2"></i>Phishing Link Scanner</h3>
-        <input id="url-input" placeholder="https:// suspicious link" class="field">
+        <h3 class="text-sm font-bold text-red-400">Phishing Link Scanner</h3>
+        <input id="url-input" placeholder="https://..." class="field">
         <button onclick="scanURL()" class="btn-red">Inspect Link</button>
         <div id="url-output" class="output"></div>
       </div>
 
-      <!-- QR -->
       <div class="glass p-4 rounded-2xl space-y-3" id="mod-qr">
-        <h3 class="text-sm font-bold text-red-400"><i class="fa-solid fa-qrcode mr-2"></i>QR Payment Inspector</h3>
-        <textarea id="qr-input" rows="2" placeholder="QR se nikla text paste karein" class="field"></textarea>
+        <h3 class="text-sm font-bold text-red-400">QR Payment Inspector</h3>
+        <textarea id="qr-input" rows="2" placeholder="QR text paste karein" class="field"></textarea>
         <button onclick="scanQR()" class="btn-red">Inspect QR</button>
         <div id="qr-output" class="output"></div>
       </div>
 
-      <!-- IFSC -->
-      <div class="glass p-4 rounded-2xl space-y-3">
-        <h3 class="text-sm font-bold text-red-400"><i class="fa-solid fa-building-columns mr-2"></i>IFSC Format Checker</h3>
-        <input id="ifsc-input" placeholder="SBIN0001234" class="field" style="text-transform:uppercase">
-        <button onclick="checkIFSC()" class="btn-red">Validate IFSC</button>
-        <div id="ifsc-output" class="output"></div>
+      <!-- PRO ONLY FEATURE -->
+      <div class="glass p-4 rounded-2xl space-y-3 relative" id="mod-advanced">
+        <div class="absolute top-3 right-3 text-[10px] bg-red-600 px-2 py-0.5 rounded-full">PRO</div>
+        <h3 class="text-sm font-bold text-red-400">Advanced Threat Analysis</h3>
+        <p class="text-xs text-gray-400">Deep pattern detection + risk score (Pro only)</p>
+        <button onclick="runAdvanced()" class="btn-red">Run Advanced Scan</button>
+        <div id="advanced-output" class="output"></div>
       </div>
 
-      <!-- Emergency -->
       <div class="glass p-4 rounded-2xl space-y-3" id="mod-emergency">
-        <h3 class="text-sm font-bold text-red-400"><i class="fa-solid fa-phone-volume mr-2"></i>Emergency Cyber Help</h3>
-        <p class="text-xs text-gray-400">Financial fraud hone par turant action lein.</p>
+        <h3 class="text-sm font-bold text-red-400">Emergency Cyber Help</h3>
         <button onclick="showEmergency()" class="btn-red">Show 1930 Helpline</button>
         <div id="emergency-output" class="output"></div>
       </div>
     </section>
 
-    <!-- BACKGROUND PROTECTION -->
+    <!-- BACKGROUND -->
     <section id="section-background" class="hidden space-y-5">
       <h2 class="text-lg font-bold">Background Protection</h2>
-
-      <div class="glass p-5 rounded-2xl space-y-4">
-        <div class="flex items-start gap-3">
-          <i class="fa-solid fa-circle-info text-yellow-500 text-xl mt-0.5"></i>
-          <div>
-            <h3 class="font-bold text-sm">Important Limitation</h3>
-            <p class="text-xs text-gray-400 mt-1 leading-relaxed">
-              Modern Android does not allow normal apps to fully monitor and block all SMS, UPI payments, or banking activity in the background. This is a system-level restriction for user privacy and security.
-            </p>
-          </div>
-        </div>
-
-        <div class="border-t border-gray-800 pt-4">
-          <h4 class="text-sm font-semibold mb-2">What Xenin AI can do:</h4>
-          <ul class="text-xs text-gray-300 space-y-2">
-            <li>• Manual scanning of SMS, UPI, links and QR codes</li>
-            <li>• AI guidance when you ask</li>
-            <li>• Local scan history</li>
-            <li>• Emergency helpline information</li>
-          </ul>
-        </div>
-
-        <div class="border-t border-gray-800 pt-4">
-          <h4 class="text-sm font-semibold mb-2">What it cannot do:</h4>
-          <ul class="text-xs text-gray-300 space-y-2">
-            <li>• Automatically block bank transactions</li>
-            <li>• Silently read all your SMS without restriction</li>
-            <li>• Stop UPI payments in real time</li>
-            <li>• Act as full antivirus or bank firewall</li>
-          </ul>
-        </div>
-
-        <div class="bg-red-950/40 border border-red-500/30 rounded-xl p-4 text-xs text-red-200">
-          Xenin AI is a <b>protection assistant</b>, not a real-time transaction blocker. Always verify important payments yourself and report fraud on 1930.
-        </div>
+      <div class="glass p-5 rounded-2xl space-y-4 text-sm">
+        <p class="text-gray-300 leading-relaxed">
+          Modern Android does not allow normal apps to fully block UPI payments or read all SMS in the background. This is a system restriction.
+        </p>
+        <p class="text-yellow-400 text-xs">
+          Xenin AI works best when you manually scan suspicious messages, UPI IDs, links and QR codes.
+        </p>
       </div>
     </section>
 
@@ -342,11 +274,9 @@
     <section id="section-history" class="hidden">
       <div class="flex justify-between items-center mb-4">
         <h2 class="text-lg font-bold">Scan History</h2>
-        <button onclick="clearHistory()" class="text-xs text-red-400">Clear All</button>
+        <button onclick="clearHistory()" class="text-xs text-red-400">Clear</button>
       </div>
-      <div id="history-box" class="glass p-4 rounded-2xl text-xs font-mono text-gray-300 min-h-40 space-y-2">
-        No scans yet.
-      </div>
+      <div id="history-box" class="glass p-4 rounded-2xl text-xs font-mono text-gray-300 min-h-40"></div>
     </section>
 
   </main>
@@ -357,7 +287,7 @@
   <div class="glass w-full max-w-sm p-6 rounded-2xl space-y-4">
     <div class="flex justify-between items-center">
       <h3 class="font-bold">Promo Code</h3>
-      <button onclick="closeModal('promo-modal')" class="text-2xl leading-none">×</button>
+      <button onclick="closeModal('promo-modal')" class="text-2xl">×</button>
     </div>
     <input type="text" id="promo-input" placeholder="Enter promo code" class="field">
     <button onclick="applyPromo()" class="btn-red">Apply Code</button>
@@ -370,80 +300,83 @@
   <div class="glass w-full max-w-md p-6 rounded-2xl space-y-5 max-h-[88vh] overflow-y-auto">
     <div class="flex justify-between items-center">
       <h3 class="font-bold text-lg">Xenin AI Pro</h3>
-      <button onclick="closeModal('sub-modal')" class="text-2xl leading-none">×</button>
+      <button onclick="closeModal('sub-modal')" class="text-2xl">×</button>
     </div>
 
     <div class="space-y-3">
-      <div class="bg-gray-900/70 p-4 rounded-xl">
-        <div class="flex justify-between items-center">
-          <div>
-            <div class="font-bold">Weekly</div>
-            <div class="text-xs text-gray-400">Basic access</div>
-          </div>
-          <div class="text-lg font-bold">₹99</div>
+      <div class="bg-gray-900/70 p-4 rounded-xl flex justify-between">
+        <div>
+          <div class="font-bold">Weekly</div>
+          <div class="text-xs text-gray-400">Basic access</div>
         </div>
+        <div class="font-bold">₹99</div>
       </div>
-
-      <div class="bg-gray-900/70 p-4 rounded-xl border border-red-500/50 relative">
+      <div class="bg-gray-900/70 p-4 rounded-xl border border-red-500/50 flex justify-between relative">
         <div class="absolute -top-2.5 left-4 bg-red-600 text-[10px] px-2 py-0.5 rounded-full">Popular</div>
-        <div class="flex justify-between items-center">
-          <div>
-            <div class="font-bold text-red-400">Monthly</div>
-            <div class="text-xs text-gray-400">Recommended</div>
-          </div>
-          <div class="text-lg font-bold">₹499</div>
+        <div>
+          <div class="font-bold text-red-400">Monthly</div>
+          <div class="text-xs text-gray-400">Recommended</div>
         </div>
+        <div class="font-bold">₹499</div>
       </div>
-
-      <div class="bg-gray-900/70 p-4 rounded-xl border border-green-500/40">
-        <div class="flex justify-between items-center">
-          <div>
-            <div class="font-bold">Yearly</div>
-            <div class="text-xs text-gray-400">Best value</div>
-          </div>
-          <div class="text-lg font-bold">₹2,999</div>
+      <div class="bg-gray-900/70 p-4 rounded-xl border border-green-500/40 flex justify-between">
+        <div>
+          <div class="font-bold">Yearly</div>
+          <div class="text-xs text-gray-400">Best value</div>
         </div>
+        <div class="font-bold">₹2,999</div>
       </div>
     </div>
 
-    <div class="bg-yellow-950/40 border border-yellow-600/30 rounded-xl p-4 text-xs text-yellow-200 leading-relaxed">
-      Payment gateway is not connected yet. Do not make any payment until official Razorpay / UPI integration is ready.
+    <div class="bg-yellow-950/40 border border-yellow-600/30 rounded-xl p-4 text-xs text-yellow-200">
+      Payment gateway is not connected yet. Use Promo Code for unlimited access right now.
     </div>
   </div>
 </div>
 
 <script>
-// ====================== STATE ======================
+let isPro = localStorage.getItem('xenin_pro') === 'true';
 let history = JSON.parse(localStorage.getItem('xenin_history') || '[]');
 
-// ====================== AUTH ======================
 function continueAsGuest() {
   document.getElementById('auth-screen').classList.add('hidden');
   document.getElementById('app').classList.remove('hidden');
   document.getElementById('user-email').textContent = 'Guest User';
+  updateProUI();
   renderHistory();
+  addChat("Namaste! Main Xenin AI hoon. Aap SMS, UPI, link ya fraud ke baare mein pooch sakte hain.", false);
 }
 
 function showGoogleInfo() {
-  alert('Google Login will work fully after backend server is connected.\n\nFor now, please use "Continue as Guest".');
+  alert("Google Login ke liye backend chahiye.\n\nAbhi Guest mode use karein.\nBaad mein Firebase ya Vercel backend se connect karenge.");
 }
 
 function logout() {
-  if (confirm('Logout from Xenin AI?')) {
-    location.reload();
+  if (confirm("Logout?")) location.reload();
+}
+
+function updateProUI() {
+  const badge = document.getElementById('pro-badge');
+  const status = document.getElementById('plan-status');
+  if (isPro) {
+    badge.classList.remove('hidden');
+    status.textContent = "PRO • Unlimited Access";
+    status.className = "text-[11px] text-green-400 mb-2";
+  } else {
+    badge.classList.add('hidden');
+    status.textContent = "Free Plan";
+    status.className = "text-[11px] text-gray-500 mb-2";
   }
 }
 
-// ====================== NAVIGATION ======================
 function toggleSidebar() {
   document.getElementById('sidebar').classList.toggle('-translate-x-full');
   document.getElementById('sidebar-overlay').classList.toggle('hidden');
 }
 
 function switchSection(name) {
-  ['home', 'chat', 'modules', 'history', 'background'].forEach(s => {
-    const el = document.getElementById('section-' + s);
-    if (el) el.classList.add('hidden');
+  ['home','chat','modules','history','background'].forEach(s => {
+    document.getElementById('section-' + s).classList.add('hidden');
   });
   document.getElementById('section-' + name).classList.remove('hidden');
   document.getElementById('sidebar').classList.add('-translate-x-full');
@@ -455,49 +388,59 @@ function goToModule(id) {
   switchSection('modules');
   setTimeout(() => {
     const el = document.getElementById('mod-' + id);
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 120);
+    if (el) el.scrollIntoView({behavior:'smooth'});
+  }, 100);
 }
 
-function openModal(id) {
-  document.getElementById(id).classList.remove('hidden');
-}
-function closeModal(id) {
-  document.getElementById(id).classList.add('hidden');
+function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+// ====================== PROMO CODE ======================
+function applyPromo() {
+  const code = document.getElementById('promo-input').value.trim().toUpperCase();
+  const status = document.getElementById('promo-status');
+
+  if (code === "X8333313409") {
+    isPro = true;
+    localStorage.setItem('xenin_pro', 'true');
+    updateProUI();
+    status.textContent = "✅ Promo applied! You now have Unlimited Pro Access.";
+    status.className = "text-xs text-center text-green-400";
+    setTimeout(() => closeModal('promo-modal'), 1500);
+  } else {
+    status.textContent = "Invalid promo code";
+    status.className = "text-xs text-center text-red-400";
+  }
 }
 
 // ====================== HISTORY ======================
 function logScan(action, result) {
-  const time = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+  const time = new Date().toLocaleTimeString('en-IN', {hour:'2-digit', minute:'2-digit'});
   history.unshift(`[${time}] ${action} → ${result}`);
-  if (history.length > 40) history.pop();
+  if (history.length > 50) history.pop();
   localStorage.setItem('xenin_history', JSON.stringify(history));
 }
 
 function renderHistory() {
   const box = document.getElementById('history-box');
-  if (history.length === 0) {
-    box.innerHTML = '<span class="text-gray-500">No scans yet.</span>';
-  } else {
-    box.innerHTML = history.map(h => `<div class="border-b border-gray-800 pb-2">${h}</div>`).join('');
-  }
+  box.innerHTML = history.length === 0 
+    ? '<span class="text-gray-500">No scans yet.</span>'
+    : history.map(h => `<div class="border-b border-gray-800 pb-2 mb-2">${h}</div>`).join('');
 }
 
 function clearHistory() {
-  if (confirm('Clear all scan history?')) {
+  if (confirm("Clear history?")) {
     history = [];
     localStorage.removeItem('xenin_history');
     renderHistory();
   }
 }
 
-// ====================== AI CHAT ======================
+// ====================== AI ======================
 function addChat(text, isUser = false) {
   const box = document.getElementById('chat-box');
   const div = document.createElement('div');
-  div.className = isUser 
-    ? 'chat-bubble bg-red-600/40 ml-auto text-white' 
-    : 'chat-bubble glass text-gray-200';
+  div.className = isUser ? 'chat-bubble bg-red-600/40 ml-auto text-white' : 'chat-bubble glass text-gray-200';
   div.innerHTML = text.replace(/\n/g, '<br>');
   box.appendChild(div);
   box.scrollTop = box.scrollHeight;
@@ -507,33 +450,21 @@ function sendChat() {
   const input = document.getElementById('chat-input');
   const q = input.value.trim();
   if (!q) return;
-
   addChat(q, true);
   input.value = '';
 
   const lower = q.toLowerCase();
-  let reply = '';
+  let reply = "Main aapki madad kar sakta hoon. SMS, UPI, link ya fraud ke baare mein poochhein.";
 
-  if (lower.includes('sms') || lower.includes('message') || lower.includes('otp') || lower.includes('kyc')) {
-    reply = `Suspicious SMS ke common signs:\n\n• "KYC update karo" / "Account blocked"\n• "Is link pe click karo"\n• Lottery / prize / reward messages\n• Bahut urgent dikhana\n\nKya karein:\n1. Link pe click mat karo\n2. Bank ke official app se verify karo\n3. OTP kisi ko mat do`;
-  } 
-  else if (lower.includes('upi') || lower.includes('payment') || lower.includes('pay')) {
-    reply = `UPI Safety Tips:\n\n• Collect request aaye to naam aur amount dono check karo\n• Unknown person ko payment mat bhejo\n• UPI PIN kabhi share mat karo\n• Galat payment ho jaye to turant bank ko call karo`;
-  }
-  else if (lower.includes('link') || lower.includes('phishing') || lower.includes('url') || lower.includes('website')) {
-    reply = `Phishing link pehchane:\n\n• HTTPS nahi hai\n• Domain name ajeeb lag raha hai\n• "Verify account" / "Login now" likha hai\n• Spelling mistakes hain\n\nUnknown link pe kabhi click mat karo.`;
-  }
-  else if (lower.includes('1930') || lower.includes('fraud') || lower.includes('scam') || lower.includes('help') || lower.includes('report')) {
-    reply = `Financial Cyber Fraud hone par:\n\n1. Turant 1930 pe call karein\n2. cybercrime.gov.in pe complaint file karein\n3. Apne bank ko official number se bataein\n4. Transaction details ready rakhein\n\nJaldi report karne se recovery chances badhte hain.`;
-  }
-  else if (lower.includes('sim') || lower.includes('swap')) {
-    reply = `SIM Swap ke signs:\n\n• Achanak network nahi aa raha\n• OTP nahi aa rahe\n• Bank se strange calls\n\nTurant mobile operator + bank ko inform karein.`;
-  }
-  else {
-    reply = `Main aapki madad kar sakta hoon:\n\n• Suspicious SMS check\n• UPI ID verify\n• Phishing link\n• QR code safety\n• Fraud hone par kya karein (1930)\n\nApna sawal clearly poochhein.`;
+  if (lower.includes("sms") || lower.includes("otp") || lower.includes("kyc")) {
+    reply = "Suspicious SMS ke signs:\n• KYC update / Account blocked\n• Click this link\n• Lottery messages\n\nLink pe click mat karo aur OTP mat do.";
+  } else if (lower.includes("upi") || lower.includes("payment")) {
+    reply = "UPI tips:\n• Collect request carefully check karo\n• Name + amount verify karo\n• UPI PIN kabhi share mat karo";
+  } else if (lower.includes("1930") || lower.includes("fraud") || lower.includes("scam")) {
+    reply = "Financial fraud hone par:\n1. 1930 pe call karo\n2. cybercrime.gov.in pe complaint karo\n3. Bank ko inform karo";
   }
 
-  setTimeout(() => addChat(reply), 450);
+  setTimeout(() => addChat(reply), 400);
 }
 
 // ====================== SCANNERS ======================
@@ -546,20 +477,18 @@ function showResult(id, msg, isWarning = false) {
 
 function inspectSMS() {
   const text = document.getElementById('sms-input').value.trim();
-  if (!text) return showResult('sms-output', 'Pehle SMS paste karein.', true);
+  if (!text) return showResult('sms-output', 'SMS paste karein.', true);
 
-  const danger = /otp|kyc|blocked|suspend|urgent|verify now|click here|account.*block|lottery|prize|won|claim|update.*kyc|atm.*block|pan.*update/i;
-  const hasLink = /https?:\/\/|bit\.ly|tinyurl|t\.me\//i.test(text);
+  const danger = /otp|kyc|blocked|urgent|click here|lottery|prize|verify now|account.*block/i;
+  const hasLink = /https?:\/\/|bit\.ly|t\.me/i.test(text);
   const suspicious = danger.test(text) || hasLink;
 
   if (suspicious) {
-    showResult('sms-output', 
-      '⚠️ WARNING: Is SMS mein scam ke common indicators hain.\n\n• Link pe click mat karein\n• OTP share mat karein\n• Bank ke official channel se verify karein', true);
-    logScan('SMS Scan', 'Suspicious indicators found');
+    showResult('sms-output', '⚠️ WARNING: Scam indicators milen hain.\n\n• Link pe click mat karo\n• OTP mat do\n• Bank se verify karo', true);
+    logScan('SMS', 'Suspicious');
   } else {
-    showResult('sms-output', 
-      'Koi strong scam keyword nahi mila.\n\nYeh guarantee nahi hai ki SMS genuine hai. Hamesha apne bank se confirm karein.');
-    logScan('SMS Scan', 'No strong indicators');
+    showResult('sms-output', 'Koi strong warning nahi mili.\nPhir bhi bank se confirm kar lena best hai.');
+    logScan('SMS', 'No strong indicators');
   }
 }
 
@@ -567,101 +496,4 @@ function verifyUPI() {
   const upi = document.getElementById('upi-input').value.trim().toLowerCase();
   if (!upi) return showResult('upi-output', 'UPI ID enter karein.', true);
 
-  const valid = /^[a-z0-9._-]+@[a-z0-9]+$/.test(upi);
-  
-  if (!valid) {
-    showResult('upi-output', '❌ UPI format galat lag raha hai.\n\nSahi format: name@paytm, name@ybl, name@oksbi', true);
-    logScan('UPI Check', 'Invalid format');
-  } else {
-    showResult('upi-output', 
-      '✓ Format theek hai.\n\nLekin yeh prove nahi karta ki account genuine hai.\nPayment se pehle naam aur amount carefully check karein.');
-    logScan('UPI Check', 'Format valid');
-  }
-}
-
-function scanURL() {
-  const raw = document.getElementById('url-input').value.trim();
-  if (!raw) return showResult('url-output', 'Link enter karein.', true);
-
-  let suspicious = false;
-  let reasons = [];
-
-  try {
-    const url = new URL(raw.startsWith('http') ? raw : 'https://' + raw);
-    
-    if (url.protocol !== 'https:') {
-      suspicious = true;
-      reasons.push('HTTPS nahi hai');
-    }
-    if (/login|verify|secure|account|bank|wallet|update|kyc/i.test(url.hostname + url.pathname)) {
-      suspicious = true;
-      reasons.push('Suspicious words in URL');
-    }
-  } catch (e) {
-    suspicious = true;
-    reasons.push('Invalid URL format');
-  }
-
-  if (suspicious) {
-    showResult('url-output', 
-      '⚠️ Caution: Is link mein risk indicators hain.\n\n' + reasons.join('\n') + 
-      '\n\nIs link pe click mat karein.', true);
-    logScan('URL Scan', 'Caution');
-  } else {
-    showResult('url-output', 
-      'Basic format theek lag raha hai.\n\nYeh guarantee nahi hai ki website safe hai.');
-    logScan('URL Scan', 'Basic format OK');
-  }
-}
-
-function scanQR() {
-  const text = document.getElementById('qr-input').value.trim();
-  if (!text) return showResult('qr-output', 'QR text paste karein.', true);
-
-  const isCollect = /pa=|cu=inr|mc=|tn=|collect|reqpay|upi:\/\//i.test(text);
-
-  if (isCollect) {
-    showResult('qr-output', 
-      '⚠️ Is QR mein payment request ho sakta hai.\n\n• Amount carefully check karein\n• Receiver ka naam verify karein\n• Unknown QR se payment mat karein', true);
-    logScan('QR Scan', 'Payment related');
-  } else {
-    showResult('qr-output', 
-      'Text inspected.\n\nYeh guarantee nahi hai ki QR safe hai.');
-    logScan('QR Scan', 'Text checked');
-  }
-}
-
-function checkIFSC() {
-  const ifsc = document.getElementById('ifsc-input').value.trim().toUpperCase();
-  const valid = /^[A-Z]{4}0[A-Z0-9]{6}$/.test(ifsc);
-
-  if (!valid) {
-    showResult('ifsc-output', 'IFSC format galat hai.\n\nSahi format: SBIN0001234', true);
-    logScan('IFSC Check', 'Invalid');
-  } else {
-    showResult('ifsc-output', 
-      '✓ IFSC format correct hai.\n\nBank branch details official website se verify karein.');
-    logScan('IFSC Check', 'Format valid');
-  }
-}
-
-function showEmergency() {
-  showResult('emergency-output', 
-    `🚨 FINANCIAL CYBER FRAUD HELP\n\n1. Turant call karein: 1930\n2. Online complaint: cybercrime.gov.in\n3. Apne bank ko official number se inform karein\n4. Transaction ID, amount, time ready rakhein\n\nJaldi report karne se recovery chances badhte hain.`, true);
-  logScan('Emergency', '1930 info shown');
-}
-
-function applyPromo() {
-  const code = document.getElementById('promo-input').value.trim();
-  const status = document.getElementById('promo-status');
-  if (!code) {
-    status.textContent = 'Code enter karein';
-    status.className = 'text-xs text-center text-red-400';
-    return;
-  }
-  status.textContent = 'Promo system abhi backend se connected nahi hai.';
-  status.className = 'text-xs text-center text-yellow-400';
-}
-</script>
-</body>
-</html>
+  // Special handling
