@@ -9,12 +9,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #05060b;
-    --card: #0c101a;
-    --border: rgba(255,255,255,0.06);
-    --accent: #ef4444;
+    --bg: #070b14;
+    --card: #0f1623;
+    --border: rgba(255,255,255,0.07);
+    --accent: #3b82f6;
   }
-  * { box-sizing: border-box; }
   body {
     font-family: 'Inter', sans-serif;
     background: var(--bg);
@@ -23,13 +22,13 @@
     -webkit-tap-highlight-color: transparent;
   }
   .glass {
-    background: rgba(12, 16, 26, 0.95);
+    background: rgba(15, 22, 35, 0.95);
     border: 1px solid var(--border);
-    backdrop-filter: blur(16px);
+    backdrop-filter: blur(18px);
   }
   .field {
     width: 100%;
-    background: #080c14;
+    background: #0a101c;
     border: 1px solid #1e293b;
     border-radius: 14px;
     padding: 14px 16px;
@@ -37,9 +36,9 @@
     color: white;
     outline: none;
   }
-  .field:focus { border-color: #ef4444; }
+  .field:focus { border-color: #3b82f6; }
   .btn {
-    background: linear-gradient(135deg, #ef4444, #b91c1c);
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
     color: white;
     border-radius: 14px;
     padding: 15px;
@@ -48,15 +47,8 @@
     width: 100%;
     border: none;
   }
-  .btn-outline {
-    background: transparent;
-    border: 1px solid #334155;
-    color: #e2e8f0;
-    border-radius: 14px;
-    padding: 14px;
-    font-size: 14px;
-    font-weight: 500;
-    width: 100%;
+  .btn-green {
+    background: linear-gradient(135deg, #10b981, #059669);
   }
   .output {
     display: none;
@@ -68,29 +60,22 @@
     white-space: pre-wrap;
   }
   .sidebar { transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); }
-  .chat-bubble {
-    max-width: 85%;
-    padding: 12px 15px;
-    border-radius: 16px;
-    font-size: 13.5px;
-    line-height: 1.55;
-  }
   .pro-tag {
-    background: linear-gradient(90deg, #ef4444, #9f1239);
+    background: linear-gradient(90deg, #3b82f6, #1e40af);
     font-size: 9px;
     padding: 3px 8px;
     border-radius: 999px;
     font-weight: 700;
   }
   .limit-bar {
-    height: 4px;
+    height: 5px;
     background: #1e293b;
     border-radius: 99px;
     overflow: hidden;
   }
   .limit-fill {
     height: 100%;
-    background: linear-gradient(90deg, #ef4444, #f97316);
+    background: linear-gradient(90deg, #3b82f6, #06b6d4);
   }
 </style>
 </head>
@@ -99,7 +84,7 @@
 <!-- LOGIN -->
 <div id="auth-screen" class="min-h-screen flex items-center justify-center p-5">
   <div class="glass w-full max-w-md p-8 rounded-3xl text-center space-y-7">
-    <div class="inline-flex p-4 bg-red-500/10 rounded-2xl text-red-500 text-3xl border border-red-500/20">
+    <div class="inline-flex p-4 bg-blue-500/10 rounded-2xl text-blue-400 text-3xl border border-blue-500/20">
       <i class="fa-solid fa-shield-halved"></i>
     </div>
     <div>
@@ -111,29 +96,42 @@
   </div>
 </div>
 
+<!-- NAME + GREETING SCREEN -->
+<div id="welcome-screen" class="hidden min-h-screen flex items-center justify-center p-5">
+  <div class="glass w-full max-w-md p-8 rounded-3xl text-center space-y-6">
+    <h2 id="greeting-text" class="text-xl font-bold">Good Morning</h2>
+    <p class="text-sm text-slate-400">What should we call you?</p>
+    <input id="user-name-input" type="text" placeholder="Enter your name" class="field text-center">
+    <button onclick="saveName()" class="btn">Continue</button>
+  </div>
+</div>
+
 <!-- APP -->
 <div id="app" class="hidden min-h-screen flex flex-col">
 
-  <!-- Header -->
   <header class="glass px-4 py-3.5 flex justify-between items-center sticky top-0 z-30">
     <div class="flex items-center gap-3">
       <button onclick="toggleSidebar()" class="w-10 h-10 flex items-center justify-center text-slate-300">
         <i class="fa-solid fa-bars"></i>
       </button>
       <div class="flex items-center gap-2">
-        <i class="fa-solid fa-shield-halved text-red-500"></i>
+        <i class="fa-solid fa-shield-halved text-blue-400"></i>
         <span class="font-bold text-sm">XENIN AI</span>
         <span id="pro-badge" class="pro-tag hidden">PRO</span>
       </div>
     </div>
-    <button onclick="openModal('sub-modal')" class="text-xs bg-red-500/10 text-red-400 border border-red-500/20 px-3 py-1.5 rounded-xl font-semibold">
-      Upgrade
-    </button>
+    <div class="flex items-center gap-2">
+      <button onclick="openModal('promo-modal')" class="text-xs bg-slate-800 text-slate-300 border border-slate-700 px-3 py-1.5 rounded-xl">
+        Promo
+      </button>
+      <button onclick="openModal('sub-modal')" class="text-xs bg-blue-500/10 text-blue-400 border border-blue-500/20 px-3 py-1.5 rounded-xl font-semibold">
+        Upgrade
+      </button>
+    </div>
   </header>
 
   <div id="sidebar-overlay" class="hidden fixed inset-0 bg-black/70 z-40" onclick="toggleSidebar()"></div>
 
-  <!-- Sidebar -->
   <aside id="sidebar" class="fixed inset-y-0 left-0 w-72 glass z-50 -translate-x-full sidebar flex flex-col p-5">
     <div class="flex justify-between items-center mb-7">
       <span class="font-bold">Xenin AI</span>
@@ -143,13 +141,10 @@
     <nav class="space-y-1 text-sm flex-1">
       <p class="text-[10px] text-slate-500 uppercase tracking-wider mb-2 px-1">Main</p>
       <a onclick="switchSection('home')" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 cursor-pointer">
-        <i class="fa-solid fa-house text-red-500 w-5"></i> Dashboard
-      </a>
-      <a onclick="switchSection('chat')" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 cursor-pointer">
-        <i class="fa-solid fa-robot text-red-500 w-5"></i> AI Assistant
+        <i class="fa-solid fa-house text-blue-400 w-5"></i> Dashboard
       </a>
       <a onclick="switchSection('modules')" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 cursor-pointer">
-        <i class="fa-solid fa-layer-group text-blue-400 w-5"></i> Security Tools
+        <i class="fa-solid fa-layer-group text-cyan-400 w-5"></i> Security Tools
       </a>
       <a onclick="switchSection('alerts')" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 cursor-pointer">
         <i class="fa-solid fa-bell text-amber-400 w-5"></i> Threat Alerts
@@ -164,6 +159,9 @@
       </a>
       <a onclick="openModal('payment-modal')" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 cursor-pointer">
         <i class="fa-solid fa-credit-card text-emerald-400 w-5"></i> Make Payment
+      </a>
+      <a onclick="openModal('promo-modal')" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 cursor-pointer">
+        <i class="fa-solid fa-key text-blue-400 w-5"></i> Promo Code
       </a>
     </nav>
 
@@ -180,11 +178,10 @@
     <!-- DASHBOARD -->
     <section id="section-home" class="space-y-5">
       <div class="text-center pt-1">
-        <h2 class="text-xl font-bold">Security Dashboard</h2>
-        <p class="text-xs text-slate-400 mt-1">Protect yourself from digital fraud</p>
+        <h2 class="text-xl font-bold" id="dash-greeting">Welcome</h2>
+        <p class="text-xs text-slate-400 mt-1">Your personal fraud protection terminal</p>
       </div>
 
-      <!-- Usage Limit Card -->
       <div class="glass p-4 rounded-2xl">
         <div class="flex justify-between items-center mb-2">
           <span class="text-xs text-slate-400">Daily Scan Limit</span>
@@ -197,50 +194,29 @@
       </div>
 
       <div class="grid grid-cols-2 gap-3">
-        <button onclick="switchSection('chat')" class="glass p-4 rounded-2xl text-left">
-          <i class="fa-solid fa-robot text-red-500 text-xl mb-2"></i>
-          <div class="text-sm font-semibold">AI Assistant</div>
-          <div class="text-[11px] text-slate-400">Ask security questions</div>
-        </button>
         <button onclick="goToModule('sms')" class="glass p-4 rounded-2xl text-left">
-          <i class="fa-solid fa-message text-red-500 text-xl mb-2"></i>
+          <i class="fa-solid fa-message text-blue-400 text-xl mb-2"></i>
           <div class="text-sm font-semibold">SMS Scanner</div>
-          <div class="text-[11px] text-slate-400">Detect scam messages</div>
         </button>
         <button onclick="goToModule('upi')" class="glass p-4 rounded-2xl text-left">
-          <i class="fa-solid fa-wallet text-red-500 text-xl mb-2"></i>
+          <i class="fa-solid fa-wallet text-blue-400 text-xl mb-2"></i>
           <div class="text-sm font-semibold">UPI Checker</div>
-          <div class="text-[11px] text-slate-400">Verify payment handles</div>
         </button>
         <button onclick="goToModule('url')" class="glass p-4 rounded-2xl text-left">
-          <i class="fa-solid fa-link text-red-500 text-xl mb-2"></i>
+          <i class="fa-solid fa-link text-blue-400 text-xl mb-2"></i>
           <div class="text-sm font-semibold">Link Scanner</div>
-          <div class="text-[11px] text-slate-400">Phishing detection</div>
+        </button>
+        <button onclick="goToModule('qr')" class="glass p-4 rounded-2xl text-left">
+          <i class="fa-solid fa-qrcode text-cyan-400 text-xl mb-2"></i>
+          <div class="text-sm font-semibold">QR Inspector</div>
         </button>
         <button onclick="switchSection('alerts')" class="glass p-4 rounded-2xl text-left">
           <i class="fa-solid fa-bell text-amber-400 text-xl mb-2"></i>
           <div class="text-sm font-semibold">Threat Alerts</div>
-          <div class="text-[11px] text-slate-400">Latest fraud patterns</div>
         </button>
         <button onclick="goToModule('emergency')" class="glass p-4 rounded-2xl text-left">
           <i class="fa-solid fa-phone text-emerald-400 text-xl mb-2"></i>
           <div class="text-sm font-semibold">Emergency</div>
-          <div class="text-[11px] text-slate-400">1930 Helpline</div>
-        </button>
-      </div>
-    </section>
-
-    <!-- AI CHAT -->
-    <section id="section-chat" class="hidden flex flex-col h-[calc(100vh-140px)]">
-      <div class="text-center mb-3">
-        <h2 class="font-bold">Xenin AI Assistant</h2>
-        <p class="text-xs text-slate-400">Intelligent security guidance</p>
-      </div>
-      <div id="chat-box" class="flex-1 overflow-y-auto space-y-3 mb-3"></div>
-      <div class="glass p-2 rounded-2xl flex gap-2">
-        <input id="chat-input" type="text" placeholder="Ask about SMS, UPI, links or fraud..." class="flex-1 bg-transparent px-3 py-2.5 text-sm outline-none" onkeydown="if(event.key==='Enter')sendChat()">
-        <button onclick="sendChat()" class="bg-red-600 w-12 h-12 rounded-xl flex items-center justify-center">
-          <i class="fa-solid fa-paper-plane"></i>
         </button>
       </div>
     </section>
@@ -250,44 +226,44 @@
       <h2 class="text-lg font-bold">Security Tools</h2>
 
       <div class="glass p-4 rounded-2xl space-y-3" id="mod-sms">
-        <h3 class="text-sm font-bold text-red-400">SMS Scam Inspector</h3>
+        <h3 class="text-sm font-bold text-blue-400">SMS Scam Inspector</h3>
         <textarea id="sms-input" rows="3" placeholder="Paste suspicious SMS here..." class="field"></textarea>
         <button onclick="inspectSMS()" class="btn">Scan SMS</button>
         <div id="sms-output" class="output"></div>
       </div>
 
       <div class="glass p-4 rounded-2xl space-y-3" id="mod-upi">
-        <h3 class="text-sm font-bold text-red-400">UPI Handle Verifier</h3>
+        <h3 class="text-sm font-bold text-blue-400">UPI Handle Verifier</h3>
         <input id="upi-input" placeholder="example@ybl or number@fam" class="field">
         <button onclick="verifyUPI()" class="btn">Inspect UPI</button>
         <div id="upi-output" class="output"></div>
       </div>
 
       <div class="glass p-4 rounded-2xl space-y-3" id="mod-url">
-        <h3 class="text-sm font-bold text-red-400">Phishing Link Scanner</h3>
+        <h3 class="text-sm font-bold text-blue-400">Phishing Link Scanner</h3>
         <input id="url-input" placeholder="https://suspicious-link.com" class="field">
         <button onclick="scanURL()" class="btn">Inspect Link</button>
         <div id="url-output" class="output"></div>
       </div>
 
       <div class="glass p-4 rounded-2xl space-y-3" id="mod-qr">
-        <h3 class="text-sm font-bold text-red-400">QR Payment Inspector</h3>
+        <h3 class="text-sm font-bold text-blue-400">QR Payment Inspector</h3>
         <textarea id="qr-input" rows="2" placeholder="Paste decoded QR text" class="field"></textarea>
         <button onclick="scanQR()" class="btn">Inspect QR</button>
         <div id="qr-output" class="output"></div>
       </div>
 
-      <div class="glass p-4 rounded-2xl space-y-3 relative">
+      <div class="glass p-4 rounded-2xl space-y-3 relative" id="mod-advanced">
         <div class="absolute top-3 right-3 pro-tag">PRO</div>
-        <h3 class="text-sm font-bold text-red-400">Advanced Threat Analysis</h3>
-        <p class="text-xs text-slate-400">Deep heuristic analysis + risk scoring</p>
+        <h3 class="text-sm font-bold text-blue-400">Advanced Threat Analysis</h3>
+        <p class="text-xs text-slate-400">Available on Monthly & Yearly plans</p>
         <button onclick="runAdvanced()" class="btn">Run Advanced Scan</button>
         <div id="advanced-output" class="output"></div>
       </div>
 
       <div class="glass p-4 rounded-2xl space-y-3" id="mod-emergency">
-        <h3 class="text-sm font-bold text-red-400">Emergency Help</h3>
-        <button onclick="showEmergency()" class="btn">Show 1930 Guidance</button>
+        <h3 class="text-sm font-bold text-blue-400">Emergency Help</h3>
+        <button onclick="showEmergency()" class="btn btn-green">Show 1930 Guidance</button>
         <div id="emergency-output" class="output"></div>
       </div>
     </section>
@@ -295,34 +271,23 @@
     <!-- ALERTS -->
     <section id="section-alerts" class="hidden space-y-4">
       <h2 class="text-lg font-bold">Threat Alerts</h2>
-      <p class="text-xs text-slate-400">Current fraud patterns you should know</p>
+      <p class="text-xs text-slate-400">Stay aware of active fraud patterns</p>
 
       <div class="glass p-4 rounded-2xl space-y-2">
-        <div class="text-red-400 text-sm font-bold flex items-center gap-2">
-          <i class="fa-solid fa-triangle-exclamation"></i> Fake KYC / Account Block SMS
-        </div>
-        <p class="text-xs text-slate-300 leading-relaxed">Fraudsters send messages claiming your bank account will be blocked unless you complete KYC through a link. Real banks never request KYC via random SMS links.</p>
+        <div class="text-amber-400 text-sm font-bold"><i class="fa-solid fa-triangle-exclamation"></i> Fake KYC / Account Block SMS</div>
+        <p class="text-xs text-slate-300">Fraudsters send messages claiming your account will be blocked unless you complete KYC through a link. Real banks never do this.</p>
       </div>
-
       <div class="glass p-4 rounded-2xl space-y-2">
-        <div class="text-red-400 text-sm font-bold flex items-center gap-2">
-          <i class="fa-solid fa-triangle-exclamation"></i> UPI Collect Request Scam
-        </div>
-        <p class="text-xs text-slate-300 leading-relaxed">Scammers send collect requests pretending you will receive money. Approving the request actually sends money from your account.</p>
+        <div class="text-amber-400 text-sm font-bold"><i class="fa-solid fa-triangle-exclamation"></i> UPI Collect Request Scam</div>
+        <p class="text-xs text-slate-300">Scammers send collect requests pretending you will receive money. Approving the request actually sends money from your account.</p>
       </div>
-
       <div class="glass p-4 rounded-2xl space-y-2">
-        <div class="text-red-400 text-sm font-bold flex items-center gap-2">
-          <i class="fa-solid fa-triangle-exclamation"></i> Fake Job / Refund Links
-        </div>
-        <p class="text-xs text-slate-300 leading-relaxed">Links promising refunds, job offers or lottery winnings often lead to phishing pages designed to steal OTPs and passwords.</p>
+        <div class="text-amber-400 text-sm font-bold"><i class="fa-solid fa-triangle-exclamation"></i> Fake Job / Refund Links</div>
+        <p class="text-xs text-slate-300">Links promising refunds or jobs often lead to phishing pages designed to steal OTPs and passwords.</p>
       </div>
-
       <div class="glass p-4 rounded-2xl space-y-2">
-        <div class="text-red-400 text-sm font-bold flex items-center gap-2">
-          <i class="fa-solid fa-triangle-exclamation"></i> Screen Sharing / Malicious APK
-        </div>
-        <p class="text-xs text-slate-300 leading-relaxed">Victims are tricked into installing unknown APKs or sharing their screen. This can give fraudsters full control of the device.</p>
+        <div class="text-amber-400 text-sm font-bold"><i class="fa-solid fa-triangle-exclamation"></i> Screen Sharing / Malicious APK</div>
+        <p class="text-xs text-slate-300">Victims are tricked into installing unknown APKs or sharing screen, giving fraudsters full device control.</p>
       </div>
     </section>
 
@@ -337,6 +302,19 @@
   </main>
 </div>
 
+<!-- PROMO MODAL -->
+<div id="promo-modal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
+  <div class="glass w-full max-w-sm p-6 rounded-2xl space-y-4">
+    <div class="flex justify-between items-center">
+      <h3 class="font-bold">Promo Code</h3>
+      <button onclick="closeModal('promo-modal')" class="text-2xl">×</button>
+    </div>
+    <input type="text" id="promo-input" placeholder="Enter promo code" class="field">
+    <button onclick="applyPromo()" class="btn">Apply Code</button>
+    <p id="promo-status" class="text-xs text-center"></p>
+  </div>
+</div>
+
 <!-- PAYMENT MODAL -->
 <div id="payment-modal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
   <div class="glass w-full max-w-md p-6 rounded-2xl space-y-5 max-h-[90vh] overflow-y-auto">
@@ -346,16 +324,16 @@
     </div>
     <div class="bg-slate-900 p-4 rounded-xl text-center space-y-2">
       <p class="text-xs text-slate-400">Pay using UPI</p>
-      <p class="text-lg font-bold tracking-wide">8851738350@fam</p>
+      <p class="text-lg font-bold">8851738350@fam</p>
       <p class="text-[11px] text-slate-500">Send the exact plan amount</p>
     </div>
     <div class="space-y-3 text-sm">
-      <div class="flex justify-between py-2 border-b border-slate-800"><span>Weekly</span><span class="font-semibold">₹500</span></div>
-      <div class="flex justify-between py-2 border-b border-slate-800"><span>Monthly</span><span class="font-semibold">₹1,800</span></div>
-      <div class="flex justify-between py-2"><span>Yearly</span><span class="font-semibold">₹20,000</span></div>
+      <div class="flex justify-between py-2 border-b border-slate-800"><span>Weekly</span><span class="font-semibold">₹799</span></div>
+      <div class="flex justify-between py-2 border-b border-slate-800"><span>Monthly</span><span class="font-semibold">₹2,499</span></div>
+      <div class="flex justify-between py-2"><span>Yearly</span><span class="font-semibold">₹24,999</span></div>
     </div>
     <div class="space-y-3">
-      <p class="text-xs text-slate-400">After payment, enter your Transaction ID (UTR)</p>
+      <p class="text-xs text-slate-400">After payment, enter Transaction ID (UTR)</p>
       <input id="utr-input" placeholder="Enter UTR / Transaction ID" class="field">
       <button onclick="submitPayment()" class="btn">Submit for Verification</button>
       <p id="payment-status" class="text-xs text-center"></p>
@@ -370,36 +348,93 @@
       <h3 class="font-bold text-lg">Xenin AI Pro</h3>
       <button onclick="closeModal('sub-modal')" class="text-2xl">×</button>
     </div>
+
     <div class="space-y-3">
-      <div class="bg-slate-900 p-4 rounded-xl flex justify-between items-center">
-        <div><div class="font-bold">Weekly</div><div class="text-xs text-slate-400">Unlimited scans</div></div>
-        <div class="text-lg font-bold">₹500</div>
+      <div class="bg-slate-900 p-4 rounded-xl">
+        <div class="flex justify-between items-center">
+          <div>
+            <div class="font-bold">Weekly</div>
+            <div class="text-xs text-slate-400 mt-1">Unlimited scans + Basic tools</div>
+          </div>
+          <div class="text-lg font-bold">₹799</div>
+        </div>
       </div>
-      <div class="bg-slate-900 p-4 rounded-xl border border-red-500/40 flex justify-between items-center relative">
-        <div class="absolute -top-2.5 left-4 bg-red-600 text-[10px] px-2.5 py-0.5 rounded-full font-bold">Popular</div>
-        <div><div class="font-bold text-red-400">Monthly</div><div class="text-xs text-slate-400">Best for regular use</div></div>
-        <div class="text-lg font-bold">₹1,800</div>
+
+      <div class="bg-slate-900 p-4 rounded-xl border border-blue-500/40 relative">
+        <div class="absolute -top-2.5 left-4 bg-blue-600 text-[10px] px-2.5 py-0.5 rounded-full font-bold">Popular</div>
+        <div class="flex justify-between items-center">
+          <div>
+            <div class="font-bold text-blue-400">Monthly</div>
+            <div class="text-xs text-slate-400 mt-1">Weekly + Advanced Analysis + Priority</div>
+          </div>
+          <div class="text-lg font-bold">₹2,499</div>
+        </div>
       </div>
-      <div class="bg-slate-900 p-4 rounded-xl border border-emerald-500/30 flex justify-between items-center">
-        <div><div class="font-bold">Yearly</div><div class="text-xs text-slate-400">Maximum value</div></div>
-        <div class="text-lg font-bold">₹20,000</div>
+
+      <div class="bg-slate-900 p-4 rounded-xl border border-emerald-500/30">
+        <div class="flex justify-between items-center">
+          <div>
+            <div class="font-bold">Yearly</div>
+            <div class="text-xs text-slate-400 mt-1">All Monthly features + Exclusive tools + Full history</div>
+          </div>
+          <div class="text-lg font-bold">₹24,999</div>
+        </div>
       </div>
     </div>
-    <div class="text-xs text-slate-400 space-y-1">
-      <p>• Unlimited scans</p>
-      <p>• Advanced Threat Analysis</p>
-      <p>• Priority support</p>
-      <p>• Full history access</p>
-    </div>
+
     <button onclick="closeModal('sub-modal'); openModal('payment-modal')" class="btn">Proceed to Payment</button>
   </div>
 </div>
 
 <script>
 let isPro = localStorage.getItem('xenin_pro') === 'true';
+let userName = localStorage.getItem('xenin_name') || '';
 let history = JSON.parse(localStorage.getItem('xenin_history') || '[]');
 let dailyScans = parseInt(localStorage.getItem('xenin_daily_scans') || '0');
 let lastScanDate = localStorage.getItem('xenin_scan_date') || '';
+
+function getGreeting() {
+  const h = new Date().getHours();
+  if (h < 12) return "Good Morning";
+  if (h < 17) return "Good Afternoon";
+  return "Good Evening";
+}
+
+function continueAsGuest() {
+  document.getElementById('auth-screen').classList.add('hidden');
+  if (!userName) {
+    document.getElementById('greeting-text').textContent = getGreeting();
+    document.getElementById('welcome-screen').classList.remove('hidden');
+  } else {
+    enterApp();
+  }
+}
+
+function saveName() {
+  const name = document.getElementById('user-name-input').value.trim();
+  if (!name) return alert("Please enter your name");
+  userName = name;
+  localStorage.setItem('xenin_name', name);
+  document.getElementById('welcome-screen').classList.add('hidden');
+  enterApp();
+}
+
+function enterApp() {
+  checkDailyReset();
+  document.getElementById('app').classList.remove('hidden');
+  document.getElementById('user-email').textContent = userName || 'Guest User';
+  document.getElementById('dash-greeting').textContent = `${getGreeting()}, ${userName || 'User'}`;
+  updateProUI();
+  updateLimitUI();
+  renderHistory();
+}
+
+function logout() {
+  if (confirm("Logout?")) {
+    localStorage.removeItem('xenin_name');
+    location.reload();
+  }
+}
 
 function checkDailyReset() {
   const today = new Date().toDateString();
@@ -410,27 +445,12 @@ function checkDailyReset() {
   }
 }
 
-function continueAsGuest() {
-  checkDailyReset();
-  document.getElementById('auth-screen').classList.add('hidden');
-  document.getElementById('app').classList.remove('hidden');
-  document.getElementById('user-email').textContent = 'Guest User';
-  updateProUI();
-  updateLimitUI();
-  renderHistory();
-  addChat("Welcome to Xenin AI.\n\nI can help you identify suspicious SMS, UPI handles, phishing links, QR codes and guide you on financial fraud safety.", false);
-}
-
-function logout() {
-  if (confirm("Logout from Xenin AI?")) location.reload();
-}
-
 function updateProUI() {
   const badge = document.getElementById('pro-badge');
   const status = document.getElementById('plan-status');
   if (isPro) {
     badge.classList.remove('hidden');
-    status.textContent = "PRO • Unlimited Access";
+    status.textContent = "PRO • Unlimited";
     status.className = "text-[11px] text-emerald-400 mb-1";
   } else {
     badge.classList.add('hidden');
@@ -441,19 +461,16 @@ function updateProUI() {
 
 function updateLimitUI() {
   checkDailyReset();
-  const max = isPro ? '∞' : 5;
-  const current = isPro ? dailyScans : dailyScans;
   document.getElementById('limit-count').textContent = isPro ? `\( {dailyScans} scans` : ` \){dailyScans} / 5`;
   document.getElementById('limit-text').textContent = isPro ? `Scans today: ${dailyScans}` : `Scans today: ${dailyScans}/5`;
-  const pct = isPro ? 100 : Math.min((dailyScans / 5) * 100, 100);
-  document.getElementById('limit-fill').style.width = pct + '%';
+  document.getElementById('limit-fill').style.width = isPro ? '100%' : Math.min((dailyScans/5)*100, 100) + '%';
 }
 
 function canScan() {
   checkDailyReset();
   if (isPro) return true;
   if (dailyScans >= 5) {
-    alert("Daily free limit reached (5 scans).\n\nUpgrade to Pro for unlimited access.");
+    alert("Daily free limit reached (5 scans).\nUpgrade to Pro for unlimited access.");
     openModal('sub-modal');
     return false;
   }
@@ -473,7 +490,7 @@ function toggleSidebar() {
 }
 
 function switchSection(name) {
-  ['home','chat','modules','alerts','history'].forEach(s => {
+  ['home','modules','alerts','history'].forEach(s => {
     document.getElementById('section-' + s).classList.add('hidden');
   });
   document.getElementById('section-' + name).classList.remove('hidden');
@@ -486,12 +503,29 @@ function goToModule(id) {
   switchSection('modules');
   setTimeout(() => {
     const el = document.getElementById('mod-' + id);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    if (el) el.scrollIntoView({behavior:'smooth'});
   }, 100);
 }
 
 function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
 function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+function applyPromo() {
+  const code = document.getElementById('promo-input').value.trim().toUpperCase();
+  const status = document.getElementById('promo-status');
+  if (code === "X8333313409") {
+    isPro = true;
+    localStorage.setItem('xenin_pro', 'true');
+    updateProUI();
+    updateLimitUI();
+    status.textContent = "✅ Promo applied! Unlimited Pro access activated.";
+    status.className = "text-xs text-center text-emerald-400";
+    setTimeout(() => closeModal('promo-modal'), 1500);
+  } else {
+    status.textContent = "Invalid promo code";
+    status.className = "text-xs text-center text-red-400";
+  }
+}
 
 function submitPayment() {
   const utr = document.getElementById('utr-input').value.trim();
@@ -506,22 +540,8 @@ function submitPayment() {
   document.getElementById('utr-input').value = '';
 }
 
-// Hidden promo
-document.addEventListener('keydown', function(e) {
-  if (e.ctrlKey && e.shiftKey && e.key === 'P') {
-    const code = prompt("Enter access code:");
-    if (code === "X8333313409") {
-      isPro = true;
-      localStorage.setItem('xenin_pro', 'true');
-      updateProUI();
-      updateLimitUI();
-      alert("Pro access activated");
-    }
-  }
-});
-
 function logScan(action, result) {
-  const time = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+  const time = new Date().toLocaleTimeString('en-IN', {hour:'2-digit', minute:'2-digit'});
   history.unshift(`[${time}] ${action} → ${result}`);
   if (history.length > 50) history.pop();
   localStorage.setItem('xenin_history', JSON.stringify(history));
@@ -529,49 +549,16 @@ function logScan(action, result) {
 
 function renderHistory() {
   const box = document.getElementById('history-box');
-  box.innerHTML = history.length === 0 
-    ? '<span class="text-slate-500">No scans yet.</span>' 
-    : history.map(h => `<div class="border-b border-slate-800 pb-2 mb-2">${h}</div>`).join('');
+  box.innerHTML = history.length === 0 ? '<span class="text-slate-500">No scans yet.</span>' :
+    history.map(h => `<div class="border-b border-slate-800 pb-2 mb-2">${h}</div>`).join('');
 }
 
 function clearHistory() {
-  if (confirm("Clear all scan history?")) {
+  if (confirm("Clear history?")) {
     history = [];
     localStorage.removeItem('xenin_history');
     renderHistory();
   }
-}
-
-function addChat(text, isUser = false) {
-  const box = document.getElementById('chat-box');
-  const div = document.createElement('div');
-  div.className = isUser ? 'chat-bubble bg-red-600/30 ml-auto text-white' : 'chat-bubble glass text-slate-200';
-  div.innerHTML = text.replace(/\n/g, '<br>');
-  box.appendChild(div);
-  box.scrollTop = box.scrollHeight;
-}
-
-function sendChat() {
-  const input = document.getElementById('chat-input');
-  const q = input.value.trim();
-  if (!q) return;
-  addChat(q, true);
-  input.value = '';
-
-  const lower = q.toLowerCase();
-  let reply = "I can help with SMS scams, UPI safety, phishing links, QR codes and financial fraud guidance. Please ask a specific question.";
-
-  if (lower.includes("sms") || lower.includes("otp") || lower.includes("kyc")) {
-    reply = "Common SMS scam signs:\n\n• Account blocked / KYC required\n• Click this link\n• Lottery, prize or refund offers\n• Urgent action required\n\nNever click unknown links or share OTP.";
-  } else if (lower.includes("upi") || lower.includes("payment")) {
-    reply = "UPI Safety Tips:\n\n• Always verify the name before paying\n• Be careful with collect requests\n• Never share your UPI PIN\n• Double-check the amount";
-  } else if (lower.includes("link") || lower.includes("phishing") || lower.includes("url")) {
-    reply = "Phishing link warning signs:\n\n• No HTTPS\n• Strange domain name\n• Urgent login or verification request\n• Requests for OTP or password\n\nAvoid opening unknown links.";
-  } else if (lower.includes("1930") || lower.includes("fraud") || lower.includes("scam") || lower.includes("help")) {
-    reply = "If you face financial cyber fraud:\n\n1. Call 1930 immediately\n2. Report on cybercrime.gov.in\n3. Inform your bank\n4. Keep transaction details ready";
-  }
-
-  setTimeout(() => addChat(reply), 400);
 }
 
 function showResult(id, msg, isWarning = false) {
@@ -585,17 +572,15 @@ function inspectSMS() {
   if (!canScan()) return;
   const text = document.getElementById('sms-input').value.trim();
   if (!text) return showResult('sms-output', 'Please paste an SMS first.', true);
-
   consumeScan();
-  const danger = /otp|kyc|blocked|suspend|urgent|verify now|click here|lottery|prize|refund|account.*block|won|claim/i;
-  const hasLink = /https?:\/\/|bit\.ly|tinyurl|t\.me\//i.test(text);
-
+  const danger = /otp|kyc|blocked|urgent|click here|lottery|prize|refund|account.*block/i;
+  const hasLink = /https?:\/\/|bit\.ly|t\.me/i.test(text);
   if (danger.test(text) || hasLink) {
-    showResult('sms-output', '⚠️ Warning: Suspicious indicators detected.\n\n• Do not click any link\n• Do not share OTP\n• Verify only through official bank channels', true);
-    logScan('SMS Scan', 'Suspicious');
+    showResult('sms-output', '⚠️ Warning: Suspicious indicators found.\n\nDo not click links or share OTP.', true);
+    logScan('SMS', 'Suspicious');
   } else {
-    showResult('sms-output', 'No strong scam indicators found.\n\nThis does not guarantee the message is safe. Always verify through official channels.');
-    logScan('SMS Scan', 'No strong indicators');
+    showResult('sms-output', 'No strong scam indicators found.\nAlways verify through official channels.');
+    logScan('SMS', 'Clean');
   }
 }
 
@@ -603,16 +588,14 @@ function verifyUPI() {
   if (!canScan()) return;
   const upi = document.getElementById('upi-input').value.trim().toLowerCase();
   if (!upi) return showResult('upi-output', 'Please enter a UPI ID.', true);
-
   consumeScan();
   const valid = /^[a-z0-9._-]+@[a-z0-9]+$/.test(upi);
-
   if (!valid) {
-    showResult('upi-output', 'Invalid UPI format.\n\nValid examples:\nname@ybl\n8851738350@fam\nname@oksbi', true);
-    logScan('UPI Check', 'Invalid');
+    showResult('upi-output', 'Invalid UPI format.\nExample: name@ybl or 8851738350@fam', true);
+    logScan('UPI', 'Invalid');
   } else {
-    showResult('upi-output', 'Format appears valid.\n\nThis only checks the format. Always confirm the name before paying.');
-    logScan('UPI Check', 'Valid format');
+    showResult('upi-output', 'Format appears valid.\nAlways confirm the name before paying.');
+    logScan('UPI', 'Valid');
   }
 }
 
@@ -620,20 +603,18 @@ function scanURL() {
   if (!canScan()) return;
   const raw = document.getElementById('url-input').value.trim();
   if (!raw) return showResult('url-output', 'Please enter a link.', true);
-
   consumeScan();
   let suspicious = false;
   try {
     const url = new URL(raw.startsWith('http') ? raw : 'https://' + raw);
     if (url.protocol !== 'https:' || /login|verify|account|bank|kyc|refund/i.test(url.href)) suspicious = true;
-  } catch (e) { suspicious = true; }
-
+  } catch(e) { suspicious = true; }
   if (suspicious) {
-    showResult('url-output', '⚠️ Caution: Risk indicators found.\n\nDo not open unknown links.', true);
-    logScan('URL Scan', 'Caution');
+    showResult('url-output', '⚠️ Caution: Risk indicators found.\nAvoid opening unknown links.', true);
+    logScan('URL', 'Caution');
   } else {
     showResult('url-output', 'Basic format looks acceptable.\nStill proceed with caution.');
-    logScan('URL Scan', 'OK');
+    logScan('URL', 'OK');
   }
 }
 
@@ -641,30 +622,29 @@ function scanQR() {
   if (!canScan()) return;
   const text = document.getElementById('qr-input').value.trim();
   if (!text) return showResult('qr-output', 'Please paste QR text.', true);
-
   consumeScan();
   if (/upi:\/\/|pa=|collect|reqpay/i.test(text)) {
-    showResult('qr-output', '⚠️ This appears related to a payment request.\n\nVerify amount and receiver name carefully.', true);
-    logScan('QR Scan', 'Payment related');
+    showResult('qr-output', '⚠️ This appears related to a payment request.\nVerify amount and receiver name.', true);
+    logScan('QR', 'Payment');
   } else {
-    showResult('qr-output', 'Text inspected. Verify before any payment.');
-    logScan('QR Scan', 'Checked');
+    showResult('qr-output', 'Text inspected. Verify before payment.');
+    logScan('QR', 'Checked');
   }
 }
 
 function runAdvanced() {
   if (!isPro) {
-    showResult('advanced-output', 'This feature is available only for Pro users.\n\nUpgrade to unlock Advanced Threat Analysis.', true);
+    showResult('advanced-output', 'This feature is available on Monthly & Yearly plans only.\nPlease upgrade.', true);
     openModal('sub-modal');
     return;
   }
-  showResult('advanced-output', 'Advanced Threat Analysis complete.\n\n• Heuristic pattern matching active\n• Multi-signal risk scoring enabled\n• Deeper structure analysis unlocked');
-  logScan('Advanced Scan', 'Pro analysis');
+  showResult('advanced-output', 'Advanced Threat Analysis complete.\n\n• Heuristic pattern matching active\n• Risk scoring enabled\n• Deep structure analysis unlocked');
+  logScan('Advanced', 'Pro scan');
 }
 
 function showEmergency() {
-  showResult('emergency-output', 'Financial Cyber Fraud Response:\n\n1. Call 1930 immediately\n2. Report on cybercrime.gov.in\n3. Inform your bank using official number\n4. Keep transaction ID, amount and time ready\n\nQuick reporting improves recovery chances.', true);
-  logScan('Emergency', '1930 guidance');
+  showResult('emergency-output', 'Financial Cyber Fraud Response:\n\n1. Call 1930 immediately\n2. Report on cybercrime.gov.in\n3. Inform your bank\n4. Keep transaction details ready', true);
+  logScan('Emergency', '1930');
 }
 </script>
 </body>
